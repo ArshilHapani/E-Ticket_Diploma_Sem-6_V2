@@ -1,0 +1,33 @@
+.guide-map-container {
+  height: 80%;
+  border-radius: 8px;
+  width: 97%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .proto-image {
+    width: 100%;
+  }
+  .proto-image:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  &.light {
+    background-color: var(--bg-light-primary);
+    color: var(--text-dark-color);
+  }
+  &.dark {
+    color: var(--text-light-color);
+    background-color: var(--bg-dark-secondary);
+  }
+
+  @media screen and (max-width: 900px) {
+    height: 80%;
+  }
+  &:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+}

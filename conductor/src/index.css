@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Actor&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Actor", sans-serif;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  display: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+::-webkit-scrollbar {
+  width: 0.1vw;
+}
+::-webkit-scrollbar-track {
+  background-color: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #20232a;
+}
+
+.link-styles-anchor-tags {
+  text-decoration: none;
+  color: inherit;
+}
+
+.form-root {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: #eef2f6;
+}
+body {
+  overflow-x: hidden;
+}

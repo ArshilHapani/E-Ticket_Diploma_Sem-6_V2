@@ -1,0 +1,195 @@
+.sidebar-container {
+  z-index: 99999 !important;
+  height: 100vh;
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: all 0.15s ease-in-out;
+
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+  &:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  }
+  filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03))
+    drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+
+  .logo-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 2rem 1.7rem;
+    letter-spacing: 1.23px;
+    .logo-icon {
+      height: 30px;
+      width: 40px;
+    }
+    span {
+      font-size: 1.5rem;
+      margin-left: 5px;
+    }
+    &.light {
+      text-decoration: none;
+      color: var(--text-dark-color);
+    }
+    &.dark {
+      text-decoration: none;
+      color: var(--text-light-color);
+    }
+  }
+
+  .sidebar-items {
+    display: flex;
+    letter-spacing: 1px;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 7px;
+    transition: all 0.2s ease-in-out;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    i {
+      font-size: 1.2rem;
+      font-weight: 300;
+    }
+    p {
+      font-size: 1rem;
+      margin-left: 15px;
+    }
+    &.light {
+      color: var(--text-dark-color);
+    }
+    &.dark {
+      color: var(--text-light-color);
+    }
+    &:hover,
+    &.active {
+      background-color: rgba(0, 0, 0, 0.1);
+      transform: translateX(2px);
+    }
+    &.active {
+      &::before {
+        content: "";
+        position: absolute;
+        height: 3vh;
+        width: 0.4rem;
+        left: 0.2vw;
+        background-color: #217be1;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+      }
+    }
+  }
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+
+  &.light {
+    background-color: var(--bg-light-primary);
+  }
+  &.dark {
+    background-color: var(--bg-dark-secondary);
+  }
+}
+
+// For Medium screen view
+.sidebar-menu {
+  @media screen and (max-width: 900px) {
+    width: 40vw;
+  }
+  @media screen and (max-width: 450px) {
+    width: 60vw;
+  }
+  position: absolute;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+
+  filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03))
+    drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+  .logo-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 2rem 1.7rem;
+    .logo-icon {
+      height: 30px;
+      width: 40px;
+    }
+    .close-icon {
+      position: absolute;
+      top: 4vh;
+      right: 3vw;
+    }
+    span {
+      font-size: 1.5rem;
+      margin-left: 5px;
+    }
+    &.light {
+      text-decoration: none;
+      color: var(--text-dark-color);
+    }
+    &.dark {
+      text-decoration: none;
+      color: var(--text-light-color);
+    }
+  }
+
+  .sidebar-items {
+    display: flex;
+    text-decoration: none;
+    margin: 1rem 2rem;
+    i {
+      font-size: 1.2rem;
+      font-weight: 300;
+    }
+    p {
+      font-size: 1rem;
+      margin-left: 15px;
+    }
+    &.light {
+      color: var(--text-dark-color);
+    }
+    &.dark {
+      color: var(--text-light-color);
+    }
+    &.active {
+      &::before {
+        content: "";
+        position: absolute;
+        height: 3vh;
+        width: 0.4rem;
+        left: 0.2vw;
+        background-color: #217be1;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+      }
+    }
+  }
+
+  &.light {
+    background-color: var(--bg-light-primary);
+  }
+  &.dark {
+    background-color: var(--bg-dark-secondary);
+  }
+}
+.active-on {
+  transform: translateX(0vw);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+.active-lose {
+  transform: translateX(-100vw);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}

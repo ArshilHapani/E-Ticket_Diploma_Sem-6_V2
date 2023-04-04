@@ -1,0 +1,14 @@
+.layout-container {
+  height: 80%;
+  width: 97%;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &.light {
+    background-color: var(--bg-light-primary);
+  }
+  &.dark {
+    background-color: var(--bg-dark-secondary);
+  }
+}

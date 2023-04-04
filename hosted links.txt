@@ -1,0 +1,7 @@
+user view:
+
+https://e-ticket-user.netlify.app/
+
+conductor view:
+
+https://e-ticket-conductor.netlify.app/
