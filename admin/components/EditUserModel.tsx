@@ -3,44 +3,58 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { functionEditUserModelProps } from '@/interfaces';
 import { toast } from 'react-hot-toast';
+import isUserNameValid from '@/functions/userNameValidate';
+import validateEmail from '@/functions/validateEmail';
 
 const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
 
     const [user, setUser] = useState({
         ...initialValues
     });
+    console.log(initialValues);
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        // if (user.name === "" || user.uname === "" || user.email === "") {
-        //     toast.error("Please enter all the required fields");
-        //     return;
-        // }
-        // const store: any = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/updateuser`, {
-        //     method: "PATCH",
-        //     //@ts-ignore
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         authToken: sessionStorage.getItem("admin")
-        //     },
-        //     body: JSON.stringify({
-        //         c_uname: user.name,
-        //         c_name: user.email,
-        //         c_email: user.email,
-        //     }),
-        // });
+        if (user.name === "" || user.uname === "" || user.email === "") {
+            toast.error("Please enter all the required fields");
+            return;
+        }
+        if (!isUserNameValid(user.uname)) {
+            toast.error("Please enter valid username");
+            return;
+        }
+        if (validateEmail(user.email) === null) {
+            toast.error("please enter valid email format");
+            return;
+        }
+        const store: any = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/passenger/update`, {
+            method: "PATCH",
+            //@ts-ignore
+            headers: {
+                'Content-Type': 'application/json',
+                authToken: sessionStorage.getItem("admin")
+            },
+            body: JSON.stringify({
+                p_id: user.id,
+                p_uname: user.uname,
+                p_email: user.email,
+                p_name: user.name,
+                p_balance: user.balance,
+            }),
+        });
 
-        // const res: any = await store.json();
-        // console.log(res);
+        const res: any = await store.json();
+        console.log(res);
 
-        // if (res.success) {
-        //     toast.success("user edited successfully");
-        // } else if (!res.success) {
-        //     toast.error(res.msg);
-        // }
-        // else {
-        //     toast.error("Something went wrong");
-        // }
+        if (res.success) {
+            toast.success("user edited successfully");
+            setOpen(false);
+        } else if (!res.success) {
+            toast.error(res.msg);
+        }
+        else {
+            toast.error("Something went wrong");
+        }
     };
     return (
 
@@ -82,7 +96,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
                 sx={profile_edit_textfield}
                 variant="standard"
                 color="info"
-                type="email"
+                type="text"
                 value={user.email}
                 onChange={(e) => {
                     setUser({

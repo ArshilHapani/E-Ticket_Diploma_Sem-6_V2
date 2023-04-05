@@ -20,9 +20,9 @@ import {
 } from "@mui/material";
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import Navbar from '@/components/Navbar';
-import EditConductor from '@/components/EditConductorModel';
 import { style } from '../styles';
 import { toast } from 'react-hot-toast';
+import EditAdmin from '@/components/EditAdminModal';
 interface funcData {
     img: string,
     id: string,
@@ -31,19 +31,20 @@ interface funcData {
     email: string,
     mobile: string,
     dob: string,
+    createdBy: string,
 }
 
-const ConductorTable = () => {
+const AdminTable = () => {
     const [confirmDialog, setConfirmDialog] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
     useEffect(() => {
-        fetchConductors();
+        fetchAdmins();
     }, []);
-    async function fetchConductors() {
+    async function fetchAdmins() {
 
-        const conductors = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetchAllConductors`, {
+        const admins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetchAllAdmins`, {
             method: "GET",
             //@ts-ignore
             headers: {
@@ -51,28 +52,29 @@ const ConductorTable = () => {
                 authToken: sessionStorage.getItem('admin'),
             },
         });
-        const res = await conductors.json();
+        const res = await admins.json();
 
         if (res.success) {
-            setDataSet(res.conductors);
+            setDataSet(res.admins);
         }
 
     }
     const student_rows = dataSet.map((data: any) => (
         createData(
-            data.c_img,
-            data.c_id,
-            data.c_name,
-            data.c_uname,
-            data.c_email,
-            data.c_no,
-            data.c_dob,
+            data.a_img,
+            data.a_id,
+            data.a_name,
+            data.a_uname,
+            data.a_email,
+            data.a_no,
+            data.a_dob,
+            data.created_by
         )
     ));
 
-    function createData(img: string, id: string, name: string, uname: string, email: string, mobile: string, dob: string): funcData {
+    function createData(img: string, id: string, name: string, uname: string, email: string, mobile: string, dob: string, createdBy: string): funcData {
         return {
-            img, id, name, uname, email, mobile, dob
+            img, id, name, uname, email, mobile, dob, createdBy
         };
     }
 
@@ -83,13 +85,14 @@ const ConductorTable = () => {
             <Navbar />
             <div className="mt-[16vh] px-5 p-4">
                 <Typography variant="h4" className="my-5 text-slate-500">
-                    Manage Conductors
+                    Manage Admins
                 </Typography>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Image</TableCell>
+                                <TableCell>Created By</TableCell>
                                 <TableCell>ID</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>User name</TableCell>
@@ -117,6 +120,9 @@ const ConductorTable = () => {
                                         >
                                             {row.img === null && row.name.charAt(0).toUpperCase()}
                                         </Avatar>
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {row.createdBy}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
                                         {row.id}
@@ -190,7 +196,7 @@ const ConductorTable = () => {
     );
 };
 
-export default ConductorTable;
+export default AdminTable;
 
 
 
@@ -205,7 +211,7 @@ function ButtonAnnotation({ row, index, setOpen, open, indexMeasure }: any) {
         >
             <Box sx={style}>
                 {/*@ts-ignore */}
-                <EditConductor setOpen={setOpen} initialValues={row} />
+                <EditAdmin setOpen={setOpen} initialValues={row} />
             </Box>
         </Modal>
     );
@@ -221,7 +227,7 @@ type dialogModel = {
 
 function OpenDialogModal({ open, setOpen, uname, index, indexMeasure }: dialogModel) {
     async function handleDelete() {
-        const deleteConductor = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/deleteConductor`, {
+        const deleteConductor = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/deleteAdmin`, {
             method: 'DELETE',
             //@ts-ignore
             headers: {
@@ -229,7 +235,7 @@ function OpenDialogModal({ open, setOpen, uname, index, indexMeasure }: dialogMo
                 authToken: sessionStorage.getItem('admin')
             },
             body: JSON.stringify({
-                c_uname: uname
+                a_uname: uname
             })
         });
         const res = await deleteConductor.json();
@@ -249,6 +255,7 @@ function OpenDialogModal({ open, setOpen, uname, index, indexMeasure }: dialogMo
             open={indexMeasure === index ? open : false}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
+            sx={{ padding: '3rem' }}
         >
             <DialogTitle id="alert-dialog-title">
                 Are you sure? that you want to delete <b>{uname}</b>

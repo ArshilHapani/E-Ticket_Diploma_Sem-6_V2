@@ -11,6 +11,7 @@ import { BsPersonAdd } from "react-icons/bs";
 import CreateConductorModel from "./CreateConductorModel";
 import AddStationsModel from "./AddStationsModel";
 import Link from "next/link";
+import AddAdmins from "./AddAdminsModal";
 
 const style = {
     position: "absolute",
@@ -25,8 +26,9 @@ const style = {
 };
 
 const Navbar = () => {
-    const [open, setOpen]: any = useState(false);
-    const [addTicketModel, setAddTicketModel]: any = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [addTicketModel, setAddTicketModel] = useState<boolean>(false);
+    const [addAdminModal, setAddAdminModal] = useState<boolean>(false);
     return (
         <Stack
             direction="row"
@@ -45,7 +47,7 @@ const Navbar = () => {
         >
             <Stack direction="row" gap={4} alignItems="center" className="px-4">
                 <Link href="/HomePage" className="focus:outline-none" >
-                    {" "}
+
                     <Image
                         src="/svg/logo-no-background.svg"
                         alt="logo"
@@ -60,7 +62,6 @@ const Navbar = () => {
                         </IconButton>
                     </Link>
                 </Tooltip>
-                {/* User page... */}
                 <Tooltip title="Insights" placement="bottom" arrow>
                     <Link href="/StatisTics">
                         <IconButton color="primary">
@@ -75,7 +76,6 @@ const Navbar = () => {
                         <MdOutlineAddLocationAlt />
                     </IconButton>
                 </Tooltip>
-                {/* station model.... */}
                 <Modal
                     open={addTicketModel}
                     aria-labelledby="modal-modal-title"
@@ -86,11 +86,19 @@ const Navbar = () => {
                     </Box>
                 </Modal>
                 <Tooltip title="Add admin" placement="bottom" arrow>
-                    <IconButton color="primary">
+                    <IconButton color="primary" onClick={() => setAddAdminModal(true)} >
                         <RiAdminLine />
                     </IconButton>
                 </Tooltip>
-                {/* Add admin model... */}
+                <Modal
+                    open={addAdminModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <AddAdmins setOpen={setAddAdminModal} />
+                    </Box>
+                </Modal>
                 <Tooltip title="Add Conductor" placement="bottom" arrow>
                     <IconButton color="primary" onClick={() => setOpen(true)}>
                         <BsPersonAdd />

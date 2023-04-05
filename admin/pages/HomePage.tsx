@@ -1,22 +1,14 @@
 // @ts-nocheck
-import React from 'react'
-
-import { IoBusOutline } from 'react-icons/io5'
-import { FaUserAlt } from 'react-icons/fa'
-import { TbFileInvoice } from 'react-icons/tb'
+import React from 'react';
 import { Container } from '@mui/system';
 import Navbar from '@/components/Navbar';
 import { Card, IconButton, Stack, Tooltip, Typography } from '@mui/material';
-import conductorImage from '../assets/Bus_conductor.svg'
-import Image from 'next/image';
 import Link from 'next/link';
 import { BiLogOutCircle } from 'react-icons/bi';
 import { useRouter } from 'next/router';
 
 const HomePage = () => {
     const router = useRouter();
-
-
     return (
         <>
             <Navbar />
@@ -30,7 +22,6 @@ const HomePage = () => {
                                     <Typography className="text-white text-[1.8rem]" >Conductors</Typography>
                                 </div>
                                 <div className='relative top-3 right-3' >
-                                    {/* <Image src={conductorImage} alt="conductor" className="object-cover" height={70} width={70} /> */}
                                 </div>
                             </Stack>
                         </Card>
@@ -42,7 +33,6 @@ const HomePage = () => {
                                     <Typography className="text-white text-[1.8rem]" >Users</Typography>
                                 </div>
                                 <div className="relative bottom-3 left-3">
-                                    {/* <FaUserAlt /> */}
                                 </div>
                             </Stack>
                         </Card>
@@ -50,7 +40,6 @@ const HomePage = () => {
                     <Link href="/BusStopsTable" >
                         <Card className="Card w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#fbb13c] rounded-lg">
                             <Stack className="w-full h-full card-gradient p-[1px] rounded-[20px] shadow-card  "  >
-                                {/* <IoBusOutline style={{ height: 70, width: 70 }} /> */}
                                 <div className='relative top-3 left-3' >
                                     <Typography className="text-white text-[1.8rem]" >Bus stops</Typography>
                                 </div>
@@ -60,9 +49,17 @@ const HomePage = () => {
                     <Link href="/InvoicesTable" >
                         <Card className="Card w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#2c6e49] rounded-lg">
                             <Stack className="w-full h-full card-gradient p-[1px] rounded-[20px] shadow-card  "  >
-                                {/* <TbFileInvoice style={{ height: 70, width: 70 }} /> */}
                                 <div className='relative top-3 left-3' >
                                     <Typography className="text-white text-[1.8rem]" >Invoices</Typography>
+                                </div>
+                            </Stack>
+                        </Card>
+                    </Link>
+                    <Link href="/AdminTable" >
+                        <Card className="Card w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#f77f00] rounded-lg">
+                            <Stack className="w-full h-full card-gradient p-[1px] rounded-[20px] shadow-card  "  >
+                                <div className='relative top-3 left-3' >
+                                    <Typography className="text-white text-[1.8rem]" >Admins</Typography>
                                 </div>
                             </Stack>
                         </Card>
@@ -79,7 +76,7 @@ const HomePage = () => {
             </Tooltip>
         </>
 
-    )
-}
+    );
+};
 
 export default HomePage;

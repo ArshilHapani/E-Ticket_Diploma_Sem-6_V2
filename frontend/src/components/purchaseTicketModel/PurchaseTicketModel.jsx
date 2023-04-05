@@ -206,7 +206,7 @@ const PurchaseTicketModel = () => {
                   step={1}
                   marks
                   min={1}
-                  max={5}
+                  max={10}
                   onChange={(e) =>
                     setDist({ ...dist, quantity: e.target.value })
                   }

@@ -5,29 +5,30 @@ import { toast } from 'react-hot-toast';
 import isUserNameValid from '@/functions/userNameValidate';
 import validateEmail from '@/functions/validateEmail';
 
-const CreateConductorModel = ({ setOpen }: any) => {
-    const [conductor, setConductor] = useState({
+const AddAdmins = ({ setOpen }: any) => {
+    const [admin, setAdmin] = useState({
         uname: "",
         pwd: "",
         name: "",
         email: "",
         dob: "",
+        no: "",
     });
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        if (conductor.uname === "" || conductor.pwd === "" || conductor.name === "" || conductor.email === "" || conductor.dob === "") {
+        if (admin.uname === "" || admin.pwd === "" || admin.name === "" || admin.email === "" || admin.dob === "" || admin.no === "") {
             toast.error("Please enter all required fields");
             return;
         }
-        if (!isUserNameValid(conductor.uname)) {
+        if (!isUserNameValid(admin.uname)) {
             toast.error("Please enter valid username");
             return;
         }
-        if (validateEmail(conductor.email) === null) {
+        if (validateEmail(admin.email) === null) {
             toast.error("please enter valid email format");
             return;
         }
-        const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/createConductor`, {
+        const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/createAdmin`, {
             method: "POST",
             //@ts-ignore
             headers: {
@@ -35,17 +36,18 @@ const CreateConductorModel = ({ setOpen }: any) => {
                 authToken: sessionStorage.getItem('admin')?.toString(),
             },
             body: JSON.stringify({
-                c_uname: conductor.uname,
-                c_pwd: conductor.pwd,
-                c_name: conductor.name,
-                c_email: conductor.email,
-                c_dob: conductor.dob
+                a_uname: admin.uname,
+                a_pwd: admin.pwd,
+                a_name: admin.name,
+                a_email: admin.email,
+                a_dob: admin.dob,
+                a_no: admin.no
             })
         });
         const response = await create.json();
         console.log(response);
         if (response.success) {
-            toast.success("Successfully created a new conductor");
+            toast.success("Successfully created a new admin");
             setOpen(false);
         } else if (!response.success) {
             toast.error(response.msg);
@@ -55,7 +57,7 @@ const CreateConductorModel = ({ setOpen }: any) => {
         <div>
             <form onSubmit={handleSubmit} >
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Create Conductor
+                    Create admin
                 </Typography>
                 <TextField
                     label="name"
@@ -64,10 +66,10 @@ const CreateConductorModel = ({ setOpen }: any) => {
                     variant="standard"
                     color="info"
                     type="text"
-                    value={conductor.name}
+                    value={admin.name}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
+                        setAdmin({
+                            ...admin,
                             name: e.target.value
                         });
                     }}
@@ -79,10 +81,10 @@ const CreateConductorModel = ({ setOpen }: any) => {
                     variant="standard"
                     color="info"
                     type="text"
-                    value={conductor.pwd}
+                    value={admin.pwd}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
+                        setAdmin({
+                            ...admin,
                             pwd: e.target.value
                         });
                     }}
@@ -94,10 +96,10 @@ const CreateConductorModel = ({ setOpen }: any) => {
                     variant="standard"
                     color="info"
                     type="text"
-                    value={conductor.uname}
+                    value={admin.uname}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
+                        setAdmin({
+                            ...admin,
                             uname: e.target.value
                         });
                     }}
@@ -110,11 +112,26 @@ const CreateConductorModel = ({ setOpen }: any) => {
                     variant="standard"
                     color="info"
                     type="text"
-                    value={conductor.email}
+                    value={admin.email}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
+                        setAdmin({
+                            ...admin,
                             email: e.target.value
+                        });
+                    }}
+                />
+                <TextField
+                    label="mobile number"
+                    sx={profile_edit_textfield}
+                    placeholder="enter mobile number"
+                    variant="standard"
+                    color="info"
+                    type="number"
+                    value={admin.no}
+                    onChange={(e) => {
+                        setAdmin({
+                            ...admin,
+                            no: e.target.value
                         });
                     }}
                 />
@@ -125,10 +142,10 @@ const CreateConductorModel = ({ setOpen }: any) => {
                     color="info"
                     type="date"
                     InputLabelProps={{ shrink: true }}
-                    value={conductor.dob}
+                    value={admin.dob}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
+                        setAdmin({
+                            ...admin,
                             dob: e.target.value
                         });
                     }}
@@ -147,7 +164,7 @@ const CreateConductorModel = ({ setOpen }: any) => {
                         type="submit"
                         sx={modelAutocomplete.generateTicketButton}
                     >
-                        create conductor
+                        create admin
                     </Button>
                 </Box>
             </form>
@@ -155,4 +172,4 @@ const CreateConductorModel = ({ setOpen }: any) => {
     );
 };
 
-export default CreateConductorModel;
+export default AddAdmins;

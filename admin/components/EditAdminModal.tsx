@@ -5,99 +5,89 @@ import { toast } from 'react-hot-toast';
 import isUserNameValid from '@/functions/userNameValidate';
 import validateEmail from '@/functions/validateEmail';
 
-const CreateConductorModel = ({ setOpen }: any) => {
-    const [conductor, setConductor] = useState({
-        uname: "",
-        pwd: "",
-        name: "",
-        email: "",
-        dob: "",
+const EditAdmin = ({ setOpen, initialValues }: any) => {
+    const [admin, setAdmin] = useState({
+        ...initialValues
     });
+    console.log(initialValues);
+
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        if (conductor.uname === "" || conductor.pwd === "" || conductor.name === "" || conductor.email === "" || conductor.dob === "") {
-            toast.error("Please enter all required fields");
+        if (admin.name === "" || admin.uname === "" || admin.email === "" || admin.mobile === "") {
+            toast.error("Please enter all the required fields");
             return;
         }
-        if (!isUserNameValid(conductor.uname)) {
+        if (!isUserNameValid(admin.uname)) {
             toast.error("Please enter valid username");
             return;
         }
-        if (validateEmail(conductor.email) === null) {
+        if (validateEmail(admin.email) === null) {
             toast.error("please enter valid email format");
             return;
         }
-        const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/createConductor`, {
-            method: "POST",
+        if (admin.mobile.length !== 10) {
+            toast.error("The length of mobile number must be equal to 10");
+            return;
+        }
+        const store: any = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/updateAdmin`, {
+            method: "PATCH",
             //@ts-ignore
             headers: {
-                "Content-Type": "application/json",
-                authToken: sessionStorage.getItem('admin')?.toString(),
+                'Content-Type': 'application/json',
+                authToken: sessionStorage.getItem("admin")
             },
             body: JSON.stringify({
-                c_uname: conductor.uname,
-                c_pwd: conductor.pwd,
-                c_name: conductor.name,
-                c_email: conductor.email,
-                c_dob: conductor.dob
-            })
+                a_id: admin.id,
+                a_uname: admin.uname,
+                a_name: admin.name,
+                a_email: admin.email,
+                a_no: admin.mobile,
+            }),
         });
-        const response = await create.json();
-        console.log(response);
-        if (response.success) {
-            toast.success("Successfully created a new conductor");
+
+        const res: any = await store.json();
+        console.log(res);
+
+        if (res.success) {
+            toast.success("admin edited successfully");
             setOpen(false);
-        } else if (!response.success) {
-            toast.error(response.msg);
+        } else if (!res.success) {
+            toast.error(res.msg);
+        }
+        else {
+            toast.error("Something went wrong");
         }
     };
     return (
         <div>
             <form onSubmit={handleSubmit} >
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Create Conductor
+                    Update Admin
                 </Typography>
                 <TextField
                     label="name"
                     sx={profile_edit_textfield}
-                    placeholder="create name"
                     variant="standard"
                     color="info"
                     type="text"
-                    value={conductor.name}
+                    value={admin.name}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
+                        setAdmin({
+                            ...admin,
                             name: e.target.value
-                        });
-                    }}
-                />
-                <TextField
-                    label="password"
-                    sx={profile_edit_textfield}
-                    placeholder="create password"
-                    variant="standard"
-                    color="info"
-                    type="text"
-                    value={conductor.pwd}
-                    onChange={(e) => {
-                        setConductor({
-                            ...conductor,
-                            pwd: e.target.value
                         });
                     }}
                 />
                 <TextField
                     label="username"
                     sx={profile_edit_textfield}
-                    placeholder="create username"
                     variant="standard"
                     color="info"
                     type="text"
-                    value={conductor.uname}
+                    value={admin.uname}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
+                        setAdmin({
+                            ...admin,
                             uname: e.target.value
                         });
                     }}
@@ -106,30 +96,28 @@ const CreateConductorModel = ({ setOpen }: any) => {
                 <TextField
                     label="email"
                     sx={profile_edit_textfield}
-                    placeholder="create email"
                     variant="standard"
                     color="info"
-                    type="text"
-                    value={conductor.email}
+                    type="email"
+                    value={admin.email}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
+                        setAdmin({
+                            ...admin,
                             email: e.target.value
                         });
                     }}
                 />
                 <TextField
-                    label="date of birth"
+                    label="number"
                     sx={profile_edit_textfield}
                     variant="standard"
                     color="info"
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                    value={conductor.dob}
+                    type="number"
+                    value={admin.mobile}
                     onChange={(e) => {
-                        setConductor({
-                            ...conductor,
-                            dob: e.target.value
+                        setAdmin({
+                            ...admin,
+                            mobile: e.target.value
                         });
                     }}
                 />
@@ -147,7 +135,7 @@ const CreateConductorModel = ({ setOpen }: any) => {
                         type="submit"
                         sx={modelAutocomplete.generateTicketButton}
                     >
-                        create conductor
+                        edit admin
                     </Button>
                 </Box>
             </form>
@@ -155,4 +143,6 @@ const CreateConductorModel = ({ setOpen }: any) => {
     );
 };
 
-export default CreateConductorModel;
+export default EditAdmin;
+
+

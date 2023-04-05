@@ -2,15 +2,27 @@ import React, { SyntheticEvent, useState } from 'react';
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
+import isUserNameValid from '@/functions/userNameValidate';
+import validateEmail from '@/functions/validateEmail';
 
 const EditConductor = ({ setOpen, initialValues }: any) => {
     const [conductor, setConductor] = useState({
         ...initialValues
     });
+    console.log(initialValues);
+
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         if (conductor.name === "" || conductor.uname === "" || conductor.email === "") {
             toast.error("Please enter all the required fields");
+            return;
+        }
+        if (!isUserNameValid(conductor.uname)) {
+            toast.error("Please enter valid username");
+            return;
+        }
+        if (validateEmail(conductor.email) === null) {
+            toast.error("please enter valid email format");
             return;
         }
         const store: any = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/updateConductor`, {
@@ -21,8 +33,9 @@ const EditConductor = ({ setOpen, initialValues }: any) => {
                 authToken: sessionStorage.getItem("admin")
             },
             body: JSON.stringify({
-                c_uname: conductor.name,
-                c_name: conductor.email,
+                c_id: conductor.id,
+                c_uname: conductor.uname,
+                c_name: conductor.name,
                 c_email: conductor.email,
             }),
         });

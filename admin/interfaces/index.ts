@@ -35,6 +35,7 @@ interface functionEditUserModelProps {
     email: string;
     uname: string;
     balance: number;
+    id: string;
   };
 }
 

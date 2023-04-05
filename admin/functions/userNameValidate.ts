@@ -1,4 +1,4 @@
-export default function isUserNameValid(username) {
+export default function isUserNameValid(username: string) {
   /* 
       Usernames can only have: 
       - Lowercase Letters (a-z) 
