@@ -7,39 +7,66 @@ import { generateSess } from "../../functions/generateSessionId";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const { showSnackBar } = useStateContext();
+  const { showSnackBar, setLoader } = useStateContext();
   const [textDisable, setTextDisable] = useState({
     textField: true,
     button: true,
   });
   const [email, setEmail] = useState("");
   const [localOtp, setLocalOtp] = useState(0);
-  const handleClick = (e) => {
+  const [resOtp, setResOtp] = useState(0);
+  const handleClick = async (e) => {
     e.preventDefault();
-
+    setLoader(true);
     if (email === "") {
       showSnackBar("please enter your email", "error");
+      setLoader(false);
       return;
     }
     if (validateEmail(email) === null) {
       showSnackBar("please enter valid email format", "error");
+      setLoader(false);
       return;
     }
-
-    showSnackBar("OTP is sent on your email", "success");
-    setTextDisable({ textField: false });
+    const otps = await fetch(
+      `${process.env.REACT_APP_BACKEND}/authentication/sendPin/verifyEmail`,
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+        }),
+      }
+    );
+    const res = await otps.json();
+    console.log(res);
+    if (res.success) {
+      showSnackBar(res.msg, "success");
+      setTextDisable({ textField: false });
+      setResOtp(res.pin);
+      setLoader(false);
+    } else if (!res.success) {
+      showSnackBar(res.msg, "error");
+      setLoader(false);
+    }
+    setLoader(false);
   };
-  const verifyOTP = () => {
-    if (localOtp !== 0) {
-      setTextDisable({ button: false });
+  const verifyOTP = async () => {
+    if (parseInt(localOtp) === resOtp) {
+      setTextDisable({ button: false, textField: false });
       showSnackBar(
         "Welcome to E-Ticket Enter your credentials to continue",
         "success"
       );
       sessionStorage.setItem("sessionId", generateSess());
       navigate("/signUp");
-    } else {
+    } else if (localOtp === "") {
       showSnackBar("Please enter OTP", "error");
+      return;
+    } else if (localOtp !== resOtp) {
+      showSnackBar("Invalid OTP", "error");
       return;
     }
   };

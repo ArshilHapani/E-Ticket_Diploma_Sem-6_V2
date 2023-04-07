@@ -23,6 +23,7 @@ import Navbar from '@/components/Navbar';
 import EditConductor from '@/components/EditConductorModel';
 import { style } from '../styles';
 import { toast } from 'react-hot-toast';
+import CreateConductorModel from '@/components/CreateConductorModel';
 interface funcData {
     img: string,
     id: string,
@@ -36,6 +37,7 @@ interface funcData {
 const ConductorTable = () => {
     const [confirmDialog, setConfirmDialog] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
+    const [conductorModal, setConductorModal] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
     useEffect(() => {
@@ -77,14 +79,38 @@ const ConductorTable = () => {
     }
 
 
+    const styleModal = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 400,
+        bgcolor: "#f2f2f2",
+        boxShadow: 24,
+        p: 4,
+        borderRadius: "8px",
+    };
+
 
     return (
         <>
             <Navbar />
             <div className="mt-[16vh] px-5 p-4">
-                <Typography variant="h4" className="my-5 text-slate-500">
-                    Manage Conductors
-                </Typography>
+                <div className="flex justify-between items-center my-5 ">
+                    <Typography variant="h4" className="text-slate-500">
+                        Manage Conductors
+                    </Typography>
+                    <Button variant="outlined" onClick={() => setConductorModal(true)} >Add Conductor</Button>
+                    <Modal
+                        open={conductorModal}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={styleModal}>
+                            <CreateConductorModel setOpen={setConductorModal} />
+                        </Box>
+                    </Modal>
+                </div>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

@@ -8,19 +8,18 @@ router.get("/", async (req, res) => {
   let success = false;
 
   try {
-    const fetchAdmins = `SELECT admin.* FROM admin,login WHERE id=a_id;`;
-
+    const fetchAdmins = `SELECT admin.*, admin2.a_uname as created_uname FROM admin,admin as admin2, login WHERE admin.created_by = admin2.a_id && admin.a_id=login.id`;
     // Fetching tickets
     con.query(fetchAdmins, (err, qres) => {
       if (err) {
         console.log(err.message);
         res.json({ success });
-      } else if (qres) {
-        qres.map((i)=>{
-            const date = new Date(i.a_dob);
-            const dob = date.toLocaleString();
-            i.a_dob = dob.substring(0, dob.indexOf(","));
-        })
+      } else if (qres.length > 0) {
+        qres.map((i) => {
+          const date = new Date(i.a_dob);
+          const dob = date.toLocaleString();
+          i.a_dob = dob.substring(0, dob.indexOf(","));
+        });
         success = true;
         res.json({ success, admins: qres });
       } else {

@@ -96,7 +96,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
                 sx={profile_edit_textfield}
                 variant="standard"
                 color="info"
-                type="text"
+                type="text0"
                 value={user.email}
                 onChange={(e) => {
                     setUser({

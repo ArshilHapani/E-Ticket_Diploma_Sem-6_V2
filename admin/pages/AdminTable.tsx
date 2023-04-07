@@ -23,6 +23,7 @@ import Navbar from '@/components/Navbar';
 import { style } from '../styles';
 import { toast } from 'react-hot-toast';
 import EditAdmin from '@/components/EditAdminModal';
+import AddAdmins from '@/components/AddAdminsModal';
 interface funcData {
     img: string,
     id: string,
@@ -39,6 +40,7 @@ const AdminTable = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
+    const [adminModal, setAdminModal] = useState<boolean>(false);
     useEffect(() => {
         fetchAdmins();
     }, []);
@@ -53,7 +55,7 @@ const AdminTable = () => {
             },
         });
         const res = await admins.json();
-
+        console.log(res);
         if (res.success) {
             setDataSet(res.admins);
         }
@@ -68,7 +70,7 @@ const AdminTable = () => {
             data.a_email,
             data.a_no,
             data.a_dob,
-            data.created_by
+            data.created_uname
         )
     ));
 
@@ -77,6 +79,18 @@ const AdminTable = () => {
             img, id, name, uname, email, mobile, dob, createdBy
         };
     }
+    const styleModal = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 400,
+        bgcolor: "#f2f2f2",
+        boxShadow: 24,
+        p: 4,
+        borderRadius: "8px",
+    };
+
 
 
 
@@ -84,18 +98,30 @@ const AdminTable = () => {
         <>
             <Navbar />
             <div className="mt-[16vh] px-5 p-4">
-                <Typography variant="h4" className="my-5 text-slate-500">
-                    Manage Admins
-                </Typography>
+                <div className="flex justify-between items-center my-5 ">
+                    <Typography variant="h4" className="text-slate-500">
+                        Manage Admins
+                    </Typography>
+                    <Button variant="outlined" onClick={() => setAdminModal(true)} >Add Admin</Button>
+                    <Modal
+                        open={adminModal}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={styleModal}>
+                            <AddAdmins setOpen={setAdminModal} />
+                        </Box>
+                    </Modal>
+                </div>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Image</TableCell>
-                                <TableCell>Created By</TableCell>
                                 <TableCell>ID</TableCell>
-                                <TableCell>Name</TableCell>
                                 <TableCell>User name</TableCell>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Created By</TableCell>
                                 <TableCell>email</TableCell>
                                 <TableCell>Mobile number</TableCell>
                                 <TableCell>Date of Birth</TableCell>
@@ -122,13 +148,13 @@ const AdminTable = () => {
                                         </Avatar>
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.createdBy}
-                                    </TableCell>
-                                    <TableCell component="th" scope="row">
                                         {row.id}
                                     </TableCell>
-                                    <TableCell>{row.name}</TableCell>
                                     <TableCell>{row.uname}</TableCell>
+                                    <TableCell>{row.name}</TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {row.createdBy}
+                                    </TableCell>
                                     <TableCell>
                                         {row.email === "" ? "not added" : row.email}
                                     </TableCell>

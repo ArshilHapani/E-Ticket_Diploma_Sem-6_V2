@@ -5,8 +5,8 @@ import con from "../../../database.js";
 router.patch("/", async (req, res) => {
   const { a_id, a_uname, a_name, a_email, a_no } = req.body;
   const fetchAdmin = `SELECT a_id, created_by FROM admin WHERE a_id='${a_id}';`;
-  const findUser = `SELECT a_uname FROM admin WHERE a_uname='${a_uname} && a_id!='${a_id}'`;
-  const checkEmail = `SELECT a_email FROM admin WHERE a_email='${a_email} && a_id!='${a_id}'`;
+  const findUser = `SELECT a_uname FROM admin WHERE a_uname='${a_uname}' && a_id!='${a_id}'`;
+  const checkEmail = `SELECT a_email FROM admin WHERE a_email='${a_email}' && a_id!='${a_id}'`;
   const setLogin = `UPDATE login SET uname='${a_uname}' WHERE id='${a_id}';`;
   const setAdmin = `UPDATE admin SET a_uname='${a_uname}', a_name='${a_name}', a_email='${a_email}', a_no=${
     a_no ? a_no : null
@@ -19,7 +19,7 @@ router.patch("/", async (req, res) => {
         console.log(err.message);
         res.json({ success });
       } else if (qres.length > 0) {
-        if (qres[0].a_id == qres[0].created_by) {
+        if (qres[0].a_id == qres[0].created_by && qres[0].a_id != req.user.id) {
           res.json({ success, msg: "You can't update this admin" });
         } else {
           con.query(findUser, (err, qres) => {

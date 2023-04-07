@@ -34,15 +34,6 @@ export const ContextProvider = ({ children }) => {
     ) {
       navigate("/signIn");
     }
-    // setTimeout(() => {
-    //   if (
-    //     // user?.c_name === "" ||
-    //     user?.c_name === undefined ||
-    //     user?.c_name === null
-    //   ) {
-    //     navigate("/signIn");
-    //   }
-    // }, 1000);
     if (location.pathname === "/forgetPassword") {
       navigate("/forgetPassword");
     }

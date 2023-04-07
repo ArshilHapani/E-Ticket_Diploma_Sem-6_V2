@@ -1,4 +1,7 @@
-export async function fetchTicketCount(setTicketCount: Function) {
+export async function fetchTicketCount(
+  setTicketCount: Function,
+  ticketCount: Array<object>
+) {
   const data = await fetch(
     `${process.env.NEXT_PUBLIC_HOST}/admin/dailyTicket/count`,
     {
@@ -12,6 +15,6 @@ export async function fetchTicketCount(setTicketCount: Function) {
   );
   const res = await data.json();
   if (res.success) {
-    setTicketCount(res.tickets);
+    setTicketCount({ ...ticketCount, dates: res.dates, counts: res.tickets });
   }
 }

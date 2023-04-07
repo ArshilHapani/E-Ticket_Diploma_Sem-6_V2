@@ -39,8 +39,25 @@ const modelTextField = {
   },
   height: "3rem",
 };
-
-const AddRechargeQrModel = ({ style }) => {
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: {
+    xs: 240,
+    sm: 270,
+    md: 370,
+    lg: 420,
+  },
+  backgroundColor: "#f2f2f2",
+  color: "#0d1b2a",
+  border: "1px solid #20232a",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: "8px",
+};
+const AddRechargeQrModel = () => {
   const [qrData, setQrData] = useState("");
   const [dataModel, setDataModel] = useState(false);
   const [rechargeAmount, setRechargeAmount] = useState(10);

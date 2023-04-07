@@ -22,6 +22,7 @@ import Navbar from '@/components/Navbar';
 import { style } from '../styles';
 import EditStations from '@/components/EditStations';
 import { toast } from 'react-hot-toast';
+import AddStationsModel from '@/components/AddStationsModel';
 
 interface funcData {
     id: number,
@@ -29,12 +30,25 @@ interface funcData {
     latitude: number,
     longitude: number;
 }
+const styleModal = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "#f2f2f2",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: "8px",
+};
+
 
 const BusStopsTable = () => {
     const [confirmDialog, setConfirmDialog] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
+    const [stationModal, setStationModal] = useState<boolean>(false);
     useEffect(() => {
         fetchConductors();
     }, []);
@@ -76,7 +90,21 @@ const BusStopsTable = () => {
         <>
             <Navbar />
             <div className='mt-[16vh] px-5 p-4' >
-                <Typography variant='h4' className="my-5 text-slate-500 " >All Bus stops</Typography>
+                <div className="flex justify-between items-center my-5 ">
+                    <Typography variant="h4" className="text-slate-500">
+                        Manage Bus Stops
+                    </Typography>
+                    <Button variant="outlined" onClick={() => setStationModal(true)} >Add Bus Stop</Button>
+                    <Modal
+                        open={stationModal}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={styleModal}>
+                            <AddStationsModel setOpen={setStationModal} />
+                        </Box>
+                    </Modal>
+                </div>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

@@ -70,28 +70,29 @@ const StatisTics = () => {
     const [payments, setPayments] = useState<object>({ dates: [], payments: [] });
     const [counts, setCounts] = useState<object>({});
     const [tickets, setTickets] = useState<Array<number>>();
-    const [ticketCount, setTicketCount] = useState<number>(0);
+    const [ticketCount, setTicketCount] = useState<object>({ dates: [], counts: [] });
     useEffect(() => {
         fetchPaymentsData(setPayments, payments);
         fetchTicketDetails(setTickets);
-        fetchTicketCount(setTicketCount);
+        fetchTicketCount(setTicketCount, ticketCount);
         fetchCounts();
     }, []);
     async function fetchCounts() {
         const countsInitial = await fetchUserCounts();
         setCounts(countsInitial);
     }
-    const labels = payments.dates;
+    let labels = ticketCount.dates;
     const data1 = {
         labels,
         datasets: [
             {
                 label: 'tickets generated',
-                data: ticketCount,
+                data: ticketCount.counts,
                 backgroundColor: '#339989'
             }
         ]
     };
+    labels = payments.dates;
     const data = {
         labels,
         datasets: [

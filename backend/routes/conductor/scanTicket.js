@@ -1,28 +1,30 @@
 /* scanTicket.js is used to create an end point for conductor that
 will take ticket-id as tid to check that purchashed ticket is expired or not*/
 
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
+import con from "../../database.js";
 
-const con = require("../database");
-
-router.post("/", async (req, res) => {
-  const { tid } = req.body;
+router.get("/:t_id", async (req, res) => {
   let success = true;
 
   try {
-    const fetchTicket = `SELECT *,IF((SELECT DATE((SELECT expires FROM ticket where t_id='${tid}')))>=(SELECT CURRENT_DATE()),IF((SELECT TIME((SELECT expires FROM ticket where t_id='${tid}')))>=(SELECT CURRENT_TIME()),'valid','expired'),'expired') as ticket FROM ticket WHERE t_id='${tid}';`;
+    const checkTicket = `SELECT passenger.p_uname as p_uname,IF((SELECT DATE((SELECT t_expires FROM ticket where t_id='${req.params.t_id}')))>=(SELECT CURRENT_DATE()),IF((SELECT TIME((SELECT t_expires FROM ticket where t_id='${req.params.t_id}')))>=(SELECT CURRENT_TIME()),'Valid','Expired'),'Expired') as ticket_is FROM ticket,passenger WHERE t_id='${req.params.t_id}' && ticket.p_id=passenger.p_id;`;
 
-    con.query(fetchTicket, (err, qres) => {
+    con.query(checkTicket, (err, qres) => {
       if (err) {
         console.log(err.message);
         success = false;
         res.json({ success });
       } else if (qres.length > 0) {
-        res.json({ success, ticket: qres });
+        res.json({
+          success,
+          p_uname: qres[0].p_uname,
+          ticket_is: qres[0].ticket_is,
+        });
       } else {
         success = false;
-        res.json({ success, msg:"Ticket does not exist" });
+        res.json({ success, msg: "Ticket does not exist" });
       }
     });
   } catch (error) {
@@ -31,4 +33,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
