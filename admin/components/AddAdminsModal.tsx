@@ -45,7 +45,6 @@ const AddAdmins = ({ setOpen }: any) => {
             })
         });
         const response = await create.json();
-        console.log(response);
         if (response.success) {
             toast.success("Successfully created a new admin");
             setOpen(false);

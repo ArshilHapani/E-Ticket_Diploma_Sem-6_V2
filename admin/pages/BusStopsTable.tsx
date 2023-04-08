@@ -18,7 +18,6 @@ import {
     Typography,
 } from "@mui/material";
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
-import Navbar from '@/components/Navbar';
 import { style } from '../styles';
 import EditStations from '@/components/EditStations';
 import { toast } from 'react-hot-toast';
@@ -62,7 +61,6 @@ const BusStopsTable = () => {
             },
         });
         const res = await passenger.json();
-        console.log(res);
 
         if (res.success) {
             setDataSet(res.stations);
@@ -88,7 +86,6 @@ const BusStopsTable = () => {
 
     return (
         <>
-            <Navbar />
             <div className='mt-[16vh] px-5 p-4' >
                 <div className="flex justify-between items-center my-5 ">
                     <Typography variant="h4" className="text-slate-500">

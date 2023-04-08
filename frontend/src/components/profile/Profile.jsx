@@ -127,7 +127,6 @@ const Profile = () => {
     const response = await data.json();
     const { success } = response;
     fetchUser();
-    console.log(response);
     setLoader(false);
     return success;
   }

@@ -56,7 +56,6 @@ const ActiveTickets = () => {
       }
     );
     const response = await ticketsActive.json();
-    console.log(response);
     if (response.success) {
       setActiveTickets(response.tickets);
       setLoader(false);

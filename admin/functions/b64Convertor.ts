@@ -3,7 +3,6 @@ import { toast } from "react-hot-toast";
 export default async function b64Convertor(file: File) {
   let base64String;
   var reader = new FileReader();
-  console.log("base 64 invoked");
 
   reader.onload = async function () {
     //@ts-ignore

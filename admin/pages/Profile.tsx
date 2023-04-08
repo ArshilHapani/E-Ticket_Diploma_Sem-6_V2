@@ -15,7 +15,6 @@ import EditProfileModel from '../components/EditProfileModal';
 import b64Convertor from "../functions/b64Convertor";
 import compressImage from "../functions/compressImage";
 import { toast } from "react-hot-toast";
-import Navbar from "@/components/Navbar";
 
 const labelStyle = {
     color: "#8d99ae",
@@ -84,7 +83,6 @@ const Profile = () => {
     };
     return (
         <>
-            <Navbar />
             <Stack
                 sx={{
                     height: "100vh",

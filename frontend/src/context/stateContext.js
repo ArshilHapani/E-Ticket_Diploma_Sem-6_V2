@@ -30,27 +30,20 @@ export const ContextProvider = ({ children }) => {
     type: "info",
   });
   useEffect(() => {
+    setTimeout(() => {
+      if (newUser === undefined && location.pathname === "/") {
+        navigate("/signIn");
+      }
+    }, 3000);
+  }, [newUser, location.pathname, navigate]);
+
+  useEffect(() => {
     if (
       localStorage.getItem("user") === null ||
       localStorage.getItem("user") === undefined
     ) {
       navigate("/signIn");
     }
-    setTimeout(() => {
-      if (
-        newUser?.p_name === undefined ||
-        // newUser?.p_name === "" ||
-        newUser?.p_name === null ||
-        newUser?.p_uname === undefined ||
-        // newUser?.p_uname === "" ||
-        newUser?.p_uname === null ||
-        newUser?.p_email === undefined ||
-        // newUser?.p_email === "" ||
-        newUser?.p_email === null
-      ) {
-        navigate("/signIn");
-      }
-    }, 1000);
     if (location.pathname === "/signUp") {
       navigate("/signUp");
     }
@@ -76,7 +69,6 @@ export const ContextProvider = ({ children }) => {
   }
   // Storing theme to the user browser
   localStorage.setItem("theme", theme);
-  console.log(newUser);
 
   return (
     <stateContext.Provider

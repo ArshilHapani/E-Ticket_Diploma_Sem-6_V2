@@ -108,7 +108,6 @@ const EditProfileModel = ({ closeModal, initialValues }) => {
       }
     );
     const response = await data.json();
-    console.log(response);
     if (response.success) {
       snackbarSetterFunction("Profile updated successfully", "success");
       setLoading(false);
@@ -124,7 +123,6 @@ const EditProfileModel = ({ closeModal, initialValues }) => {
     initialValues.dob = updateData.dob;
     initialValues.username = updateData.username;
 
-    console.log(updateData);
     closeModal(false);
   };
 

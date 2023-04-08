@@ -9,7 +9,6 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
-import Navbar from '@/components/Navbar';
 
 interface funcData {
     time: string,
@@ -60,7 +59,6 @@ const InvoicesTable = () => {
 
     return (
         <>
-            <Navbar />
             <div className='mt-[16vh] px-5 p-4' >
                 <Typography variant='h4' className="my-5 text-slate-500" >Payments</Typography>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>

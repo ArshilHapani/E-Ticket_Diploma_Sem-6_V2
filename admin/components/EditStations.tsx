@@ -32,7 +32,6 @@ const EditStations = ({ setOpen, initialValues }: any) => {
         });
 
         const res: any = await store.json();
-        console.log(res);
 
         if (res.success) {
             toast.success("stations edited successfully");

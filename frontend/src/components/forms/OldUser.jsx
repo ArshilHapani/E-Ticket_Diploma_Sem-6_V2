@@ -49,7 +49,6 @@ const OldUser = () => {
       }
     );
     const response = await data.json();
-    console.log(response);
     if (response.success) {
       showSnackBar("Login Success", "success");
       localStorage.setItem("user", response.authToken);

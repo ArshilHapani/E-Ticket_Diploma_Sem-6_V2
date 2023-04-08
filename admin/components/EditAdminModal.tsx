@@ -9,7 +9,6 @@ const EditAdmin = ({ setOpen, initialValues }: any) => {
     const [admin, setAdmin] = useState({
         ...initialValues
     });
-    console.log(initialValues);
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -46,7 +45,6 @@ const EditAdmin = ({ setOpen, initialValues }: any) => {
         });
 
         const res: any = await store.json();
-        console.log(res);
 
         if (res.success) {
             toast.success("admin edited successfully");

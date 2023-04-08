@@ -41,7 +41,6 @@ const ForgotPassword = () => {
       }
     );
     const res = await otps.json();
-    console.log(res);
     if (res.success) {
       showSnackBar(res.msg, "success");
       setTextDisable({ textField: false });

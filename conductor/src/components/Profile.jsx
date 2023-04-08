@@ -39,13 +39,15 @@ const Profile = () => {
     dob: user?.c_dob,
     image: user?.c_img,
   });
-  if (
-    localObj.name === undefined ||
-    localObj.name === "" ||
-    localObj.name === null
-  ) {
-    navigate("/");
-  }
+  setTimeout(() => {
+    if (
+      localObj.name === undefined ||
+      localObj.name === "" ||
+      localObj.name === null
+    ) {
+      navigate("/signIn");
+    }
+  }, 1000);
 
   const uploadImage = async (e) => {
     e.preventDefault();

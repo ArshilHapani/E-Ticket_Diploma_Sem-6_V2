@@ -2,16 +2,13 @@
 import React from 'react';
 import { Container } from '@mui/system';
 import Navbar from '@/components/Navbar';
-import { Card, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { Card, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
-import { BiLogOutCircle } from 'react-icons/bi';
-import { useRouter } from 'next/router';
 
 const HomePage = () => {
-    const router = useRouter();
     return (
         <>
-            <Navbar />
+
             <Container className="mt-[13vh]">
                 <Typography variant="h3" textAlign="center" className='text-slate-500' sx={{ margin: '1rem 0' }} >Services</Typography>
                 <Stack direction="row" alignItems="center" flexWrap="wrap" justifyContent="center" gap={4} >
@@ -66,14 +63,6 @@ const HomePage = () => {
                     </Link>
                 </Stack>
             </Container>
-            <Tooltip title="logout" arrow placement="right" className="fixed bottom-3 left-3" >
-                <IconButton color='error' onClick={() => {
-                    sessionStorage.clear();
-                    router.push('/');
-                }}>
-                    <BiLogOutCircle />
-                </IconButton>
-            </Tooltip>
         </>
 
     );

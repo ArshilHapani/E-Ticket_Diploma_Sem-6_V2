@@ -33,7 +33,6 @@ const PHistory = () => {
       }
     );
     const response = await transaction.json();
-    console.log(response);
     setHistory(response.payments);
     setLoader(false);
   }

@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { useSidebarItems } from "../../constants/sidebarItems";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import "./Sidebar.scss";
-import { IoBusOutline } from "react-icons/io5";
 import { useStateContext } from "../../context/stateContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import image from "../../assets/logo-no-background.png";
@@ -45,7 +44,7 @@ const Sidebar = () => {
           <NavLink
             to={
               item.path === "profile"
-                ? `${item.path}/${newUser.p_uname}`
+                ? `${item?.path}/${newUser?.p_uname}`
                 : item.path
             }
             key={item.title + index}
@@ -88,7 +87,7 @@ const Sidebar = () => {
                 }`}
                 onClick={() => setSidebarMenu(false)}
               >
-                <IoBusOutline className="logo-icon" />
+                <img src={image} alt="e-ticket" className="logo-icon" />
                 <span>E-Ticket</span>
                 <span className="close-icon">
                   {" "}

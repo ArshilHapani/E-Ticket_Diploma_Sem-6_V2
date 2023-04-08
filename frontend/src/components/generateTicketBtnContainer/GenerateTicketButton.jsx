@@ -75,12 +75,12 @@ const GenerateTicketButton = () => {
             )}
           </h3>
           <div className="ticket-macro-container">
-            <span>From</span>
+            <span className="from-text">From</span>
             <span>
               <FaExchangeAlt />
               <span className="dot-green"></span>
             </span>
-            <span>To</span>
+            <span className="to-text">To</span>
           </div>
           {activeOneTicket.length !== 0 ? (
             <div className="ticket-details-cont">
@@ -123,7 +123,7 @@ const GenerateTicketButton = () => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <QrCodeSVG values={{ name: newUser.p_uname }} />
+                <QrCodeSVG values={{ name: newUser?.p_uname }} />
                 <Typography sx={{ marginTop: "1rem", textAlign: "center" }}>
                   Request any nearby bus <b>conductor</b> to recharge into your
                   account by scanning this QR code{" "}

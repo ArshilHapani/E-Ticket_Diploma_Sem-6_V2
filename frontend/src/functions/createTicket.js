@@ -1,7 +1,4 @@
 export async function createTicket(dist, showSnackBar) {
-  console.log("create ticket invoked");
-  console.log(dist);
-  console.log(dist.quantity);
   const ticket = await fetch(
     `${process.env.REACT_APP_BACKEND}/passenger/purchaseTicket`,
     {

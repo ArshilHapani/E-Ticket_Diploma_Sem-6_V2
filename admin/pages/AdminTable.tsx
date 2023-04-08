@@ -19,7 +19,6 @@ import {
     Typography,
 } from "@mui/material";
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
-import Navbar from '@/components/Navbar';
 import { style } from '../styles';
 import { toast } from 'react-hot-toast';
 import EditAdmin from '@/components/EditAdminModal';
@@ -55,7 +54,6 @@ const AdminTable = () => {
             },
         });
         const res = await admins.json();
-        console.log(res);
         if (res.success) {
             setDataSet(res.admins);
         }
@@ -96,7 +94,6 @@ const AdminTable = () => {
 
     return (
         <>
-            <Navbar />
             <div className="mt-[16vh] px-5 p-4">
                 <div className="flex justify-between items-center my-5 ">
                     <Typography variant="h4" className="text-slate-500">

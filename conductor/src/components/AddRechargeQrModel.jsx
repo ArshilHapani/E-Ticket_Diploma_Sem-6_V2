@@ -67,7 +67,6 @@ const AddRechargeQrModel = () => {
     if (scanData && scanData !== "") {
       try {
         setQrData(scanData);
-        console.log(scanData);
         const data = JSON.parse(scanData);
         if (data.name === "" || !data.name) {
           snackbarSetterFunction("Invalid QR Code", "error");
@@ -76,7 +75,6 @@ const AddRechargeQrModel = () => {
         setQrData(data.name);
         setDataModel(true);
       } catch (error) {
-        console.log(error);
         snackbarSetterFunction("Invalid QR Code", "error");
       }
     }
@@ -112,7 +110,6 @@ const AddRechargeQrModel = () => {
       }
     );
     const response = await data.json();
-    console.log(response);
     if (response.success) {
       snackbarSetterFunction(
         `Balance added to ${qrData} of amount ${rechargeAmount}`,

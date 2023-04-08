@@ -100,9 +100,12 @@ const NewUser = () => {
     );
     const response = await data.json();
     if (response.success) {
-      showSnackBar("Successfully created a new account", "success");
+      showSnackBar(
+        "Successfully created a new account! please sign in to continue",
+        "success"
+      );
       localStorage.setItem("user", response.authToken);
-      navigate("/");
+      navigate("/signIn");
     } else if (response.msg !== "") {
       showSnackBar(response.msg, "error");
     } else {

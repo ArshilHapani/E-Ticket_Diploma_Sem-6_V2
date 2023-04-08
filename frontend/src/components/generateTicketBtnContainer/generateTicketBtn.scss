@@ -90,8 +90,16 @@
       display: flex;
       justify-content: space-between;
       width: 90%;
-      line-height: 10px;
-      font-size: 1.2rem;
+      .from-text {
+        line-height: 10px;
+        font-size: 1.2rem;
+        text-align: left;
+      }
+      .to-text {
+        line-height: 10px;
+        font-size: 1.2rem;
+        text-align: right;
+      }
     }
     .ticket-details-cont {
       display: flex;

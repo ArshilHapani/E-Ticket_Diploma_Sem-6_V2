@@ -20,7 +20,6 @@ const ScanTicketModal = ({
   snackbarSetterFunction,
   setOpen,
 }) => {
-  const handleOpen = () => setOpen(true);
   const handleScan = async (scanData) => {
     if (scanData && scanData !== "") {
       try {
@@ -28,11 +27,8 @@ const ScanTicketModal = ({
         if (typeof JSON.parse(scanData) === "object") {
           setData(JSON.parse(scanData));
         }
-        handleOpen();
-        console.log(JSON.parse(scanData));
         setStartScan(false);
       } catch (error) {
-        console.log(error);
         //if data is string...
         snackbarSetterFunction("Invalid QR Code", "error");
       }

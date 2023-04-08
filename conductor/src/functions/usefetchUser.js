@@ -8,7 +8,6 @@ async function usefetchUser() {
   });
 
   const { conductor } = await data.json();
-  console.log(conductor);
   return conductor;
 }
 export default usefetchUser;

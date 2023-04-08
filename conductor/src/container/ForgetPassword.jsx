@@ -48,7 +48,6 @@ const ForgotPassword = () => {
       }
     );
     const response = await otps.json();
-    console.log(response);
     if (response.success) {
       snackbarSetterFunction(response.msg, "success");
       setTextDisable(false);

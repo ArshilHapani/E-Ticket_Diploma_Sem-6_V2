@@ -15,7 +15,6 @@ import {
     Typography,
 } from "@mui/material";
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
-import Navbar from '@/components/Navbar';
 import { style } from '../styles';
 import EditUser from '@/components/EditUserModel';
 import { userTableButtonAnnotationTypes, userTableFuncData } from '@/interfaces';
@@ -67,9 +66,10 @@ const UserTable = () => {
 
     return (
         <>
-            <Navbar />
-            <div className='mt-[16vh] px-5 p-4' >
-                <Typography variant='h4' className="my-5 text-slate-500" >All users</Typography>
+            <div className="mt-[16vh] px-5 p-4">
+                <Typography variant="h4" className="my-5 text-slate-500">
+                    All users
+                </Typography>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
@@ -93,7 +93,11 @@ const UserTable = () => {
                                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        <Avatar src={row.img !== null && row.img} alt={row.name} >
+                                        <Avatar src={
+                                            row?.img !== null &&
+                                                typeof row?.img === "string" ?
+                                                row?.img : " "
+                                        } alt={row.name}>
                                             {row.img === null && row.name.charAt(0).toUpperCase()}
                                         </Avatar>
                                     </TableCell>
@@ -102,21 +106,48 @@ const UserTable = () => {
                                     </TableCell>
                                     <TableCell>{row.name}</TableCell>
                                     <TableCell>{row.uname}</TableCell>
-                                    <TableCell>{row.email === "" ? "not added" : row.email}</TableCell>
-                                    <TableCell>{row.mobile === null ? "not added" : row.mobile}</TableCell>
+                                    <TableCell>
+                                        {row.email === "" ? "not added" : row.email}
+                                    </TableCell>
+                                    <TableCell>
+                                        {row.mobile === null ? "not added" : row.mobile}
+                                    </TableCell>
                                     <TableCell>{row.dob}</TableCell>
                                     <TableCell>{row.balance}</TableCell>
                                     <TableCell>
-                                        <Tooltip title={`Edit ${row.name}`} arrow placement='right' >
-                                            <IconButton color="primary" onClick={() => { setOpen(true); setIndexMeasure(index); }}>
+                                        <Tooltip
+                                            title={`Edit ${row.name}`}
+                                            arrow
+                                            placement="right"
+                                        >
+                                            <IconButton
+                                                color="primary"
+                                                onClick={() => {
+                                                    setOpen(true);
+                                                    setIndexMeasure(index);
+                                                }}
+                                            >
                                                 <AiOutlineEdit />
                                             </IconButton>
                                         </Tooltip>
-                                        <ButtonAnnotation open={open} indexMeasure={indexMeasure} row={row} index={index} setOpen={setOpen} />
+                                        <ButtonAnnotation
+                                            open={open}
+                                            indexMeasure={indexMeasure}
+                                            row={row}
+                                            index={index}
+                                            setOpen={setOpen}
+                                        />
                                     </TableCell>
                                     <TableCell>
-                                        <Tooltip title={`Delete ${row.name}`} arrow placement='right' >
-                                            <IconButton color="error" onClick={() => confirm("Are you sure about that?")} >
+                                        <Tooltip
+                                            title={`Delete ${row.name}`}
+                                            arrow
+                                            placement="right"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => confirm("Are you sure about that?")}
+                                            >
                                                 <AiOutlineDelete />
                                             </IconButton>
                                         </Tooltip>

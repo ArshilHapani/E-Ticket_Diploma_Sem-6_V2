@@ -11,7 +11,6 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
     const [user, setUser] = useState({
         ...initialValues
     });
-    console.log(initialValues);
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -44,7 +43,6 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
         });
 
         const res: any = await store.json();
-        console.log(res);
 
         if (res.success) {
             toast.success("user edited successfully");

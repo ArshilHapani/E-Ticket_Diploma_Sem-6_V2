@@ -12,7 +12,6 @@ import {
 } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Container, Typography } from '@mui/material';
-import Navbar from '@/components/Navbar';
 import { fetchPaymentsData } from '@/functions/fetchPaymentsData.';
 import { fetchTicketDetails } from '@/functions/fetchTicketDetails';
 import { fetchTicketCount } from '@/functions/fetchTicketCount';
@@ -127,17 +126,16 @@ const StatisTics = () => {
     };
     return (
         <>
-            <Navbar />
             <Container className="mt-[13vh]">
                 <Typography variant="h4" textAlign="center" sx={{ margin: '1rem 0' }} >Analysis</Typography>
                 <div className='flex flex-wrap my-5 justify-center items-center' >
-                    <div className='w-[70vw] h-[100vh] '>
+                    <div className='md:w-[70vw] md:h-[100vh] w-full h-full '>
                         <Bar options={options} data={data} />
                     </div>
-                    <div className='w-[70vw] h-[100vh] '>
+                    <div className='md:w-[70vw] md:h-[100vh] w-full h-full '>
                         <Bar options={options1} data={data1} />
                     </div>
-                    <div className='w-[30vw] mt-[-5vh] '>
+                    <div className='md:w-[30vw] md:mt-[-5vh] w-full h-full '>
                         <Pie options={options3} data={userData} />
                     </div>
                 </div>

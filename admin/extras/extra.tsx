@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-    Avatar,
     Box,
     IconButton,
     Modal,
@@ -15,7 +14,6 @@ import {
     Typography,
 } from "@mui/material";
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
-import Navbar from '@/components/Navbar';
 import { style } from '../styles';
 import EditStations from '@/components/EditStations';
 
@@ -42,7 +40,6 @@ const BusStopsTable = () => {
             },
         });
         const res = await passenger.json();
-        console.log(res);
 
         if (res.success) {
             setDataSet(res.stations);
@@ -68,7 +65,6 @@ const BusStopsTable = () => {
 
     return (
         <>
-            <Navbar />
             <div className='mt-[16vh] px-5 p-4' >
                 <Typography variant='h4' className="my-5 text-slate-500 " >All Bus stops</Typography>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>

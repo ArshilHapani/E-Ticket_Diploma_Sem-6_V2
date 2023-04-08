@@ -37,8 +37,6 @@ const OldUser = () => {
       );
       return;
     }
-    setLoading(true);
-    console.log(user);
     const data = await fetch(
       `${process.env.REACT_APP_BACKEND}/authentication/login`,
       {
@@ -50,7 +48,6 @@ const OldUser = () => {
       }
     );
     const response = await data.json();
-    console.log(response);
     if (response.success) {
       snackbarSetterFunction("Login Success", "success");
       localStorage.setItem("user", response.authToken);
