@@ -35,7 +35,7 @@ const options = {
         },
         title: {
             display: true,
-            text: 'Recharge Collection and Tickets Revenue',
+            text: 'Recharge Collection and TicketsPaymentsCount Revenue',
         },
     },
 };
@@ -68,11 +68,11 @@ const options3 = {
 const StatisTics = () => {
     const [payments, setPayments] = useState<object>({ dates: [], payments: [] });
     const [counts, setCounts] = useState<object>({});
-    const [tickets, setTickets] = useState<Array<number>>();
+    const [ticketsPaymentsCount, setTicketsPaymentsCount] = useState<Array<number>>();
     const [ticketCount, setTicketCount] = useState<object>({ dates: [], counts: [] });
     useEffect(() => {
         fetchPaymentsData(setPayments, payments);
-        fetchTicketDetails(setTickets);
+        fetchTicketDetails(setTicketsPaymentsCount);
         fetchTicketCount(setTicketCount, ticketCount);
         fetchCounts();
     }, []);
@@ -85,7 +85,7 @@ const StatisTics = () => {
         labels,
         datasets: [
             {
-                label: 'tickets generated',
+                label: 'ticketsPaymentsCount generated',
                 data: ticketCount.counts,
                 backgroundColor: '#339989'
             }
@@ -101,8 +101,8 @@ const StatisTics = () => {
                 backgroundColor: 'rgba(0, 99, 232, 0.5)',
             },
             {
-                label: "total tickets generated in ₹",
-                data: tickets,
+                label: "Revenue generated in ₹ by tickets",
+                data: ticketsPaymentsCount,
                 backgroundColor: 'rgba(255, 9, 2, 0.5)',
             }
         ],

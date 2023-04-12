@@ -14,6 +14,7 @@ import {
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 const SignIn = () => {
   const router = useRouter();
@@ -144,6 +145,14 @@ const SignIn = () => {
                 paddingBottom: "15px",
               }}
             >
+              <Link
+                href="/ForgetPassword"
+                className="link-styles-anchor-tags"
+                // @ts-ignore
+                align="right"
+              >
+                <Typography> Forgot Password?</Typography>
+              </Link>
               <Button variant="outlined" type="submit">
                 Sign In
               </Button>

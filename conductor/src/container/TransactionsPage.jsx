@@ -35,7 +35,6 @@ const TransactionsPage = () => {
       <Stack
         sx={{
           padding: "1rem",
-          marginBottom: "4rem",
         }}
         direction="column"
         alignItems="center"
@@ -59,6 +58,9 @@ const TransactionsPage = () => {
                 background: "#f2f2f2",
                 borderRadius: "8px",
                 padding: "1rem",
+                "&:last-child": {
+                  marginBottom: "5rem",
+                },
               }}
             >
               <Typography>

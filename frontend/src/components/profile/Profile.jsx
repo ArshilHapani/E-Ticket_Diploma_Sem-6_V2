@@ -13,6 +13,7 @@ import calculateAge from "../../functions/agrCalculate";
 import isUserNameValid from "../../functions/userNameValidate";
 import b64Convertor from "../../functions/b64Convertor";
 import { compressImage, validateEmail } from "../../functions";
+import { FiLogOut } from "react-icons/fi";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -263,6 +264,18 @@ const Profile = () => {
             </Button>
             <Button variant="outlined" onClick={() => setBuyTicketModel(true)}>
               Buy Ticket
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                localStorage.clear();
+                sessionStorage.clear();
+                navigate("/signIn");
+              }}
+              endIcon={<FiLogOut />}
+            >
+              Log out
             </Button>
           </Stack>
         </div>

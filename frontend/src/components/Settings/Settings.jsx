@@ -11,12 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { CiDark } from "react-icons/ci";
 import { WiMoonAltFirstQuarter } from "react-icons/wi";
 import { BsSun } from "react-icons/bs";
+import { GoReport } from "react-icons/go";
 
 import { useStateContext } from "../../context/stateContext";
 import useMuiStyles from "../../hooks/useMuiStyles";
 
 import "./Settings.scss";
 import ReportABugModal from "../modals/Report";
+import { FiLogOut } from "react-icons/fi";
 const Settings = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -97,10 +99,36 @@ const Settings = () => {
         >
           Report / Contact
         </Typography>
-        <Button variant="outlined" onClick={() => setOpen(true)}>
+        <Button
+          variant="outlined"
+          endIcon={<GoReport />}
+          onClick={() => setOpen(true)}
+        >
           Report a bug
         </Button>
         <ReportABugModal open={open} setOpen={setOpen} />
+        <br />
+        <br />
+        <Typography
+          sx={{
+            fontSize: 30,
+            marginBottom: "1rem",
+          }}
+        >
+          Log out ?
+        </Typography>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={() => {
+            localStorage.clear();
+            sessionStorage.clear();
+            navigate("/signIn");
+          }}
+          endIcon={<FiLogOut />}
+        >
+          Log out
+        </Button>
       </Container>
     </Box>
   );

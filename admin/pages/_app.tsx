@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
         reverseOrder={false}
       />
       {
-        router.pathname !== "/" &&
+        router.pathname !== "/" && router.pathname !== "/ForgetPassword" &&
         <>
           <Navbar />
           <Tooltip title="home" placement="left" arrow >

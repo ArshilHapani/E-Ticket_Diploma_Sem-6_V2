@@ -68,13 +68,13 @@ const UpdatePassword = ({ uname, closingModal }) => {
       const res = await fetch(
         `${process.env.REACT_APP_BACKEND}/authentication/changePwd`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             uname,
-            pwd: password.cPwd,
+            password: password.cPwd,
           }),
         }
       );
@@ -85,7 +85,7 @@ const UpdatePassword = ({ uname, closingModal }) => {
         closingModal(false);
         return;
       } else if (!response.success) {
-        snackbarSetterFunction(res.msg, "warning");
+        snackbarSetterFunction(response.msg, "warning");
         setLoading(false);
         return;
       }
@@ -126,7 +126,7 @@ const UpdatePassword = ({ uname, closingModal }) => {
             confirm new password
           </InputLabel>
           <Input
-            id="standard-adornment-password"
+            id="standard-adornment-password-1"
             type={showPassword1 ? "text" : "password"}
             value={password.cPwd}
             onChange={(e) => setPassword({ ...password, cPwd: e.target.value })}

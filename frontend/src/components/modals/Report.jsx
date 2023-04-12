@@ -13,37 +13,60 @@ import {
   FormControl,
   IconButton,
 } from "@mui/material";
+import useMuiStyles from "../../hooks/useMuiStyles";
+import { useStateContext } from "../../context/stateContext";
 
 export default function ReportABugModal({ open, setOpen }) {
+  const { theme, showSnackBar } = useStateContext();
+  const { modelStyle, modelTextField } = useMuiStyles();
   const handleClose = () => setOpen(false);
-
   const [start, setStart] = useState(false);
-
   const handleEnd = () => setStart(false);
-
-  const [Opt, setOpt] = useState("");
-  const handleChange = (event) => setOpt(event.target.value);
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [reportData, setReportData] = useState({
+    topic: "",
+    title: "",
+    description: "",
+  });
+  function handleClick() {
+    if (
+      reportData.title === "" ||
+      reportData.description === "" ||
+      reportData.topic === ""
+    ) {
+      showSnackBar("Please enter all the required fields", "error");
+      return;
+    }
+    console.log(reportData);
     setOpen(false);
     setStart(true);
-  };
+    setReportData({
+      topic: "",
+      title: "",
+      description: "",
+    });
+  }
   return (
     <>
-      <Stack
-        sx={{
-          width: {
-            xs: "80vw",
-            md: "30vw",
-            lg: "25vw",
-          },
-        }}
-      >
-        <form onSubmit={handleSubmit}>
-          <Modal open={open} onClose={handleClose}>
+      <Stack>
+        <Modal open={open} onClose={handleClose}>
+          <Stack gap={2} direction="column" alignItems="center" sx={modelStyle}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+              }}
+            >
+              <IconButton onClick={handleClose}>
+                <AiOutlineClose color="#da2c38" />
+              </IconButton>
+            </Box>
+            <Stack justifyContent="center" alignItems="center" marginTop={3}>
+              <Typography align="center" fontSize={17} fontWeight="bold">
+                Report a bug or request a feature
+              </Typography>
+            </Stack>
             <Stack
-              gap={2}
-              direction="column"
               alignItems="center"
               sx={{
                 width: {
@@ -51,132 +74,94 @@ export default function ReportABugModal({ open, setOpen }) {
                   md: "30vw",
                   lg: "25vw",
                 },
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                bgcolor: "background.paper",
-                boxShadow: 5,
-                p: 5,
-                borderRadius: "8px",
+                flexDirection: {
+                  xs: "column",
+                  md: "row",
+                },
               }}
             >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "1rem",
-                  right: "1rem",
-                }}
-              >
-                <IconButton onClick={handleClose}>
-                  <AiOutlineClose color="#da2c38" />
-                </IconButton>
-              </Box>
-              <Stack justifyContent="center" alignItems="center" marginTop={3}>
-                <Typography align="center" fontSize={17} fontWeight="bold">
-                  Report a bug or request a feature
+              <FormControl fullWidth>
+                <Typography sx={{ marginBottom: "0.1rem" }}>
+                  I would like to
                 </Typography>
-              </Stack>
-              <Stack
-                alignItems="center"
-                sx={{
-                  width: {
-                    xs: "50vw",
-                    md: "30vw",
-                    lg: "25vw",
-                  },
-                  flexDirection: {
-                    xs: "column",
-                    md: "row",
-                  },
-                }}
-              >
-                <FormControl fullWidth>
-                  <Typography sx={{ marginBottom: "0.1rem" }}>
-                    I would like to
-                  </Typography>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={Opt}
-                    placeholder="Select"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={1}>Report a bug</MenuItem>
-                    <MenuItem value={2}>Suggest feature</MenuItem>
-                    <MenuItem value={3}>Complain fraud</MenuItem>
-                  </Select>
-                </FormControl>
-              </Stack>
-              <Stack
-                sx={{
-                  width: {
-                    xs: "50vw",
-                    md: "30vw",
-                    lg: "25vw",
-                  },
-                }}
-              >
-                <Typography fontSize={16}>Title</Typography>
-                <TextField
-                  required
-                  placeholder="Enter a title"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Stack>
-              <Stack
-                sx={{
-                  width: {
-                    xs: "50vw",
-                    md: "30vw",
-                    lg: "25vw",
-                  },
-                }}
-              >
-                <Typography fontSize={16}>Description</Typography>
-                <TextField
-                  required
-                  placeholder="Enter a description"
-                  variant="outlined"
-                  rows={4}
-                  multiline
-                  fullWidth
-                />
-              </Stack>
-              <Button
-                variant="outlined"
-                type="submit"
-                fullWidth
-                sx={{ marginTop: 4 }}
-              >
-                Submit
-              </Button>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  placeholder="Select"
+                  sx={{ color: theme === "dark" ? "white" : "black" }}
+                  value={reportData.topic}
+                  onChange={(e) =>
+                    setReportData({ ...reportData, topic: e.target.value })
+                  }
+                >
+                  <MenuItem value={"Report a bug"}>Report a bug</MenuItem>
+                  <MenuItem value={"Suggest feature"}>Suggest feature</MenuItem>
+                  <MenuItem value={"Complain fraud"}>Complain fraud</MenuItem>
+                </Select>
+              </FormControl>
             </Stack>
-          </Modal>
-        </form>
+            <Stack
+              sx={{
+                width: {
+                  xs: "50vw",
+                  md: "30vw",
+                  lg: "25vw",
+                },
+              }}
+            >
+              <Typography fontSize={16}>Title</Typography>
+              <TextField
+                required
+                placeholder="Enter a title"
+                variant="outlined"
+                fullWidth
+                sx={modelTextField}
+                value={reportData.title}
+                onChange={(e) =>
+                  setReportData({ ...reportData, title: e.target.value })
+                }
+              />
+            </Stack>
+            <Stack
+              sx={{
+                width: {
+                  xs: "50vw",
+                  md: "30vw",
+                  lg: "25vw",
+                },
+              }}
+            >
+              <Typography fontSize={16}>Description</Typography>
+              <TextField
+                required
+                placeholder="Enter a description"
+                variant="outlined"
+                rows={4}
+                multiline
+                fullWidth
+                sx={modelTextField}
+                value={reportData.description}
+                onChange={(e) =>
+                  setReportData({ ...reportData, description: e.target.value })
+                }
+              />
+            </Stack>
+            <Button
+              variant="outlined"
+              type="submit"
+              fullWidth
+              sx={{ marginTop: 4 }}
+              onClick={handleClick}
+            >
+              Submit
+            </Button>
+          </Stack>
+        </Modal>
       </Stack>
+
+      {/* success screen */}
       <Modal open={start} onClose={handleEnd}>
-        <Stack
-          gap={4}
-          direction="column"
-          alignItems="center"
-          sx={{
-            width: {
-              xs: "50vw",
-              md: "30vw",
-              lg: "25vw",
-            },
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: 5,
-            p: 6,
-            borderRadius: "8px",
-          }}
-        >
+        <Stack gap={4} direction="column" alignItems="center" sx={modelStyle}>
           <Box
             sx={{
               position: "absolute",

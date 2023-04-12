@@ -3,6 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 const stateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
+  let defaultTheme;
+  const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+  if (darkThemeMq.matches) {
+    defaultTheme = "dark";
+  } else {
+    defaultTheme = "light";
+  }
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarMenu, setSidebarMenu] = useState(false);
@@ -22,7 +29,7 @@ export const ContextProvider = ({ children }) => {
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") !== null || undefined
       ? localStorage.getItem("theme")
-      : "light"
+      : defaultTheme
   );
   const [snackbar, setSnackbar] = useState({
     show: false,

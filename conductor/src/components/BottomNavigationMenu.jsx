@@ -5,6 +5,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsPerson } from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Tooltip } from "@mui/material";
 const BottomNavigationMenu = () => {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const BottomNavigationMenu = () => {
         bottom: "0",
         left: "0",
         right: "0",
+        background: "rgba(255,255,255,0.7)",
       }}
     >
       <BottomNavigation
@@ -34,17 +36,20 @@ const BottomNavigationMenu = () => {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction
-          label="Home"
-          icon={<AiOutlineHome size={25} />}
-          onClick={() => navigate("/")}
-        />
-
-        <BottomNavigationAction
-          label="Profile"
-          icon={<BsPerson size={25} />}
-          onClick={() => navigate("/profile")}
-        />
+        <Tooltip title="Home" placement="top" arrow>
+          <BottomNavigationAction
+            label="Home"
+            icon={<AiOutlineHome size={25} />}
+            onClick={() => navigate("/")}
+          />
+        </Tooltip>
+        <Tooltip title="Profile" placement="top" arrow>
+          <BottomNavigationAction
+            label="Profile"
+            icon={<BsPerson size={25} />}
+            onClick={() => navigate("/profile")}
+          />
+        </Tooltip>
       </BottomNavigation>
     </Box>
   );

@@ -8,47 +8,67 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import useMuiStyles from "../../hooks/useMuiStyles";
-import { useState } from "react";
+import { useState, SyntheticEvent } from "react";
+import { toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useStateContext } from "../../context/stateContext";
 
-const UpdatePassword = ({ uname, closingModal }) => {
-  const { showSnackBar, setLoader } = useStateContext();
-  const { defaultModelStyle } = useMuiStyles();
+const defaultModelStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: {
+    xs: 300,
+    sm: 350,
+    md: 300,
+    lg: 360,
+  },
+  bgcolor: "#f2f2f2",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: "8px",
+};
+type props = {
+  uname: string;
+  closingModal: Function;
+};
+type responseType = {
+  success?: boolean;
+  msg?: string;
+};
+const UpdatePassword = ({ uname, closingModal }: props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [password, setPassword] = useState({ pwd: "", cPwd: "" });
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: MouseEvent) => {
     event.preventDefault();
   };
   const handleClickShowPassword1 = () => setShowPassword1((show1) => !show1);
-  const handleMouseDownPassword1 = (event) => {
+  const handleMouseDownPassword1 = (event: MouseEvent) => {
     event.preventDefault();
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    setLoader(true);
+
     if (password.pwd === "" || password.cPwd === "") {
-      showSnackBar("Please enter required fields", "error");
-      setLoader(false);
+      toast.error("Please enter required fields");
+
       return;
     } else if (password.pwd !== password.cPwd) {
-      showSnackBar("Confirm password does'nt match password", "error");
-      setLoader(false);
+      toast.error("Confirm password does'nt match password");
+
       return;
     } else if (password.cPwd.length < 8 || password.pwd.length < 8) {
-      showSnackBar(
-        "The length of the password must be greater than or equal to 8",
-        "error"
+      toast.error(
+        "The length of the password must be greater than or equal to 8"
       );
-      setLoader(false);
+
       return;
     } else {
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND}/authentication/changePwd`,
+        `${process.env.NEXT_PUBLIC_HOST}/authentication/changePwd`,
         {
           method: "PATCH",
           headers: {
@@ -60,19 +80,17 @@ const UpdatePassword = ({ uname, closingModal }) => {
           }),
         }
       );
-      const response = await res.json();
+      const response: responseType = await res.json();
       if (response.success) {
-        showSnackBar("Password updated successfully", "success");
-        setLoader(false);
+        toast.success("Password updated successfully");
         closingModal(false);
         return;
       } else if (!response.success) {
-        showSnackBar(response.msg, "warning");
-        setLoader(false);
+        //@ts-ignore
+        toast.error(response.msg?.toString());
         return;
       }
     }
-    setLoader(false);
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -91,6 +109,7 @@ const UpdatePassword = ({ uname, closingModal }) => {
             onChange={(e) => setPassword({ ...password, pwd: e.target.value })}
             endAdornment={
               <InputAdornment position="end">
+                {/* @ts-ignore */}
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={handleClickShowPassword}
@@ -114,6 +133,7 @@ const UpdatePassword = ({ uname, closingModal }) => {
             onChange={(e) => setPassword({ ...password, cPwd: e.target.value })}
             endAdornment={
               <InputAdornment position="end">
+                {/*@ts-ignore */}
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={handleClickShowPassword1}
@@ -137,7 +157,7 @@ const UpdatePassword = ({ uname, closingModal }) => {
           >
             Close
           </Button>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="outlined" color="primary" type="submit">
             Update Profile
           </Button>
         </Stack>

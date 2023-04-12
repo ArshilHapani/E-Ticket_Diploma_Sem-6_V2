@@ -20,6 +20,18 @@ input[type="number"] {
   .bg-red-hero {
     background-color: #d90429;
   }
+  .bg-blue-hero {
+    background-color: #0582ca;
+  }
+  .bg-yellow-1-hero {
+    background-color: #d90429;
+  }
+  .bg-green-hero {
+    background-color: #d90429;
+  }
+  .bg-yellow-2-hero {
+    background-color: #d90429;
+  }
 }
 
 .form-root {
