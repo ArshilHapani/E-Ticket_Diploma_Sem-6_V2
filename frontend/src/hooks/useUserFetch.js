@@ -20,6 +20,7 @@ const useUserFetch = () => {
     );
     const response = await data.json();
     const { passenger } = response;
+    console.log("Fetch user invoked");
     dispatch(
       setUser({
         ...passenger,

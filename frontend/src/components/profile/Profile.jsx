@@ -23,9 +23,9 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { fetchUser } = useUserFetch();
   if (
-    localStorage.getItem("user") === null ||
-    localStorage.getItem("user") === undefined ||
-    localStorage.getItem("user") === ""
+    (localStorage.getItem("user") === null) |
+    (localStorage.getItem("user") === undefined) |
+    (localStorage.getItem("user") === "")
   ) {
     navigate("/signUp");
   }
@@ -43,31 +43,22 @@ const Profile = () => {
   const { detail_ref_style, profile_divider_styles } = useMuiStyles();
   const [open, setOpen] = useState(false);
   const [reduxUserState, setReduxUserState] = useState(null);
+  const { user } = useSelector(selectUser);
   const [updatedUserInfo, setUpdatedUserInfo] = useState({
-    name: reduxUserState?.p_name,
-    uname: reduxUserState?.p_uname,
-    email: reduxUserState?.p_email,
-    no: reduxUserState?.p_no,
+    name: user?.p_name,
+    uname: user?.p_uname,
+    email: user?.p_email,
+    no: user?.p_no,
   });
   console.log(reduxUserState);
-  const { user } = useSelector(selectUser);
   useEffect(() => {
     (async () => {
       await fetchUsers();
+      user.p_name === "" && navigate("/");
       setReduxUserState(user);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setNewUser, toggleSync]);
-  useEffect(() => {
-    (async () => {
-      await fetchUsers();
-      await fetchUser();
-      console.log("UseEffect invoked");
-    })();
-    console.log(user);
-    setReduxUserState(user);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const uploadImage = async (e) => {
     e.preventDefault();
     setLoader(true);
@@ -99,9 +90,9 @@ const Profile = () => {
   const handleForm = (e) => {
     e.preventDefault();
     if (
-      updatedUserInfo.name === "" ||
-      updatedUserInfo.email === "" ||
-      updatedUserInfo.uname === ""
+      (updatedUserInfo.name === "") |
+      (updatedUserInfo.email === "") |
+      (updatedUserInfo.uname === "")
     ) {
       showSnackBar("Please fill all the required fields", "error");
       return;
