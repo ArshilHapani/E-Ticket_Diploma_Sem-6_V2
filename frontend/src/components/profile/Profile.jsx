@@ -40,10 +40,10 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
 
   const [updatedUserInfo, setUpdatedUserInfo] = useState({
-    name: newUser?.p_name,
-    uname: newUser?.p_uname,
-    email: newUser?.p_email,
-    no: newUser?.p_no,
+    name: (newUser.p_name ??= ""),
+    uname: (newUser.p_uname ??= ""),
+    email: (newUser.p_email ??= ""),
+    no: (newUser.p_no ??= ""),
   });
   const uploadImage = async (e) => {
     e.preventDefault();
@@ -220,7 +220,7 @@ const Profile = () => {
           <Divider sx={profile_divider_styles} />
           <Typography sx={detail_ref_style}>age</Typography>
           <Typography sx={detail_ref_style.userDetailStyle}>
-            {calculateAge(newUser?.p_dob)}
+            {calculateAge(newUser?.p_dob) || 0}
           </Typography>
 
           <Divider sx={profile_divider_styles} />
