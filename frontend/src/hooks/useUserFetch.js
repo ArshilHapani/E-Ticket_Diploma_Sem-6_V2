@@ -1,7 +1,10 @@
+import { useDispatch } from "react-redux";
 import { useStateContext } from "../context/stateContext";
+import { setUser } from "../states/slices/userSlice";
 
 const useUserFetch = () => {
   const { setLoader, setNewUser } = useStateContext();
+  const dispatch = useDispatch();
 
   async function fetchUser() {
     setLoader(true);
@@ -17,6 +20,11 @@ const useUserFetch = () => {
     );
     const response = await data.json();
     const { passenger } = response;
+    dispatch(
+      setUser({
+        ...passenger,
+      })
+    );
     setNewUser(passenger);
     setLoader(false);
   }

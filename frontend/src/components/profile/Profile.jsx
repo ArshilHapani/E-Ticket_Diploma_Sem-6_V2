@@ -14,10 +14,14 @@ import isUserNameValid from "../../functions/userNameValidate";
 import b64Convertor from "../../functions/b64Convertor";
 import { compressImage, validateEmail } from "../../functions";
 import { FiLogOut } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setUser } from "../../states/slices/userSlice";
+import useUserFetch from "../../hooks/useUserFetch";
 
 const Profile = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const { fetchUser } = useUserFetch();
   if (
     localStorage.getItem("user") === null ||
     localStorage.getItem("user") === undefined ||
@@ -38,13 +42,32 @@ const Profile = () => {
   } = useStateContext();
   const { detail_ref_style, profile_divider_styles } = useMuiStyles();
   const [open, setOpen] = useState(false);
-
+  const [reduxUserState, setReduxUserState] = useState(null);
   const [updatedUserInfo, setUpdatedUserInfo] = useState({
-    name: newUser?.p_name,
-    uname: newUser?.p_uname,
-    email: newUser?.p_email,
-    no: newUser?.p_no,
+    name: reduxUserState?.p_name,
+    uname: reduxUserState?.p_uname,
+    email: reduxUserState?.p_email,
+    no: reduxUserState?.p_no,
   });
+  console.log(reduxUserState);
+  const { user } = useSelector(selectUser);
+  useEffect(() => {
+    (async () => {
+      await fetchUsers();
+      setReduxUserState(user);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setNewUser, toggleSync]);
+  useEffect(() => {
+    (async () => {
+      await fetchUsers();
+      await fetchUser();
+      console.log("UseEffect invoked");
+    })();
+    console.log(user);
+    setReduxUserState(user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const uploadImage = async (e) => {
     e.preventDefault();
     setLoader(true);
@@ -61,15 +84,15 @@ const Profile = () => {
     }
     if (selectedFile.size >= 800000) {
       const imageRes = await compressImage(selectedFile);
-      await b64Convertor(imageRes, showSnackBar, fetchUser);
+      await b64Convertor(imageRes, showSnackBar, fetchUsers);
       showSnackBar("Image updated successfully", "success");
       setLoader(false);
       return;
     }
-    await b64Convertor(selectedFile, showSnackBar, fetchUser);
+    await b64Convertor(selectedFile, showSnackBar, fetchUsers);
     showSnackBar("Image updated successfully", "success");
     setTimeout(() => {
-      fetchUser();
+      fetchUsers();
     }, 1000);
     setLoader(false);
   };
@@ -127,13 +150,13 @@ const Profile = () => {
 
     const response = await data.json();
     const { success } = response;
-    fetchUser();
+    fetchUsers();
     setLoader(false);
     return success;
   }
 
   // Fetching data after being updated
-  async function fetchUser() {
+  async function fetchUsers() {
     setLoader(true);
     const data = await fetch(
       `${process.env.REACT_APP_BACKEND}/passenger/fetch`,
@@ -147,14 +170,14 @@ const Profile = () => {
     );
     const response = await data.json();
     const { passenger } = response;
+    dispatch(
+      setUser({
+        ...passenger,
+      })
+    );
     setNewUser(passenger);
     setLoader(false);
   }
-
-  useEffect(() => {
-    fetchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setNewUser, toggleSync]);
 
   return (
     <Box
@@ -169,7 +192,7 @@ const Profile = () => {
       >
         <Box className="profile-hero-section dark">
           <Avatar
-            src={newUser?.p_img}
+            src={reduxUserState?.p_img}
             sx={{
               width: 90,
               height: 90,
@@ -178,7 +201,7 @@ const Profile = () => {
             className="img-avatar"
             alt="profile-picture"
           >
-            {newUser?.p_name?.charAt(0)}
+            {reduxUserState?.p_name?.charAt(0)}
           </Avatar>
           <Button
             variant="outlined"
@@ -193,34 +216,36 @@ const Profile = () => {
         <div className="profile-credentials-container">
           <Typography sx={detail_ref_style}>name</Typography>
           <Typography sx={detail_ref_style.userDetailStyle}>
-            {newUser?.p_name}
+            {reduxUserState?.p_name}
           </Typography>
           <Divider sx={profile_divider_styles} />
           <Typography sx={detail_ref_style}>username</Typography>
           <Typography sx={detail_ref_style.userDetailStyle}>
-            {newUser?.p_uname}
+            {reduxUserState?.p_uname}
           </Typography>
           <Divider sx={profile_divider_styles} />
 
           <Typography sx={detail_ref_style}>email</Typography>
           <Typography sx={detail_ref_style.userDetailStyle}>
-            {newUser?.p_email}
+            {reduxUserState?.p_email}
           </Typography>
           <Divider sx={profile_divider_styles} />
 
           <Typography sx={detail_ref_style}>mobile number</Typography>
           <Typography sx={detail_ref_style.userDetailStyle}>
-            {newUser?.p_no ? newUser.p_no : "no mobile number added"}
+            {reduxUserState?.p_no
+              ? reduxUserState.p_no
+              : "no mobile number added"}
           </Typography>
           <Divider sx={profile_divider_styles} />
           <Typography sx={detail_ref_style}>Date Of Birth</Typography>
           <Typography sx={detail_ref_style.userDetailStyle}>
-            {newUser?.p_dob}
+            {reduxUserState?.p_dob}
           </Typography>
           <Divider sx={profile_divider_styles} />
           <Typography sx={detail_ref_style}>age</Typography>
           <Typography sx={detail_ref_style.userDetailStyle}>
-            {calculateAge(newUser?.p_dob)}
+            {calculateAge(reduxUserState?.p_dob) || 0}
           </Typography>
 
           <Divider sx={profile_divider_styles} />
@@ -255,7 +280,7 @@ const Profile = () => {
             Total number of ticket generated
           </Typography>
           <Typography sx={detail_ref_style.userDetailStyle}>
-            {newUser?.no_ticket}
+            {reduxUserState?.no_ticket}
           </Typography>
           <Divider sx={profile_divider_styles} />
           <Stack direction="column" gap={1}>

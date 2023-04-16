@@ -20,26 +20,8 @@ import useUserFetch from "../../hooks/useUserFetch";
 const Home = () => {
   const navigate = useNavigate();
   document.title = "E-Ticket | Home";
-  const { setNewUser, theme, setLoader, setToggleSync } = useStateContext();
+  const { theme, setToggleSync } = useStateContext();
   const { fetchUser } = useUserFetch();
-  // Fetch user data....
-  async function fetchUsers() {
-    setLoader(true);
-    const data = await fetch(
-      `${process.env.REACT_APP_BACKEND}/passenger/fetch`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authToken: localStorage.getItem("user"),
-        },
-      }
-    );
-    const response = await data.json();
-    const { passenger } = response;
-    setLoader(false);
-    return passenger;
-  }
   useEffect(() => {
     if (
       localStorage.getItem("user") === null ||
@@ -48,15 +30,7 @@ const Home = () => {
     ) {
       navigate("/signUp");
     }
-    setLoader(true);
-
-    async function fetchPassenger() {
-      const data = await fetchUsers();
-      setNewUser(data);
-    }
-    fetchPassenger();
-
-    setLoader(false);
+    fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

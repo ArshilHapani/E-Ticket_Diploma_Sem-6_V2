@@ -18,7 +18,6 @@ export const ContextProvider = ({ children }) => {
   const [loader, setLoader] = useState(false);
   const [newUser, setNewUser] = useState({
     p_uname: "",
-    p_pwd: "",
     p_name: "",
     p_email: "",
     p_dob: "",

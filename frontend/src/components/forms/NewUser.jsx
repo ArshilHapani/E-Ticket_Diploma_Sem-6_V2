@@ -20,8 +20,10 @@ import isUserNameValid from "../../functions/userNameValidate";
 import validateEmail from "../../functions/validateEmail";
 import logo from "../../assets/favicon.png";
 import calculateAge from "../../functions/agrCalculate";
+import { useDispatch } from "react-redux";
 
 const NewUser = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { showSnackBar, setLoader } = useStateContext();
   const [user, setUser] = useState({
@@ -105,6 +107,7 @@ const NewUser = () => {
         "success"
       );
       localStorage.setItem("user", response.authToken);
+      dispatch(setUser(user));
       navigate("/signIn");
     } else if (response.msg !== "") {
       showSnackBar(response.msg, "error");
