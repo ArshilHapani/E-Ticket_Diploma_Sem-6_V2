@@ -53,8 +53,8 @@ const Profile = () => {
   console.log(reduxUserState);
   useEffect(() => {
     (async () => {
-      await fetchUsers();
-      user.p_name === "" && navigate("/");
+      await fetchUser();
+      // user.p_name === "" && navigate("/");
       setReduxUserState(user);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -142,6 +142,7 @@ const Profile = () => {
     const response = await data.json();
     const { success } = response;
     fetchUsers();
+    fetchUser();
     setLoader(false);
     return success;
   }

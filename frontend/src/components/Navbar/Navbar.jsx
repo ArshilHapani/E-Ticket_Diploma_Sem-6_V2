@@ -190,11 +190,11 @@ const Navbar = () => {
                   navigate("/signIn");
                 }}
               >
-                <FiLogOut color={theme === "light" ? "#0d1b2a" : "#f2f2f2"} />{" "}
+                <FiLogOut color="#d2302f" />
                 <Typography
                   sx={{
                     marginLeft: "0.6rem",
-                    color: theme === "light" ? "#0d1b2a" : "#f2f2f2",
+                    color: "#d2302f",
                   }}
                 >
                   {" "}
