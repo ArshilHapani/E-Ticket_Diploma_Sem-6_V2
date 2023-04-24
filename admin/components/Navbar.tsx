@@ -12,6 +12,7 @@ import CreateConductorModel from "./CreateConductorModel";
 import AddStationsModel from "./AddStationsModel";
 import Link from "next/link";
 import AddAdmins from "./AddAdminsModal";
+import { useRouter } from "next/router";
 
 const style = {
     position: "absolute",
@@ -26,6 +27,7 @@ const style = {
 };
 
 const Navbar = () => {
+    const router = useRouter();
     const [open, setOpen] = useState<boolean>(false);
     const [addTicketModel, setAddTicketModel] = useState<boolean>(false);
     const [addAdminModal, setAddAdminModal] = useState<boolean>(false);
@@ -56,18 +58,16 @@ const Navbar = () => {
                     />
                 </Link>
                 <Tooltip title="Profile" placement="bottom" arrow>
-                    <Link href="/Profile" >
-                        <IconButton color="primary" >
-                            <AiOutlineUser />
-                        </IconButton>
-                    </Link>
+                    <IconButton color="primary" onClick={() => router.push("/Profile")} >
+                        <AiOutlineUser />
+                    </IconButton>
                 </Tooltip>
                 <Tooltip title="Insights" placement="bottom" arrow>
-                    <Link href="/StatisTics">
-                        <IconButton color="primary">
-                            <GoGraph />
-                        </IconButton>
-                    </Link>
+
+                    <IconButton color="primary" onClick={() => router.push("/StatisTics")} >
+                        <GoGraph />
+                    </IconButton>
+
                 </Tooltip>
             </Stack>
             <Box className="px-4 flex gap-4 ">

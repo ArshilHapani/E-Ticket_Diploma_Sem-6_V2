@@ -24,13 +24,24 @@ const ScanTicketModal = ({
     if (scanData && scanData !== "") {
       try {
         //converting qr json data into js object
-        if (typeof JSON.parse(scanData) === "object") {
+        if (
+          typeof JSON.parse(scanData) === "object" &&
+          JSON.parse(scanData).t_id
+        ) {
           setData(JSON.parse(scanData));
+          setOpen(true);
+        } else if (JSON.parse(scanData).name) {
+          snackbarSetterFunction(
+            "Kindly scan this qr code via add recharge scanner",
+            "info"
+          );
+        } else {
+          snackbarSetterFunction("Invalid qr code", "error");
         }
         setStartScan(false);
       } catch (error) {
         //if data is string...
-        snackbarSetterFunction("Invalid QR Code", "error");
+        snackbarSetterFunction("Something went wrong", "warning ");
       }
       //stopping the user's cam manually
       navigator.mediaDevices

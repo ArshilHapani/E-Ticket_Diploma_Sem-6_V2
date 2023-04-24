@@ -14,7 +14,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        if (user.name === "" || user.uname === "" || user.email === "") {
+        if (user.name === null || user.uname === null || user.email === null || user.balance === null) {
             toast.error("Please enter all the required fields");
             return;
         }
@@ -46,6 +46,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
 
         if (res.success) {
             toast.success("user edited successfully");
+            location.reload();
             setOpen(false);
         } else if (!res.success) {
             toast.error(res.msg);
@@ -66,7 +67,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
                 variant="standard"
                 color="info"
                 type="text"
-                value={user.name}
+                value={user.name || ""}
                 onChange={(e) => {
                     setUser({
                         ...user,
@@ -80,7 +81,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
                 variant="standard"
                 color="info"
                 type="text"
-                value={user.uname}
+                value={user.uname || ""}
                 onChange={(e) => {
                     setUser({
                         ...user,
@@ -95,7 +96,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
                 variant="standard"
                 color="info"
                 type="text0"
-                value={user.email}
+                value={user.email || ""}
                 onChange={(e) => {
                     setUser({
                         ...user,
@@ -109,7 +110,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
                 variant="standard"
                 color="info"
                 type="number"
-                value={user.balance}
+                value={user.balance || 0}
                 onChange={(e) => {
                     setUser({
                         ...user,
