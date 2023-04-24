@@ -10,7 +10,6 @@ const checkConductor = (req,res,next) =>{
             } else if(qres.length > 0){
                 next();
             } else {
-                console.log("wtf00")
                 res.json({ success:false, msg:"Authentication did not happen"});
             }
         })
