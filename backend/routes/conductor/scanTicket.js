@@ -17,11 +17,7 @@ router.get("/:t_id", async (req, res) => {
         success = false;
         res.json({ success });
       } else if (qres.length > 0) {
-        res.json({
-          success,
-          p_uname: qres[0].p_uname,
-          ticket_is: qres[0].ticket_is,
-        });
+        res.json({ success, p_uname: qres[0].p_uname, ticket_is: qres[0].ticket_is });
       } else {
         success = false;
         res.json({ success, msg: "Ticket does not exist" });

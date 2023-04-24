@@ -3,7 +3,7 @@ to change information of themself into system*/
 
 import { Router } from "express";
 const router = Router();
-import con from "../../../database.js";
+import con from '../../../database.js';
 
 router.patch("/", async (req, res) => {
   const { p_id, p_uname, p_name, p_email, p_no, p_balance } = req.body;
@@ -12,17 +12,17 @@ router.patch("/", async (req, res) => {
   const findUser = `SELECT p_uname FROM passenger WHERE p_uname='${p_uname}' && p_id!='${p_id}'`;
   const checkEMail = `SELECT p_email FROM passenger WHERE p_email='${p_email}' && p_id!='${p_id}'`;
   const setLogin = `UPDATE login SET uname='${p_uname}' WHERE id='${p_id}'`;
-  const setPassenger = `UPDATE passenger SET p_uname='${p_uname}', p_name='${p_name}', p_email='${p_email}', p_no=${
-    p_no ? p_no : null
-  }, p_balance=${p_balance} WHERE p_id='${p_id}'`;
+  const setPassenger = `UPDATE passenger SET p_uname='${p_uname}', p_name='${p_name}', p_email='${p_email}', p_no=${p_no ? p_no : null}, p_balance=${p_balance} WHERE p_id='${p_id}'`;
 
   try {
+
     con.query(findUser, (err, qres) => {
       if (err) {
         console.log(err.message);
       } else if (qres.length > 0) {
         res.json({ success, msg: "A User with this Usename already exist" });
       } else {
+
         con.query(checkEMail, (err, qres) => {
           if (err) {
             console.log(err.message);
@@ -38,6 +38,7 @@ router.patch("/", async (req, res) => {
                 console.log(err.message);
                 res.json({ success });
               } else if (qres.affectedRows > 0) {
+
                 // Changing login related information of passenger
                 con.query(setLogin, (err, qres) => {
                   if (err) {

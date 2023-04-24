@@ -1,6 +1,6 @@
 /* fetchFare.js is used to create an end point for passenger to get the fare of selected stations*/
 
-import { Router, request } from "express";
+import { Router } from "express";
 const router = Router();
 
 // Middlewares used to geneate fare
@@ -13,6 +13,7 @@ router.post("/", async (req, res) => {
   let success = true;
   let amount = 0;
   try {
+
     if (req.dist >= 0 && req.dist <= 2) {
       amount = 4;
     } else if (req.dist >= 3 && req.dist <= 5) {
@@ -27,13 +28,14 @@ router.post("/", async (req, res) => {
       amount = 16;
     } else if (req.dist >= 19 && req.dist <= 24) {
       amount = 20;
-    } else if (request.dist >= 25 && request.dist <= 100) {
+    } else if (req.dist >= 25 && req.dist <= 50) {
       amount = 24;
     }
     res.json({ success, amount });
+
   } catch (error) {
     success = false;
-    res.json({ success });
+    res.json({ success })
   }
 });
 

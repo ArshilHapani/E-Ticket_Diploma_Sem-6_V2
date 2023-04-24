@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 
 import fetchuser from "./middleware/fetchUser.js";
-import checkConductor from "./middleware/checkConductor.js";
+import checkConductor from './middleware/checkConductor.js';
 
 router.use(fetchuser, checkConductor);
 

@@ -6,7 +6,7 @@ import con from "../../../database.js";
 
 router.get("/", async (req, res) => {
   let success = false;
-
+  
   try {
     const fetchPassenger = `SELECT passenger.* FROM passenger,login WHERE p_id=id`;
 

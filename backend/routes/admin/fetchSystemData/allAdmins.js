@@ -15,11 +15,11 @@ router.get("/", async (req, res) => {
         console.log(err.message);
         res.json({ success });
       } else if (qres.length > 0) {
-        qres.map((i) => {
-          const date = new Date(i.a_dob);
-          const dob = date.toLocaleString();
-          i.a_dob = dob.substring(0, dob.indexOf(","));
-        });
+        qres.map((i)=>{
+            const date = new Date(i.a_dob);
+            const dob = date.toLocaleString();
+            i.a_dob = dob.substring(0, dob.indexOf(","));
+        })
         success = true;
         res.json({ success, admins: qres });
       } else {

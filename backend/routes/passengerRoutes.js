@@ -10,6 +10,7 @@ import changePassenger from "./passenger/updatePassenger.js";
 import changeImage from "./passenger/updateImage.js";
 import fetchPassenger from "./passenger/fetchPassenger.js";
 import fetchPayment from "./passenger/fetchPayment.js";
+import submitFeedback from "./passenger/submitFeedback.js";
 
 import createTicket from "./passenger/forTicket/purchaseTicket.js";
 import fetchTicket from "./passenger/fetchTicket.js";
@@ -23,6 +24,7 @@ router.use("/update", changePassenger);
 router.use("/updateImage", changeImage);
 router.use("/fetch", fetchPassenger);
 router.use("/payment", fetchPayment);
+router.use("/feedback", submitFeedback);
 
 router.use("/fetchFare", fetchFare);
 router.use("/fetchStations", fetchStations);

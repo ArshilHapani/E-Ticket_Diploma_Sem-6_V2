@@ -28,6 +28,8 @@ import fetchAllConductors from "./admin/fetchSystemData/allConductors.js";
 import fetchAllPayments from "./admin/fetchSystemData/allPayments.js";
 import fetchAllTickets from "./admin/fetchSystemData/allTickets.js";
 import fetchAllStations from "./admin/fetchSystemData/allStations.js";
+import fetchFeedback from "./admin/fetchFeedback.js";
+import replyFeedback from "./admin/replyFeedback.js";
 
 import dailyPayment from "./admin/fetchSystemData/dailyPayment.js";
 import dailyTicket from "./admin/fetchSystemData/dailyTicket.js";
@@ -63,6 +65,8 @@ router.use("/fetchAllConductors", fetchAllConductors);
 router.use("/fetchAllPayments", fetchAllPayments);
 router.use("/fetchAllTickets", fetchAllTickets);
 router.use("/fetchAllStations", fetchAllStations);
+router.use("/fetchFeedback", fetchFeedback);
+router.use("/reply", replyFeedback);
 
 router.use('/dailyPayment', dailyPayment);
 router.use('/dailyTicket', dailyTicket);
@@ -75,6 +79,5 @@ router.use("/passenger/delete",deletePassenger);
 
 router.use("/conductor/fetch", fetchConductor);
 router.use("/conductor/fetchPayment", fetchPaymentC);
-// router.use("/passenger", fetchTicket);
 
 export default router;

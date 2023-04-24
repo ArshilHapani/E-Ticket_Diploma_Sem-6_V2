@@ -74,10 +74,21 @@ create table login (
     pwd char(60) NOT NULL
 );
 
+create table feedback(
+    f_id char(15),
+    p_id char(15) NOT NULL,
+    a_id char(15),
+    feedback varchar(255) NOT NULL,
+    f_time datetime NOT NULL,
+    reply varchar(255),
+    r_time datetime,
+    f_status char(7) NOT NULL,
+    primary key(f_id,p_id)
+);
+
 INSERT INTO station VALUES 
 (10257, 'Dabholi Gam BRTS', 21.2340434, 72.8098173),
 (10258, 'Adajan Patiya BRTS', 21.199882,72.8037554);
-
 
 INSERT INTO login VALUES
 ('A11111111111111','admin','$2a$10$JUmQ.VhgsfN8rmVx9URlH.Ue46jMl4OQGYoxN.A8.sjFMasfRU2Eu');
