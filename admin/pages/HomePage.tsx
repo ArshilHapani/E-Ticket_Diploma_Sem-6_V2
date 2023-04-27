@@ -61,6 +61,15 @@ const HomePage = () => {
                             </Stack>
                         </Box>
                     </Link>
+                    <Link href="/FeedbackTable" >
+                        <Box className="Box w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#7209b7] rounded-lg">
+                            <Stack className="w-full h-full Box-gradient p-[1px] rounded-[20px] shadow-Box  "  >
+                                <div className='relative top-3 left-3' >
+                                    <Typography className="text-white text-[1.8rem]" >Feedbacks from users</Typography>
+                                </div>
+                            </Stack>
+                        </Box>
+                    </Link>
                 </Stack>
             </Container>
         </>

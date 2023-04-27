@@ -17,39 +17,62 @@ import useMuiStyles from "../../hooks/useMuiStyles";
 import { useStateContext } from "../../context/stateContext";
 
 export default function ReportABugModal({ open, setOpen }) {
-  const { theme, showSnackBar } = useStateContext();
-  const { modelStyle, modelTextField } = useMuiStyles();
+  const { theme, showSnackBar, setLoader } = useStateContext();
+  const { modelTextField, defaultModelStyle } = useMuiStyles();
   const handleClose = () => setOpen(false);
   const [start, setStart] = useState(false);
   const handleEnd = () => setStart(false);
   const [reportData, setReportData] = useState({
     topic: "",
-    title: "",
     description: "",
   });
-  function handleClick() {
-    if (
-      reportData.title === "" ||
-      reportData.description === "" ||
-      reportData.topic === ""
-    ) {
+  async function handleClick() {
+    if (reportData.description === "" || reportData.topic === "") {
       showSnackBar("Please enter all the required fields", "error");
       return;
     }
-    console.log(reportData);
-    setOpen(false);
-    setStart(true);
+    setLoader(true);
+    const storeData = await fetch(
+      `${process.env.REACT_APP_BACKEND}/passenger/feedback`,
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          authToken: localStorage.getItem("user").toString(),
+        },
+        body: JSON.stringify({
+          feedback: `topic : ${reportData.topic} ,\n\n description: ${reportData.description}`,
+        }),
+      }
+    );
+
+    const res = await storeData.json();
+    if (res.success) {
+      setStart(true);
+      setOpen(false);
+    } else if (res.error) {
+      showSnackBar(res.error, "warning");
+      setOpen(false);
+    } else {
+      showSnackBar("Failed to send feedback please try again later", "error");
+      setOpen(false);
+    }
     setReportData({
       topic: "",
-      title: "",
       description: "",
     });
+    setLoader(false);
   }
   return (
     <>
       <Stack>
         <Modal open={open} onClose={handleClose}>
-          <Stack gap={2} direction="column" alignItems="center" sx={modelStyle}>
+          <Stack
+            gap={2}
+            direction="column"
+            alignItems="center"
+            sx={defaultModelStyle}
+          >
             <Box
               sx={{
                 position: "absolute",
@@ -109,28 +132,6 @@ export default function ReportABugModal({ open, setOpen }) {
                 },
               }}
             >
-              <Typography fontSize={16}>Title</Typography>
-              <TextField
-                required
-                placeholder="Enter a title"
-                variant="outlined"
-                fullWidth
-                sx={modelTextField}
-                value={reportData.title}
-                onChange={(e) =>
-                  setReportData({ ...reportData, title: e.target.value })
-                }
-              />
-            </Stack>
-            <Stack
-              sx={{
-                width: {
-                  xs: "50vw",
-                  md: "30vw",
-                  lg: "25vw",
-                },
-              }}
-            >
               <Typography fontSize={16}>Description</Typography>
               <TextField
                 required
@@ -161,7 +162,12 @@ export default function ReportABugModal({ open, setOpen }) {
 
       {/* success screen */}
       <Modal open={start} onClose={handleEnd}>
-        <Stack gap={4} direction="column" alignItems="center" sx={modelStyle}>
+        <Stack
+          gap={4}
+          direction="column"
+          alignItems="center"
+          sx={defaultModelStyle}
+        >
           <Box
             sx={{
               position: "absolute",

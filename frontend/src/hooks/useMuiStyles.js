@@ -155,20 +155,22 @@ export default function useMuiStyles() {
     justifyContent: "center",
   };
   const defaultModelStyle = {
+    bgcolor: theme === "light" ? "background.paper" : "#20232a",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: "8px",
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
+    color: theme === "light" ? "#0d1b2a" : "background.paper",
+    border:
+      theme === "light" ? "1px solid #20232a" : "2px solid background.paper",
     width: {
       xs: 300,
-      sm: 350,
-      md: 300,
-      lg: 360,
+      sm: 400,
+      md: 470,
     },
-    bgcolor: "#f2f2f2",
-    boxShadow: 24,
-    p: 4,
-    borderRadius: "8px",
   };
   return {
     modelStyle,
