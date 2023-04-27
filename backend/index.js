@@ -1,7 +1,7 @@
 import express, { json } from "express";
 const app = express();
 import cors from "cors";
-const port = 4444;
+const port = 6565;
 import con from "./database.js"; // Connection object to establish connection with database
 
 import authentication from "./routes/authenticationRoutes.js";
@@ -20,8 +20,8 @@ con.connect((error) => {
 
 app.use(cors());
 app.get("/", (req, res) => {
-  res.send("Welcome to backend")
-})
+  res.send("Welcome to backend");
+});
 app.use(json({ limit: "20mb" })); // Setting limit of data upto 20 mb
 
 app.use("/authentication", authentication);
