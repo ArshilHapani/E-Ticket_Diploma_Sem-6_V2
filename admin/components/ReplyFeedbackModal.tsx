@@ -3,9 +3,12 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
 
-const ReplyFeedBackModal = ({ setOpen, feedbackID, user }: any) => {
-    console.log(feedbackID);
-
+type Props = {
+    setOpen: Function,
+    feedbackID?: string,
+    user?: string,
+};
+const ReplyFeedBackModal = ({ setOpen, feedbackID, user }: Props) => {
     const [feedback, setFeedback] = useState({
         f_id: feedbackID,
         reply: "",
@@ -16,18 +19,18 @@ const ReplyFeedBackModal = ({ setOpen, feedbackID, user }: any) => {
             toast.error("Please enter reply.");
             return;
         }
-        const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/feedback/createfeedback`, {
-            method: "POST",
+        const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/reply`, {
+            method: "PATCH",
             //@ts-ignore
             headers: {
                 "Content-Type": "application/json",
-                authToken: sessionStorage.getItem('feedback')?.toString(),
+                authToken: sessionStorage.getItem('admin')?.toString(),
             },
             body: JSON.stringify(feedback)
         });
         const response = await create.json();
         if (response.success) {
-            toast.success("Successfully created a new feedback");
+            toast.success(`Message ${feedback.reply.substring(0, 10)}... is send to ${user}`);
             setOpen(false);
         } else if (!response.success) {
             toast.error(response.msg);
@@ -70,7 +73,7 @@ const ReplyFeedBackModal = ({ setOpen, feedbackID, user }: any) => {
                         type="submit"
                         sx={modelAutocomplete.generateTicketButton}
                     >
-                        Reply {user}
+                        Send Message
                     </Button>
                 </Box>
             </form>

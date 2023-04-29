@@ -8,8 +8,7 @@ import Link from 'next/link';
 const HomePage = () => {
     return (
         <>
-
-            <Container className="mt-[13vh]">
+            <Container className="mt-[13vh] pb-10 ">
                 <Typography variant="h3" textAlign="center" className='text-slate-500' sx={{ margin: '1rem 0' }} >Services</Typography>
                 <Stack direction="row" alignItems="center" flexWrap="wrap" justifyContent="center" gap={4} >
                     <Link href="/ConductorTable">
@@ -62,10 +61,10 @@ const HomePage = () => {
                         </Box>
                     </Link>
                     <Link href="/FeedbackTable" >
-                        <Box className="Box w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#7209b7] rounded-lg">
+                        <Box className="Box w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#6f2dbd] rounded-lg">
                             <Stack className="w-full h-full Box-gradient p-[1px] rounded-[20px] shadow-Box  "  >
                                 <div className='relative top-3 left-3' >
-                                    <Typography className="text-white text-[1.8rem]" >Feedbacks from users</Typography>
+                                    <Typography className="text-white text-[1.8rem]" >Feedbacks</Typography>
                                 </div>
                             </Stack>
                         </Box>

@@ -41,7 +41,8 @@ export default function ReportABugModal({ open, setOpen }) {
           authToken: localStorage.getItem("user").toString(),
         },
         body: JSON.stringify({
-          feedback: `topic : ${reportData.topic} ,\n\n description: ${reportData.description}`,
+          topic: reportData.topic,
+          feedback: reportData.description,
         }),
       }
     );
@@ -120,6 +121,7 @@ export default function ReportABugModal({ open, setOpen }) {
                   <MenuItem value={"Report a bug"}>Report a bug</MenuItem>
                   <MenuItem value={"Suggest feature"}>Suggest feature</MenuItem>
                   <MenuItem value={"Complain fraud"}>Complain fraud</MenuItem>
+                  <MenuItem value={"Others"}>Other</MenuItem>
                 </Select>
               </FormControl>
             </Stack>

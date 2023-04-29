@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import {
-    Avatar,
     Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogTitle,
     IconButton,
+    MenuItem,
     Modal,
     Paper,
+    Select,
     Table,
     TableBody,
     TableCell,
@@ -18,34 +15,44 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { AiOutlineDelete } from 'react-icons/ai';
 import { VscReply } from 'react-icons/vsc';
 import { style } from '../styles';
-import { toast } from 'react-hot-toast';
 import ReplyFeedBackModal from '@/components/ReplyFeedbackModal';
+
 interface funcData {
-    a_id?: string,
-    f_id?: string,
-    f_status?: string,
-    f_time?: string,
-    feedback?: string,
-    p_id?: string,
-    r_time?: string,
-    reply?: string;
+    a_id: string | null,
+    f_id: string | null,
+    f_status: string,
+    f_time: string,
+    feedback: string,
+    p_id: string,
+    r_time: string | null,
+    reply: string | null;
+    p_uname: string;
 }
 
 const FeedBackTabel = () => {
-    const [confirmDialog, setConfirmDialog] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
-    const [conductorModal, setConductorModal] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
+    const [menuItems, setMenuItems] = useState<string>("Unsorted");
     useEffect(() => {
-        fetchConductors();
+        fetchSortedFeedback("");
     }, []);
-    async function fetchConductors() {
+    useEffect(() => {
+        if (menuItems === "pending") {
+            fetchSortedFeedback("pending");
+        }
+        else if (menuItems === "replied") {
+            fetchSortedFeedback("replied");
+        }
+        else if (menuItems === "unsorted") {
+            fetchSortedFeedback("");
+        }
+    }, [setMenuItems, menuItems]);
 
-        const conductors = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetchFeedback`, {
+    async function fetchSortedFeedback(type: string) {
+        const conductors = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetchFeedback/${type}`, {
             method: "GET",
             //@ts-ignore
             headers: {
@@ -54,12 +61,10 @@ const FeedBackTabel = () => {
             },
         });
         const res = await conductors.json();
-        console.log(res);
 
         if (res.success) {
             setDataSet(res.feedbacks);
         }
-
     }
     const student_rows = dataSet.map((data: any) => (
         createData(
@@ -71,11 +76,11 @@ const FeedBackTabel = () => {
             data.p_id,
             data.r_time,
             data.reply,
-
+            data.p_uname,
         )
     ));
 
-    function createData(a_id: string, f_id: string, f_status: string, f_time: string, feedback: string, p_id: string, r_time: string, reply: string): funcData {
+    function createData(a_id: string, f_id: string, f_status: string, f_time: string, feedback: string, p_id: string, r_time: string, reply: string, p_uname: string): funcData {
         return {
             a_id,
             f_id,
@@ -85,22 +90,9 @@ const FeedBackTabel = () => {
             p_id,
             r_time,
             reply,
+            p_uname,
         };
     }
-
-
-    const styleModal = {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: 400,
-        bgcolor: "#f2f2f2",
-        boxShadow: 24,
-        p: 4,
-        borderRadius: "8px",
-    };
-
 
     return (
         <>
@@ -109,6 +101,29 @@ const FeedBackTabel = () => {
                     <Typography variant="h4" className="text-slate-500">
                         User Feedbacks
                     </Typography>
+                    <Box className='flex  items-center gap-2' >
+                        <Typography sx={{ marginBottom: "0.1rem" }}>
+                            Short by
+                        </Typography>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={menuItems}
+                            sx={{ height: 40 }}
+                            displayEmpty={false}
+                            onChange={(e) =>
+                                setMenuItems(e.target.value)
+                            }
+                            defaultValue='unsorted'
+                        >
+                            <MenuItem value="" disabled>
+                                <em>Select sorting type</em>
+                            </MenuItem>
+                            <MenuItem value={"pending"}>Pending</MenuItem>
+                            <MenuItem value={"replied"}>Replied</MenuItem>
+                            <MenuItem value={"unsorted"}>Unsorted</MenuItem>
+                        </Select>
+                    </Box>
                 </div>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -116,28 +131,34 @@ const FeedBackTabel = () => {
                             <TableRow>
                                 <TableCell>Time</TableCell>
                                 <TableCell>Status</TableCell>
+                                <TableCell>username</TableCell>
                                 <TableCell>Feedback</TableCell>
+                                <TableCell>Reply At</TableCell>
                                 <TableCell>Reply Message</TableCell>
-                                <TableCell>Reply</TableCell>
+                                <TableCell>Reply to user</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {student_rows?.map((row: any, index: number) => (
+                            {student_rows?.map((row: funcData, index: number) => (
                                 <TableRow
-                                    key={row.f_id + row.p_id + row.r_time + row.f_time}
+                                    key={row?.f_id + row?.p_id + row.r_time + row.f_time}
                                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                                 >
                                     <TableCell>{row.f_time}</TableCell>
                                     <TableCell>{row.f_status}</TableCell>
+                                    <TableCell>{row.p_uname}</TableCell>
                                     <TableCell>
                                         {row.feedback}
+                                    </TableCell>
+                                    <TableCell>
+                                        {row.r_time === null ? "not replied" : row.r_time}
                                     </TableCell>
                                     <TableCell>
                                         {row.reply === null ? "not replied" : row.reply}
                                     </TableCell>
                                     <TableCell>
                                         <Tooltip
-                                            title={`Reply ${row.p_id}`}
+                                            title={`reply ${row.p_uname}`}
                                             arrow
                                             placement="right"
                                         >
@@ -164,7 +185,7 @@ const FeedBackTabel = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </div>
+            </div >
         </>
     );
 };
@@ -184,7 +205,7 @@ function ButtonAnnotation({ row, index, setOpen, open, indexMeasure }: any) {
         >
             <Box sx={style}>
                 {/*@ts-ignore */}
-                <ReplyFeedBackModal setOpen={setOpen} feedbackID={row.f_id} user={row.p_id} />
+                <ReplyFeedBackModal setOpen={setOpen} feedbackID={row.f_id} user={row.p_uname} />
             </Box>
         </Modal>
     );
