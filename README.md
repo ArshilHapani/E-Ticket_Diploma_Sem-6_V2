@@ -21,7 +21,7 @@ The BRTS E - ticket management system is a software application that allows user
 
 ## Documentation
 
-[In repo presentation section](https://github.com/ArshilHapani/E-Ticket_Diploma_Sem-6/tree/master/Presentation)
+[In repo presentation section](https://github.com/ArshilHapani/E-Ticket_Diploma_Sem-6_V2/tree/master/docs)
 
 
 ## Feedback
