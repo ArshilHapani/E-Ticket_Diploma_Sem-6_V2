@@ -15,8 +15,10 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import Spinner from "@/components/Spinner";
 
 const SignIn = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [user, setUser] = useState({
     uname: "",
@@ -28,6 +30,7 @@ const SignIn = () => {
       toast.error("Please enter your username and password");
       return;
     }
+    setLoading(true);
     const login = await fetch(`${process.env.NEXT_PUBLIC_HOST}/authentication/login`, {
       method: 'POST',
       headers: {
@@ -47,7 +50,7 @@ const SignIn = () => {
     else if (!response.success) {
       toast.error(response.msg);
     }
-
+    setLoading(false);
   };
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -58,6 +61,8 @@ const SignIn = () => {
   };
   return (
     <div className="form-root">
+      {loading && <Spinner message={`Verifying ${user?.uname} `} />}
+
       <Stack
         sx={{
           width: {

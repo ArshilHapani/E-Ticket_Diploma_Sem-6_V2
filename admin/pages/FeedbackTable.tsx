@@ -35,7 +35,7 @@ const FeedBackTabel = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
-    const [menuItems, setMenuItems] = useState<string>("Unsorted");
+    const [menuItems, setMenuItems] = useState<string>("All");
     useEffect(() => {
         fetchSortedFeedback("");
     }, []);

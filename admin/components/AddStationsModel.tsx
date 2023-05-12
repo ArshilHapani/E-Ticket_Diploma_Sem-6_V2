@@ -2,9 +2,12 @@ import React, { SyntheticEvent, useState } from 'react';
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
+import Spinner from './Spinner';
 
 
 const AddStationsModel = ({ setOpen }: any) => {
+    const [loading, setLoading] = useState(false);
+
     const [stations, setStations] = useState({
         id: 0,
         stName: "",
@@ -18,6 +21,7 @@ const AddStationsModel = ({ setOpen }: any) => {
             return;
         }
         else {
+            setLoading(true);
             const store = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/addStation`, {
                 method: 'POST',
                 //@ts-ignore
@@ -45,10 +49,13 @@ const AddStationsModel = ({ setOpen }: any) => {
             else {
                 toast.error("Failed to add station\n" + response.msg);
             }
+            setLoading(false);
         }
     };
     return (
         <div>
+            {loading && <Spinner message={`Adding station ${stations?.stName}`} />}
+
             <form onSubmit={handleSubmit}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Add Station

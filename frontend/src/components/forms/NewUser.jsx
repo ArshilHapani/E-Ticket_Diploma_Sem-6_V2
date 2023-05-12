@@ -13,7 +13,7 @@ import {
   Avatar,
   // Avatar,
 } from "@mui/material";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useStateContext } from "../../context/stateContext";
 import isUserNameValid from "../../functions/userNameValidate";
@@ -23,6 +23,8 @@ import calculateAge from "../../functions/agrCalculate";
 
 const NewUser = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
   const { showSnackBar, setLoader } = useStateContext();
   const [user, setUser] = useState({
     uname: "",
@@ -30,7 +32,7 @@ const NewUser = () => {
     name: "",
     dob: "",
     no: "",
-    email: "",
+    email: location.state?.email ?? location.state?.email,
   });
   if (
     sessionStorage.getItem("sessionId") === undefined ||

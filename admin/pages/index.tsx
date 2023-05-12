@@ -14,7 +14,6 @@ export default function Home() {
         <link rel="icon" type="image/svg" href="/svg/logo-black.svg" />
       </Head>
       <SignIn />
-
       {router.pathname === '/HomePage' && <HomePage />}
     </>
   );

@@ -11,6 +11,7 @@ import { Stack } from "@mui/system";
 import { useState, SyntheticEvent } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Spinner from "./Spinner";
 
 const defaultModelStyle = {
   position: "absolute",
@@ -37,6 +38,7 @@ type responseType = {
   msg?: string;
 };
 const UpdatePassword = ({ uname, closingModal }: props) => {
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [password, setPassword] = useState({ pwd: "", cPwd: "" });
@@ -67,6 +69,7 @@ const UpdatePassword = ({ uname, closingModal }: props) => {
 
       return;
     } else {
+      setLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_HOST}/authentication/changePwd`,
         {
@@ -84,16 +87,21 @@ const UpdatePassword = ({ uname, closingModal }: props) => {
       if (response.success) {
         toast.success("Password updated successfully");
         closingModal(false);
+        setLoading(false);
+
         return;
       } else if (!response.success) {
         //@ts-ignore
         toast.error(response.msg?.toString());
+        setLoading(false);
         return;
       }
     }
   };
   return (
     <form onSubmit={handleSubmit}>
+      {loading && <Spinner message="Updating password" />}
+
       <Stack sx={defaultModelStyle} gap={2} direction="column">
         <Typography variant="h5" textAlign="center">
           Create a new password

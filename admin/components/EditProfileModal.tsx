@@ -2,6 +2,7 @@ import { Button, Stack, TextField } from "@mui/material";
 import { useState, SyntheticEvent } from 'react';
 import { style, modelTextField } from '../styles';
 import { toast } from "react-hot-toast";
+import Spinner from "./Spinner";
 
 type Props = {
     initialValues: {
@@ -18,6 +19,8 @@ type Props = {
 };
 
 const EditProfileModal = ({ initialValues, closeModal }: Props) => {
+    const [loading, setLoading] = useState(false);
+
     const [updateData, setUpdateData] = useState({
         name: initialValues.a_name,
         email: initialValues.a_email,
@@ -35,6 +38,7 @@ const EditProfileModal = ({ initialValues, closeModal }: Props) => {
             toast.error("The length of mobile number must be equal to 10");
             return;
         }
+        setLoading(true);
         const update = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/update`, {
             method: 'PATCH',
             //@ts-ignore
@@ -58,9 +62,12 @@ const EditProfileModal = ({ initialValues, closeModal }: Props) => {
         } else if (!response.success) {
             toast.error(response.msg);
         }
+        setLoading(false);
     }
     return (
         <form onSubmit={handleSubmit} >
+            {loading && <Spinner message={`Editing profile ${updateData.name}`} />}
+
             <Stack sx={style} gap={2} direction="column">
                 <TextField
                     sx={modelTextField}

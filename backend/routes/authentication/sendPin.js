@@ -3,31 +3,50 @@
 import { Router } from "express";
 const router = Router();
 import con from "../../database.js";
-import { createTransport } from 'nodemailer';
-import dotenv from 'dotenv';
+import { createTransport } from "nodemailer";
+import dotenv from "dotenv";
 dotenv.config();
 
 const email_pass = process.env.EMAIL_PASS;
 const email_user = process.env.EMAIL_USER;
 
 const transporter = createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
     user: email_user,
-    pass: email_pass
-  }
+    pass: email_pass,
+  },
 });
 
-router.post('/verifyEmail', (req, res) => {
+router.post("/verifyEmail", (req, res) => {
   const { email } = req.body;
   let success = false;
-  const pin = Math.floor((Math.random() * 1000000) + 1);
+  const pin = Math.floor(Math.random() * 1000000 + 1);
 
   const mailOptions = {
     from: email_user,
     to: email,
-    subject: 'Your Code',
-    text: pin.toString()
+    subject: "OTP For E-Ticket",
+    html: `
+    <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+      <div style="margin:50px auto;width:70%;padding:20px 0">
+        <div style="border-bottom:1px solid #eee">
+          <a href="https://e-ticket-user.netlify.app" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">E-Ticket</a>
+        </div>
+        <p style="font-size:1.1em">Hi,Welcome to E-Ticket</p>
+        <p>Thank you for using E-Ticket. Use the following OTP to complete your sign up authentication procedures.</p>
+        <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${pin.toString()}</h2>
+        <p style="font-size:0.9em;">Regards,<br />E-Ticket</p>
+        <hr style="border:none;border-top:1px solid #eee" />
+        <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+          <p>E-Ticket Inc</p>
+          <p>Surat</p>
+          <p>Gujarat</p>
+        </div>
+      </div>
+    </div>
+    
+    `,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -38,22 +57,30 @@ router.post('/verifyEmail', (req, res) => {
       let emailadd = email;
       success = true;
 
-      let i, str = "";
-      for (i = 0; emailadd.slice(2, emailadd.indexOf('@') - 4).length > i; i++) {
-        str += '*';
+      let i,
+        str = "";
+      for (
+        i = 0;
+        emailadd.slice(2, emailadd.indexOf("@") - 4).length > i;
+        i++
+      ) {
+        str += "*";
       }
 
-      emailadd = emailadd.replace(emailadd.slice(2, emailadd.indexOf('@') - 4), str);
+      emailadd = emailadd.replace(
+        emailadd.slice(2, emailadd.indexOf("@") - 4),
+        str
+      );
 
       res.json({ success, pin: pin, msg: `OTP sent to ${emailadd}` });
     }
   });
 });
 
-router.post('/changePwd', (req, res) => {
+router.post("/changePwd", (req, res) => {
   const { uname } = req.body;
   let success = false;
-  const pin = Math.floor((Math.random() * 1000000) + 1);
+  const pin = Math.floor(Math.random() * 1000000 + 1);
 
   const getUser = `SELECT id FROM login WHERE uname='${uname}';`;
 
@@ -62,7 +89,6 @@ router.post('/changePwd', (req, res) => {
       console.log(err.message);
       res.json({ success });
     } else if (qres.length > 0) {
-
       const checkPassenger = `SELECT p_email FROM passenger WHERE p_id='${qres[0].id}';`;
       const checkConductor = `SELECT c_email FROM conductor WHERE c_id='${qres[0].id}';`;
       const checkAdmin = `SELECT a_email FROM admin WHERE a_id='${qres[0].id}';`;
@@ -98,35 +124,63 @@ router.post('/changePwd', (req, res) => {
         });
       });
 
-      user.then((user_email) => {
-        const mailOptions = {
-          from: email_user,
-          to: user_email,
-          subject: 'Your Code',
-          text: pin.toString()
-        };
+      user
+        .then((user_email) => {
+          const mailOptions = {
+            from: email_user,
+            to: user_email,
+            subject: "OTP For E-Ticket",
+            html: `
+            <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+              <div style="margin:50px auto;width:70%;padding:20px 0">
+                <div style="border-bottom:1px solid #eee">
+                  <a href="https://e-ticket-user.netlify.app" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">E-Ticket</a>
+                </div>
+                <p style="font-size:1.1em">Hi,</p>
+                <p>Thank you for using E-Ticket. Use the following OTP to complete your reset password authentication procedures.</p>
+                <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${pin.toString()}</h2>
+                <p style="font-size:0.9em;">Regards,<br />E-Ticket</p>
+                <hr style="border:none;border-top:1px solid #eee" />
+                <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                  <p>E-Ticket Inc</p>
+                  <p>Surat</p>
+                  <p>Gujarat</p>
+                </div>
+              </div>
+            </div>
+            `,
+          };
 
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            console.log(error);
-            res.json({ success });
-          } else if (info) {
-            success = true;
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log(error);
+              res.json({ success });
+            } else if (info) {
+              success = true;
 
-            let i, str = "";
-            for (i = 0; user_email.slice(2, user_email.indexOf('@') - 4).length > i; i++) {
-              str += '*';
+              let i,
+                str = "";
+              for (
+                i = 0;
+                user_email.slice(2, user_email.indexOf("@") - 4).length > i;
+                i++
+              ) {
+                str += "*";
+              }
+
+              user_email = user_email.replace(
+                user_email.slice(2, user_email.indexOf("@") - 4),
+                str
+              );
+              res.json({ success, pin: pin, msg: `OTP sent to ${user_email}` });
             }
-
-            user_email = user_email.replace(user_email.slice(2, user_email.indexOf('@') - 4), str);
-            res.json({ success, pin: pin, msg: `OTP sent to ${user_email}` });
-          }
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      }).catch((err) => {
-        console.log(err);
-      });
     } else {
-      res.json({ success, msg: "User does not exist" })
+      res.json({ success, msg: "User does not exist" });
     }
   });
 });

@@ -4,8 +4,11 @@ import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
 import isUserNameValid from '@/functions/userNameValidate';
 import validateEmail from '@/functions/validateEmail';
+import Spinner from './Spinner';
 
 const CreateConductorModel = ({ setOpen }: any) => {
+    const [loading, setLoading] = useState(false);
+
     const [conductor, setConductor] = useState({
         uname: "",
         pwd: "",
@@ -27,6 +30,7 @@ const CreateConductorModel = ({ setOpen }: any) => {
             toast.error("please enter valid email format");
             return;
         }
+        setLoading(true);
         const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/createConductor`, {
             method: "POST",
             //@ts-ignore
@@ -49,9 +53,12 @@ const CreateConductorModel = ({ setOpen }: any) => {
         } else if (!response.success) {
             toast.error(response.msg);
         }
+        setLoading(false);
     };
     return (
         <div>
+            {loading && <Spinner message={`Creating conductor ${conductor?.name}`} />}
+
             <form onSubmit={handleSubmit} >
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Create Conductor

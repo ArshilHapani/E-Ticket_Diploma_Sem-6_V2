@@ -5,9 +5,10 @@ import { functionEditUserModelProps } from '@/interfaces';
 import { toast } from 'react-hot-toast';
 import isUserNameValid from '@/functions/userNameValidate';
 import validateEmail from '@/functions/validateEmail';
+import Spinner from './Spinner';
 
 const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
-
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({
         ...initialValues
     });
@@ -26,6 +27,7 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
             toast.error("please enter valid email format");
             return;
         }
+        setLoading(true);
         const store: any = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/passenger/update`, {
             method: "PATCH",
             //@ts-ignore
@@ -54,10 +56,13 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
         else {
             toast.error("Something went wrong");
         }
+        setLoading(false);
     };
     return (
 
         <form onSubmit={handleSubmit} >
+            {loading && <Spinner message={`Editing user ${user?.name}`} />}
+
             <Typography id="modal-modal-title" variant="h6" component="h2">
                 Manage User
             </Typography>

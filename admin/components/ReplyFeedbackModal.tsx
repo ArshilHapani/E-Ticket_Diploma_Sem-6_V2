@@ -2,6 +2,7 @@ import React, { SyntheticEvent, useState } from 'react';
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
+import Spinner from './Spinner';
 
 type Props = {
     setOpen: Function,
@@ -13,12 +14,15 @@ const ReplyFeedBackModal = ({ setOpen, feedbackID, user }: Props) => {
         f_id: feedbackID,
         reply: "",
     });
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         if (feedback.reply === "") {
             toast.error("Please enter reply.");
             return;
         }
+        setLoading(true);
         const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/reply`, {
             method: "PATCH",
             //@ts-ignore
@@ -35,9 +39,11 @@ const ReplyFeedBackModal = ({ setOpen, feedbackID, user }: Props) => {
         } else if (!response.success) {
             toast.error(response.msg);
         }
+        setLoading(false);
     };
     return (
         <div>
+            {loading && <Spinner message={`Sending reply to ${user}`} />}
             <form onSubmit={handleSubmit} >
                 <Typography id="modal-modal-title" align="center" variant="h6" component="h2">
                     Reply   <b> {user}</b>

@@ -4,8 +4,11 @@ import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
 import isUserNameValid from '@/functions/userNameValidate';
 import validateEmail from '@/functions/validateEmail';
+import Spinner from './Spinner';
 
 const EditConductor = ({ setOpen, initialValues }: any) => {
+    const [loading, setLoading] = useState(false);
+
     const [conductor, setConductor] = useState({
         ...initialValues
     });
@@ -24,6 +27,7 @@ const EditConductor = ({ setOpen, initialValues }: any) => {
             toast.error("please enter valid email format");
             return;
         }
+        setLoading(true);
         const store: any = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/updateConductor`, {
             method: "PATCH",
             //@ts-ignore
@@ -49,9 +53,12 @@ const EditConductor = ({ setOpen, initialValues }: any) => {
         else {
             toast.error("Something went wrong");
         }
+        setLoading(false);
     };
     return (
         <div>
+            {loading && <Spinner message={`Editing conductor ${conductor?.name}`} />}
+
             <form onSubmit={handleSubmit} >
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Update Conductor

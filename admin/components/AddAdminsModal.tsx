@@ -4,8 +4,10 @@ import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
 import isUserNameValid from '@/functions/userNameValidate';
 import validateEmail from '@/functions/validateEmail';
+import Spinner from './Spinner';
 
 const AddAdmins = ({ setOpen }: any) => {
+    const [loading, setLoading] = useState(false);
     const [admin, setAdmin] = useState({
         uname: "",
         pwd: "",
@@ -28,6 +30,7 @@ const AddAdmins = ({ setOpen }: any) => {
             toast.error("please enter valid email format");
             return;
         }
+        setLoading(true);
         const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/createAdmin`, {
             method: "POST",
             //@ts-ignore
@@ -51,9 +54,12 @@ const AddAdmins = ({ setOpen }: any) => {
         } else if (!response.success) {
             toast.error(response.msg);
         }
+        setLoading(false);
     };
     return (
         <div>
+            {loading && <Spinner message={`Adding admin ${admin.name}`} />}
+
             <form onSubmit={handleSubmit} >
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Create admin

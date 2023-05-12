@@ -4,8 +4,11 @@ import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
 import isUserNameValid from '@/functions/userNameValidate';
 import validateEmail from '@/functions/validateEmail';
+import Spinner from './Spinner';
 
 const EditAdmin = ({ setOpen, initialValues }: any) => {
+    const [loading, setLoading] = useState(false);
+
     const [admin, setAdmin] = useState({
         ...initialValues
     });
@@ -28,6 +31,7 @@ const EditAdmin = ({ setOpen, initialValues }: any) => {
             toast.error("The length of mobile number must be equal to 10");
             return;
         }
+        setLoading(true);
         const store: any = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/updateAdmin`, {
             method: "PATCH",
             //@ts-ignore
@@ -55,9 +59,12 @@ const EditAdmin = ({ setOpen, initialValues }: any) => {
         else {
             toast.error("Something went wrong");
         }
+        setLoading(false);
     };
     return (
         <div>
+            {loading && <Spinner message={`Editing admin ${admin?.name}`} />}
+
             <form onSubmit={handleSubmit} >
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Update Admin

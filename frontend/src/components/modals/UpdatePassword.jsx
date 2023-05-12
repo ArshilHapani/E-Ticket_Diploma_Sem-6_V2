@@ -15,7 +15,7 @@ import { useStateContext } from "../../context/stateContext";
 
 const UpdatePassword = ({ uname, closingModal }) => {
   const { showSnackBar, setLoader } = useStateContext();
-  const { defaultModelStyle } = useMuiStyles();
+  const { lightstyle } = useMuiStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [password, setPassword] = useState({ pwd: "", cPwd: "" });
@@ -76,7 +76,7 @@ const UpdatePassword = ({ uname, closingModal }) => {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <Stack sx={defaultModelStyle} gap={2} direction="column">
+      <Stack sx={lightstyle} gap={2} direction="column">
         <Typography variant="h5" textAlign="center">
           Create a new password
         </Typography>

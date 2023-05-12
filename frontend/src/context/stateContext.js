@@ -36,13 +36,13 @@ export const ContextProvider = ({ children }) => {
     message: "",
     type: "info",
   });
-  useEffect(() => {
-    setTimeout(() => {
-      if (newUser === undefined && location.pathname === "/") {
-        navigate("/signIn");
-      }
-    }, 3000);
-  }, [newUser, location.pathname, navigate]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (newUser === undefined && location.pathname === "/") {
+  //       navigate("/signIn");
+  //     }
+  //   }, 3000);
+  // }, [newUser, location.pathname, navigate]);
 
   useEffect(() => {
     if (

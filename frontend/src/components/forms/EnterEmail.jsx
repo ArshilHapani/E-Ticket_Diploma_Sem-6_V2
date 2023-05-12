@@ -60,7 +60,7 @@ const ForgotPassword = () => {
         "success"
       );
       sessionStorage.setItem("sessionId", generateSess());
-      navigate("/signUp");
+      navigate("/signUp", { state: { test: email } });
     } else if (localOtp === "") {
       showSnackBar("Please enter OTP", "error");
       return;

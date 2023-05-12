@@ -172,6 +172,24 @@ export default function useMuiStyles() {
       md: 470,
     },
   };
+
+  const lightstyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: {
+      xs: 300,
+      sm: 400,
+      md: 470,
+    },
+    bgcolor: "white",
+    boxShadow: 24,
+    borderRadius: 2,
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
   return {
     modelStyle,
     modelTextField,
@@ -181,5 +199,6 @@ export default function useMuiStyles() {
     profile_divider_styles,
     textTheme,
     defaultModelStyle,
+    lightstyle,
   };
 }

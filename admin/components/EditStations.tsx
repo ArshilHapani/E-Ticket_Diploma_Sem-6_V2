@@ -2,8 +2,10 @@ import React, { SyntheticEvent, useState } from 'react';
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { profile_edit_textfield, modelAutocomplete } from '../styles';
 import { toast } from 'react-hot-toast';
+import Spinner from './Spinner';
 
 const EditStations = ({ setOpen, initialValues }: any) => {
+    const [loading, setLoading] = useState(false);
 
     const [stations, setStations] = useState({
         ...initialValues
@@ -15,6 +17,7 @@ const EditStations = ({ setOpen, initialValues }: any) => {
             toast.error("Please enter all the required fields");
             return;
         }
+        setLoading(true);
         const store: any = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/updateStation`, {
             method: "PATCH",
             //@ts-ignore
@@ -42,10 +45,12 @@ const EditStations = ({ setOpen, initialValues }: any) => {
         else {
             toast.error("Something went wrong");
         }
-
+        setLoading(false);
     };
     return (
         <div>
+            {loading && <Spinner message={`Editing station ${stations?.name}`} />}
+
             <form onSubmit={handleSubmit}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Update stations <b>{stations.name}</b>

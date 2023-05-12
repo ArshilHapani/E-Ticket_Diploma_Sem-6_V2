@@ -8,17 +8,21 @@ import { IconButton, Tooltip } from '@mui/material';
 import { AiOutlineHome } from 'react-icons/ai';
 import { BiLogOutCircle } from 'react-icons/bi';
 import Navbar from '@/components/Navbar';
+import Spinner from '@/components/Spinner';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [progress, setProgress] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   useEffect(() => {
     router.events.on('routeChangeComplete', () => {
       setProgress(100);
+      setLoading(false);
     });
     router.events.on('routeChangeStart', () => {
       setProgress(30);
+      setLoading(true);
     });
     if (sessionStorage.getItem('admin') === null || sessionStorage.getItem('admin') === undefined) {
       router.push('/');
@@ -26,6 +30,8 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <>
+      {loading && <Spinner message="Loading..." />}
+
       <LoadingBar
         color='#198acc'
         style={{ height: '4px' }}

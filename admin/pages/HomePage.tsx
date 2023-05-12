@@ -61,10 +61,19 @@ const HomePage = () => {
                         </Box>
                     </Link>
                     <Link href="/FeedbackTable" >
-                        <Box className="Box w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#6f2dbd] rounded-lg">
+                        <Box className="Box w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#7b2cbf] rounded-lg">
                             <Stack className="w-full h-full Box-gradient p-[1px] rounded-[20px] shadow-Box  "  >
                                 <div className='relative top-3 left-3' >
                                     <Typography className="text-white text-[1.8rem]" >Feedbacks</Typography>
+                                </div>
+                            </Stack>
+                        </Box>
+                    </Link>
+                    <Link href="/BroadCastEmail" >
+                        <Box className="Box w-[350px] transition-shadow hover:shadow-lg  h-[150px] bg-[#778da9] rounded-lg">
+                            <Stack className="w-full h-full Box-gradient p-[1px] rounded-[20px] shadow-Box  "  >
+                                <div className='relative top-3 left-3' >
+                                    <Typography className="text-white text-[1.8rem]" >Broadcast</Typography>
                                 </div>
                             </Stack>
                         </Box>

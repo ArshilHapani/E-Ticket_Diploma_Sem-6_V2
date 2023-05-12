@@ -1,14 +1,19 @@
+// adminRoutes.js is used to do routing of  all endpoints used by admin
+
 import { Router } from "express";
 const router = Router();
 
-import fetchuser from './middleware/fetchUser.js';
-import checkAdmin from './middleware/checkAdmin.js';
+// Import middlewares
+import fetchuser from "./middleware/fetchUser.js";
+import checkAdmin from "./middleware/checkAdmin.js";
 
-router.use(fetchuser,checkAdmin);
+// Middleware to authenticate the user and check if the user is admin or not
+router.use(fetchuser, checkAdmin);
 
 import fetchAdmin from "./admin/fetchAdmin.js";
 import update from "./admin/updateAdmin.js";
 import updateImage from "./admin/updateImage.js";
+import sendEmails from "./admin/sendEmails.js";
 
 import createAdmin from "./admin/forAdmins/createAdmin.js";
 import updateAdmin from "./admin/forAdmins/updateAdmin.js";
@@ -43,21 +48,22 @@ import deletePassenger from "./admin/forPassengers/deletePassenger.js";
 import fetchConductor from "./admin/forConductors/fetchConductor.js";
 import fetchPaymentC from "./admin/forConductors/fetchPayment.js";
 
-router.use('/fetch', fetchAdmin);
-router.use('/update', update);
-router.use('/updateImage', updateImage);
+router.use("/fetch", fetchAdmin);
+router.use("/update", update);
+router.use("/updateImage", updateImage);
+router.use("/sendEmails", sendEmails);
 
-router.use('/addStation', addStation);
-router.use('/updateStation', updateStation);
-router.use('/deleteStation', deleteStation);
+router.use("/addStation", addStation);
+router.use("/updateStation", updateStation);
+router.use("/deleteStation", deleteStation);
 
-router.use('/createAdmin', createAdmin);
-router.use('/updateAdmin', updateAdmin);
-router.use('/deleteAdmin', deleteAdmin);
+router.use("/createAdmin", createAdmin);
+router.use("/updateAdmin", updateAdmin);
+router.use("/deleteAdmin", deleteAdmin);
 
-router.use('/createConductor', createConductor);
-router.use('/updateConductor', updateConductor);
-router.use('/deleteConductor', deleteConductor);
+router.use("/createConductor", createConductor);
+router.use("/updateConductor", updateConductor);
+router.use("/deleteConductor", deleteConductor);
 
 router.use("/fetchAllAdmins", fetchAllAdmins);
 router.use("/fetchAllPassengers", fetchAllPassengers);
@@ -68,14 +74,14 @@ router.use("/fetchAllStations", fetchAllStations);
 router.use("/fetchFeedback", fetchFeedback);
 router.use("/reply", replyFeedback);
 
-router.use('/dailyPayment', dailyPayment);
-router.use('/dailyTicket', dailyTicket);
+router.use("/dailyPayment", dailyPayment);
+router.use("/dailyTicket", dailyTicket);
 
 router.use("/passenger/fetch", fetchPassenger);
 router.use("/passenger/fetchPayment", fetchPaymentP);
 router.use("/passenger/fetchTicket", fetchTicket);
-router.use("/passenger/update",updatePassenger);
-router.use("/passenger/delete",deletePassenger);
+router.use("/passenger/update", updatePassenger);
+router.use("/passenger/delete", deletePassenger);
 
 router.use("/conductor/fetch", fetchConductor);
 router.use("/conductor/fetchPayment", fetchPaymentC);
