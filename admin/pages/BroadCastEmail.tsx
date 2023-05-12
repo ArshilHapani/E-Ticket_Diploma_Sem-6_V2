@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 import { Button, Typography } from '@mui/material';
 import { toast } from 'react-hot-toast';
 import Spinner from '@/components/Spinner';
+import dynamic from 'next/dynamic';
 
 
 const BroadCastEmail = () => {
     const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
-
+    const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
     const handleChange = (value: string) => {
         setText(value);
     };

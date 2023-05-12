@@ -114,7 +114,7 @@ const StatisTics = () => {
             'admins'
         ],
         datasets: [{
-            label: 'My First Dataset',
+            label: 'User counts',
             data: [counts.passengerCnt, counts.conductorCnt, counts.adminCnt],
             backgroundColor: [
                 'rgb(255, 99, 132)',
