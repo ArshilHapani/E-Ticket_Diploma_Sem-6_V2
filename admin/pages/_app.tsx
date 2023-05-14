@@ -41,6 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Toaster
         position="bottom-left"
         reverseOrder={false}
+        toastOptions={{ duration: 4000 }}
       />
       {
         router.pathname !== "/" && router.pathname !== "/ForgetPassword" &&

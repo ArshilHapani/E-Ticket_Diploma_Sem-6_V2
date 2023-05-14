@@ -121,7 +121,7 @@ const FeedBackTabel = () => {
                             </MenuItem>
                             <MenuItem value={"pending"}>Pending</MenuItem>
                             <MenuItem value={"replied"}>Replied</MenuItem>
-                            <MenuItem value={"unsorted"}>Unsorted</MenuItem>
+                            <MenuItem value={"unsorted"}>All</MenuItem>
                         </Select>
                     </Box>
                 </div>

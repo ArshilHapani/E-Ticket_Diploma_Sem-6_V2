@@ -39,9 +39,15 @@ interface functionEditUserModelProps {
   };
 }
 
+interface FileDownload {
+  filename: string;
+  url: string;
+}
+
 export type {
   userTableButtonAnnotationTypes,
   userTableFuncData,
   userTableDataTypes,
   functionEditUserModelProps,
+  FileDownload,
 };

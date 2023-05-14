@@ -48,7 +48,6 @@ const EditUser = ({ setOpen, initialValues }: functionEditUserModelProps) => {
 
         if (res.success) {
             toast.success("user edited successfully");
-            location.reload();
             setOpen(false);
         } else if (!res.success) {
             toast.error(res.msg);

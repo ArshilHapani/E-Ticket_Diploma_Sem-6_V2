@@ -24,7 +24,6 @@ import calculateAge from "../../functions/agrCalculate";
 const NewUser = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
   const { showSnackBar, setLoader } = useStateContext();
   const [user, setUser] = useState({
     uname: "",

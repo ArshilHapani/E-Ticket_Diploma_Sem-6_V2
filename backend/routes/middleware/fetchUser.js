@@ -13,7 +13,9 @@ const fetchUser = (req, res, next) => {
 
   // Checks token exists or not
   if (!token) {
-    res.status(401).send({ error: "Authentication did not happen" });
+    res
+      .status(401)
+      .send({ error: "Failed to authenticate user, please login again" });
   } else {
     try {
       // Verifying and Getting the object that contains id of user from the token
@@ -25,7 +27,9 @@ const fetchUser = (req, res, next) => {
       // Calling next function
       next();
     } catch (error) {
-      res.status(401).send({ error: "Authentication did not happen" });
+      res
+        .status(401)
+        .send({ error: "Failed to authenticate user, please login again" });
     }
   }
 };

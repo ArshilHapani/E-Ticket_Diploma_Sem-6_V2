@@ -13,6 +13,7 @@ import Link from "next/link";
 import isUserNameValid from "../functions/userNameValidate";
 import UpdatePassword from "@/components/UpdatePasswordModal";
 import { toast } from "react-hot-toast";
+import Spinner from "@/components/Spinner";
 
 const ForgotPassword = () => {
   const [textDisable, setTextDisable] = useState<boolean>(true);
@@ -20,6 +21,7 @@ const ForgotPassword = () => {
   const [userName, setUserName] = useState<string>("");
   const [otp, setOtp] = useState(0);
   const [initialOtp, setInitialOtp] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
   const handleClick = async () => {
     if (userName === "") {
       toast.error("please enter your username");
@@ -29,7 +31,7 @@ const ForgotPassword = () => {
       toast.error("Enter a valid username");
       return;
     }
-
+    setLoading(true);
     const otps = await fetch(
       `${process.env.NEXT_PUBLIC_HOST}/authentication/sendPin/changePwd`,
       {
@@ -51,6 +53,7 @@ const ForgotPassword = () => {
       toast.error(response.msg);
       setTextDisable(false);
     }
+    setLoading(false);
   };
 
   const handleOTPClick = () => {
@@ -67,6 +70,7 @@ const ForgotPassword = () => {
   };
   return (
     <>
+      {loading && <Spinner message={`Sending mail to ${userName}`} />}
       <div className="form-root">
         <Stack
           sx={{
@@ -161,7 +165,7 @@ const ForgotPassword = () => {
               direction="row"
             >
               <Link
-                href="/SignIn"
+                href="/"
                 style={{ textAlign: "center" }}
                 className="link-styles-anchor-tags"
               >

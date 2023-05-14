@@ -18,11 +18,14 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineBulb, AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { style } from '../styles';
 import { toast } from 'react-hot-toast';
 import EditAdmin from '@/components/EditAdminModal';
 import AddAdmins from '@/components/AddAdminsModal';
+import Spinner from '@/components/Spinner';
+import { SiMicrosoftexcel } from 'react-icons/si';
+import { handleDownloadAdminSampleExcel, readAdminExcel } from '@/functions/readAndUploadExcel';
 interface funcData {
     img: string,
     id: string,
@@ -36,6 +39,7 @@ interface funcData {
 
 const AdminTable = () => {
     const [confirmDialog, setConfirmDialog] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
@@ -44,7 +48,7 @@ const AdminTable = () => {
         fetchAdmins();
     }, []);
     async function fetchAdmins() {
-
+        setLoading(true);
         const admins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetchAllAdmins`, {
             method: "GET",
             //@ts-ignore
@@ -57,7 +61,7 @@ const AdminTable = () => {
         if (res.success) {
             setDataSet(res.admins);
         }
-
+        setLoading(false);
     }
     const student_rows = dataSet.map((data: any) => (
         createData(
@@ -94,21 +98,44 @@ const AdminTable = () => {
 
     return (
         <>
+            {loading && <Spinner message="Updating..." />}
             <div className="mt-[16vh] px-5 p-4">
                 <div className="flex justify-between items-center my-5 ">
                     <Typography variant="h4" className="text-slate-500">
                         Manage Admins
                     </Typography>
-                    <Button variant="outlined" onClick={() => setAdminModal(true)} >Add Admin</Button>
-                    <Modal
-                        open={adminModal}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={styleModal}>
-                            <AddAdmins setOpen={setAdminModal} />
-                        </Box>
-                    </Modal>
+                    <div className="flex gap-4">
+                        <Button variant="outlined" onClick={() => setAdminModal(true)} >Add Admin</Button>
+                        <Modal
+                            open={adminModal}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                        >
+                            <Box sx={styleModal}>
+                                <AddAdmins setOpen={setAdminModal} />
+                            </Box>
+                        </Modal>
+                        <Button
+                            variant="outlined"
+                            component="label"
+                            endIcon={<SiMicrosoftexcel />}
+                            sx={{
+                                width: "180px",
+                            }}
+                        >
+                            Upload excel
+                            <input
+                                hidden
+                                accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                type="file"
+                                onChange={(e) => readAdminExcel(e, setLoading)} />
+                        </Button>
+                        <Tooltip title="Download sample excel file" placement="bottom" >
+                            <IconButton color="success" onClick={handleDownloadAdminSampleExcel} >
+                                <AiOutlineBulb />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                 </div>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -135,8 +162,7 @@ const AdminTable = () => {
                                     <TableCell component="th" scope="row">
                                         <Avatar
                                             src={
-                                                row?.img !== null &&
-                                                typeof row?.img === "string" &&
+                                                row?.img ??
                                                 row?.img
                                             }
                                             alt={row.name}

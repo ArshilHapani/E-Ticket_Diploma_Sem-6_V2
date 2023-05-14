@@ -168,7 +168,10 @@ const UserTable = () => {
                                         >
                                             <IconButton
                                                 color="error"
-                                                onClick={() => setDeleteModal(true)}
+                                                onClick={() => {
+                                                    setDeleteModal(true);
+                                                    setIndexMeasure(index);
+                                                }}
                                             >
                                                 <AiOutlineDelete />
                                             </IconButton>
@@ -217,11 +220,10 @@ function ButtonAnnotation({
 }
 
 function OpenDialogModal({ open, setOpen, uname, index, indexMeasure }: any) {
-    console.log(uname);
 
     async function handleDelete() {
         const deleteConductor = await fetch(
-            `${process.env.NEXT_PUBLIC_HOST}/passenger/delete`,
+            `${process.env.NEXT_PUBLIC_HOST}/admin/deletePassenger`,
             {
                 method: "DELETE",
                 //@ts-ignore

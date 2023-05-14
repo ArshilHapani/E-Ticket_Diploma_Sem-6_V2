@@ -15,6 +15,7 @@ import EditProfileModel from '../components/EditProfileModal';
 import b64Convertor from "../functions/b64Convertor";
 import compressImage from "../functions/compressImage";
 import { toast } from "react-hot-toast";
+import Spinner from "@/components/Spinner";
 
 const labelStyle = {
     color: "#8d99ae",
@@ -27,6 +28,7 @@ const userDetailsStyle = {
 };
 
 const Profile = () => {
+    const [loading, setLoading] = useState<boolean>(false);
     const [profileModal, setProfileModal] = useState<boolean>(false);
     const [localObj, setLocalObj] = useState<object>({
         a_id: "",
@@ -42,6 +44,7 @@ const Profile = () => {
         fetchAdmin();
     }, []);
     async function fetchAdmin() {
+        setLoading(true);
         const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetch`, {
             method: "GET",
             //@ts-ignore
@@ -51,15 +54,24 @@ const Profile = () => {
             }
         });
         const data = await response.json();
+        console.log(data);
+
         if (data.success) {
             setLocalObj({ ...data.admin });
-        } else {
+        } else if (data?.error) {
             toast.error(data.error);
         }
+        else if (data.status) {
+            toast.error(data.status);
+        } else {
+            toast.error("Failed to update profile");
+        }
+        setLoading(false);
 
     }
     const uploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
+        setLoading(true);
         const selectedFile = e?.target?.files[0];
         if (
             selectedFile.type !== "image/jpeg" &&
@@ -70,19 +82,24 @@ const Profile = () => {
             toast.error(
                 "Please upload an image with valid format",
             );
+            setLoading(false);
             return;
         }
         if (selectedFile.size >= 800000) {
             const imageRes = await compressImage(selectedFile);
             await b64Convertor(imageRes);
             toast.success("Image updated successfully");
+            setLoading(false);
             return;
         }
         await b64Convertor(selectedFile);
         toast.success("Image updated successfully");
+        setLoading(false);
     };
     return (
         <>
+            {loading && <Spinner message={`Updating latest data... `} />}
+
             <Stack
                 sx={{
                     height: "100vh",

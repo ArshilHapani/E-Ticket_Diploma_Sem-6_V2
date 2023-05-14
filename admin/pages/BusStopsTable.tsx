@@ -17,11 +17,14 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineBulb, AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { style } from '../styles';
 import EditStations from '@/components/EditStations';
 import { toast } from 'react-hot-toast';
 import AddStationsModel from '@/components/AddStationsModel';
+import { SiMicrosoftexcel } from 'react-icons/si';
+import Spinner from '@/components/Spinner';
+import { handleDownloadBusStopsSampleExcel, readBusStopsExcel } from '@/functions/readAndUploadExcel';
 
 interface funcData {
     id: number,
@@ -44,6 +47,7 @@ const styleModal = {
 
 const BusStopsTable = () => {
     const [confirmDialog, setConfirmDialog] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
@@ -52,6 +56,7 @@ const BusStopsTable = () => {
         fetchConductors();
     }, []);
     async function fetchConductors() {
+        setLoading(true);
         const passenger = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetchAllStations`, {
             method: "GET",
             //@ts-ignore
@@ -65,6 +70,7 @@ const BusStopsTable = () => {
         if (res.success) {
             setDataSet(res.stations);
         }
+        setLoading(false);
 
     }
     const student_rows = dataSet.map((data: any) => (
@@ -86,21 +92,44 @@ const BusStopsTable = () => {
 
     return (
         <>
+            {loading && <Spinner message="Updating..." />}
             <div className='mt-[16vh] px-5 p-4' >
                 <div className="flex justify-between items-center my-5 ">
                     <Typography variant="h4" className="text-slate-500">
                         Manage Bus Stops
                     </Typography>
-                    <Button variant="outlined" onClick={() => setStationModal(true)} >Add Bus Stop</Button>
-                    <Modal
-                        open={stationModal}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={styleModal}>
-                            <AddStationsModel setOpen={setStationModal} />
-                        </Box>
-                    </Modal>
+                    <div className="flex gap-4">
+                        <Button variant="outlined" onClick={() => setStationModal(true)} >Add Bus Stop</Button>
+                        <Modal
+                            open={stationModal}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                        >
+                            <Box sx={styleModal}>
+                                <AddStationsModel setOpen={setStationModal} />
+                            </Box>
+                        </Modal>
+                        <Button
+                            variant="outlined"
+                            component="label"
+                            endIcon={<SiMicrosoftexcel />}
+                            sx={{
+                                width: "180px",
+                            }}
+                        >
+                            Upload excel
+                            <input
+                                hidden
+                                accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                type="file"
+                                onChange={(e) => readBusStopsExcel(e, setLoading)} />
+                        </Button>
+                        <Tooltip title="Download sample excel file" placement="bottom" >
+                            <IconButton color="success" onClick={handleDownloadBusStopsSampleExcel} >
+                                <AiOutlineBulb />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                 </div>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">

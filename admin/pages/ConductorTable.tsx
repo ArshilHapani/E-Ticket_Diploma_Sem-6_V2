@@ -18,11 +18,14 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineBulb, AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { SiMicrosoftexcel } from "react-icons/si";
 import EditConductor from '@/components/EditConductorModel';
 import { style } from '../styles';
 import { toast } from 'react-hot-toast';
 import CreateConductorModel from '@/components/CreateConductorModel';
+import { handleDownloadConductorSampleExcel, readConductorExcel } from '@/functions/readAndUploadExcel';
+import Spinner from '@/components/Spinner';
 interface funcData {
     img: string,
     id: string,
@@ -37,13 +40,14 @@ const ConductorTable = () => {
     const [confirmDialog, setConfirmDialog] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const [conductorModal, setConductorModal] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
     useEffect(() => {
         fetchConductors();
     }, []);
     async function fetchConductors() {
-
+        setLoading(true);
         const conductors = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetchAllConductors`, {
             method: "GET",
             //@ts-ignore
@@ -57,6 +61,7 @@ const ConductorTable = () => {
         if (res.success) {
             setDataSet(res.conductors);
         }
+        setLoading(false);
 
     }
     const student_rows = dataSet.map((data: any) => (
@@ -93,21 +98,44 @@ const ConductorTable = () => {
 
     return (
         <>
+            {loading && <Spinner message="Updating..." />}
             <div className="mt-[16vh] px-5 p-4">
                 <div className="flex justify-between items-center my-5 ">
                     <Typography variant="h4" className="text-slate-500">
                         Manage Conductors
                     </Typography>
-                    <Button variant="outlined" onClick={() => setConductorModal(true)} >Add Conductor</Button>
-                    <Modal
-                        open={conductorModal}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                    >
-                        <Box sx={styleModal}>
-                            <CreateConductorModel setOpen={setConductorModal} />
-                        </Box>
-                    </Modal>
+                    <div className="flex gap-4" >
+                        <Button variant="outlined" onClick={() => setConductorModal(true)} >Add Conductor</Button>
+                        <Modal
+                            open={conductorModal}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                        >
+                            <Box sx={styleModal}>
+                                <CreateConductorModel setOpen={setConductorModal} />
+                            </Box>
+                        </Modal>
+                        <Button
+                            variant="outlined"
+                            component="label"
+                            endIcon={<SiMicrosoftexcel />}
+                            sx={{
+                                width: "180px",
+                            }}
+                        >
+                            Upload excel
+                            <input
+                                hidden
+                                accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                type="file"
+                                onChange={(e) => readConductorExcel(e, setLoading)} />
+                        </Button>
+                        <Tooltip title="Download sample excel file" placement="bottom" >
+                            <IconButton color="success" onClick={handleDownloadConductorSampleExcel} >
+                                <AiOutlineBulb />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                 </div>
                 <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
