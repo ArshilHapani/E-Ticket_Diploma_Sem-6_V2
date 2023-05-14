@@ -1,0 +1,29 @@
+Please read this before uploading excel files
+
+
+------- Rules for conductor excel --------------------------------
+
+--> strictly follow the excel format as given in the sample file
+--> enter the valid username and email formats for each conductor, if any mistakes occurs then it leads to misbehave of application or crashing of backend server
+--> birth date format for conductor is yyyy-mm-dd  using text function e.g =TEXT(1993-4-1,"yyyy-mm-dd")
+--> refresh the page after every excel upload to clear the cache from the server stream pipeline
+--> don't include white space before or after any entries in sheet
+
+
+-------- Rules for station excel -------------------
+
+--> follow the excel format as give in the station_example.xlsx
+--> for each station id should be unique
+--> make sure to add correct latitude and longitude values
+--> don't include white space before or after any entries in sheet
+
+
+
+------- Rules for admin excel --------------------------------
+
+--> strictly follow the excel format as given in the sample file
+--> enter the valid username and email formats for each admin, if any mistakes occurs then it leads to misbehave of application or crashing of backend server
+--> birth date format for conductor is yyyy-mm-dd  using text function e.g =TEXT(1993-4-1,"yyyy-mm-dd")
+--> refresh the page after every excel upload to clear the cache from the server stream pipeline
+--> don't include white space before or after any entries in sheet
+
