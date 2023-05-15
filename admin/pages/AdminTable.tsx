@@ -104,7 +104,7 @@ const AdminTable = () => {
                     <Typography variant="h4" className="text-slate-500">
                         Manage Admins
                     </Typography>
-                    <div className="flex gap-4">
+                    <div className="flex-col sm:flex-row justify-between  md:items-center items-start gap-3 my-5 flex">
                         <Button variant="outlined" onClick={() => setAdminModal(true)} >Add Admin</Button>
                         <Modal
                             open={adminModal}

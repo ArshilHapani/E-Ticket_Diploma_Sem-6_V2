@@ -94,8 +94,8 @@ const BusStopsTable = () => {
         <>
             {loading && <Spinner message="Updating..." />}
             <div className='mt-[16vh] px-5 p-4' >
-                <div className="flex justify-between items-center my-5 ">
-                    <Typography variant="h4" className="text-slate-500">
+                <div className="flex-col sm:flex-row justify-between  md:items-center items-start gap-3 my-5 flex">
+                    <Typography variant="h4" className="text-slate-500 ">
                         Manage Bus Stops
                     </Typography>
                     <div className="flex gap-4">

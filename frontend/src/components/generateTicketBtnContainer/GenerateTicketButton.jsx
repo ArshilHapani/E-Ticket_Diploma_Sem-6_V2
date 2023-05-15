@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./generateTicketBtn.scss";
 import { Box, Button, Card, Modal, Typography } from "@mui/material";
+import { MdPayments } from "react-icons/md";
 import { FaExchangeAlt } from "react-icons/fa";
 import { useStateContext } from "../../context/stateContext";
 import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/system";
 import QrCodeSVG from "../svg_qr/QrCodeSVG";
+import PaymentModal from "./PaymentModal";
 const style = {
   position: "absolute",
   top: "50%",
@@ -25,6 +27,7 @@ const GenerateTicketButton = () => {
     useStateContext();
   const [activeOneTicket, setActiveOneTicket] = useState([]);
   const [qrModel, setQrModel] = useState(false);
+  const [upiModal, setUpiModal] = useState(false);
 
   useEffect(() => {
     fetchActiveTickets();
@@ -115,6 +118,7 @@ const GenerateTicketButton = () => {
             open={qrModel}
             onClose={() => setQrModel(false)}
             aria-labelledby="modal-modal-title"
+            closeAfterTransition
             aria-describedby="modal-modal-description"
           >
             <Box sx={style}>
@@ -126,13 +130,43 @@ const GenerateTicketButton = () => {
                 <QrCodeSVG values={{ name: newUser?.p_uname }} />
                 <Typography sx={{ marginTop: "1rem", textAlign: "center" }}>
                   Request any nearby bus <b>conductor</b> to recharge into your
-                  account by scanning this QR code{" "}
+                  account by scanning this QR code <br />
+                  <span
+                    style={{
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                      fontSize: "20px",
+                      fontWeight: 1000,
+                    }}
+                  >
+                    OR
+                  </span>
                 </Typography>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setQrModel(false);
+                    setUpiModal(true);
+                  }}
+                  endIcon={<MdPayments />}
+                >
+                  Recharge using UPI{" "}
+                </Button>
               </Stack>
             </Box>
           </Modal>
         </Stack>
       </Box>
+      <Modal
+        open={upiModal}
+        onClose={() => setUpiModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <PaymentModal />
+        </Box>
+      </Modal>
     </>
   );
 };
