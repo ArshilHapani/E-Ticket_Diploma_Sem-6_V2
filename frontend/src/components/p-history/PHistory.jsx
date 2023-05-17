@@ -33,6 +33,7 @@ const PHistory = () => {
       }
     );
     const response = await transaction.json();
+    console.log(response);
     setHistory(response.payments);
     setLoader(false);
   }
@@ -70,7 +71,7 @@ const PHistory = () => {
               Transaction ID : <span> {item.pay_id}</span>
             </h4>
             <h4>
-              Transaction By : <span> {item.c_uname}</span>
+              Transaction By : <span> {item.paid_by}</span>
             </h4>
           </div>
         ))}

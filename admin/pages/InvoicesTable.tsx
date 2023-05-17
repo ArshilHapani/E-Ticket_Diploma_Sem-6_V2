@@ -15,7 +15,6 @@ interface funcData {
     amount: number,
     id: string,
     payment_to: string,
-    payment_by: string,
 }
 
 const InvoicesTable = () => {
@@ -33,7 +32,6 @@ const InvoicesTable = () => {
             },
         });
         const res = await passenger.json();
-
         if (res.success) {
             setDataSet(res.payments);
         }
@@ -44,14 +42,13 @@ const InvoicesTable = () => {
             data.pay_time,
             data.pay_amount,
             data.pay_id,
-            data.p_uname,
-            data.c_uname,
+            data.paid_by,
         )
     ));
 
-    function createData(time: string, amount: number, id: string, payment_to: string, payment_by: string): funcData {
+    function createData(time: string, amount: number, id: string, payment_to: string): funcData {
         return {
-            time, amount, id, payment_to, payment_by
+            time, amount, id, payment_to
         };
     }
 
@@ -68,7 +65,6 @@ const InvoicesTable = () => {
                                 <TableCell>time</TableCell>
                                 <TableCell>amount</TableCell>
                                 <TableCell>id</TableCell>
-                                <TableCell>payment done to</TableCell>
                                 <TableCell>payment done by</TableCell>
                             </TableRow>
                         </TableHead>
@@ -82,7 +78,6 @@ const InvoicesTable = () => {
                                     <TableCell>{row.amount}</TableCell>
                                     <TableCell>{row.id}</TableCell>
                                     <TableCell>{row.payment_to}</TableCell>
-                                    <TableCell>{row.payment_by}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
