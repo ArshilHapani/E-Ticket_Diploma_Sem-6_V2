@@ -22,6 +22,7 @@ const Home = () => {
   document.title = "E-Ticket | Home";
   const { setNewUser, theme, setLoader, setToggleSync } = useStateContext();
   const { fetchUser } = useUserFetch();
+
   // Fetch user data....
   async function fetchUsers() {
     setLoader(true);

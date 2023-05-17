@@ -86,7 +86,7 @@ const EditProfileModel = ({ closeModal, initialValues }) => {
       snackbarSetterFunction("please enter valid email format", "error");
       return;
     }
-    if (!isUserNameValid(updateData.uname)) {
+    if (!isUserNameValid(updateData.username)) {
       snackbarSetterFunction("Please enter valid username", "error");
       return;
     }
@@ -111,6 +111,10 @@ const EditProfileModel = ({ closeModal, initialValues }) => {
     if (response.success) {
       snackbarSetterFunction("Profile updated successfully", "success");
       setLoading(false);
+    } else if (response.msg) {
+      snackbarSetterFunction(response.msg, "error");
+      setLoading(false);
+      return;
     } else {
       snackbarSetterFunction("Failed to update profile", "error");
       setLoading(false);

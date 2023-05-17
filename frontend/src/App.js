@@ -1,4 +1,4 @@
-import { Home } from "./container";
+import { Home, PaymentSuccess } from "./container";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
   EnterEmail,
@@ -45,7 +45,6 @@ function App() {
             path="/signUp"
             element={
               <div style={{ overFlowX: "hidden" }}>
-                {" "}
                 <NewUser />
               </div>
             }
@@ -55,7 +54,6 @@ function App() {
             path="/signIn"
             element={
               <div style={{ overFlowX: "hidden" }}>
-                {" "}
                 <OldUser />
               </div>
             }
@@ -65,7 +63,6 @@ function App() {
             path="/getStarted"
             element={
               <div style={{ overFlowX: "hidden" }}>
-                {" "}
                 <EnterEmail />
               </div>
             }
@@ -75,8 +72,16 @@ function App() {
             path="/forgetPassword"
             element={
               <div style={{ overFlowX: "hidden" }}>
-                {" "}
                 <ForgotPassword />
+              </div>
+            }
+          />
+          <Route
+            exact
+            path="/PaymentSuccess/:id"
+            element={
+              <div style={{ overFlowX: "hidden" }}>
+                <PaymentSuccess />
               </div>
             }
           />

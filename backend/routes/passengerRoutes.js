@@ -1,9 +1,13 @@
+// passengerRoutes.js is used to do routing of all endpoints used by passengers
+
 import { Router } from "express";
 const router = Router();
 
+// Import middlewares
 import fetchuser from "./middleware/fetchUser.js";
 import checkPassenger from "./middleware/checkPassenger.js";
 
+// Middleware to authenticate the user and check if the user is passenger or not
 router.use(fetchuser, checkPassenger);
 
 import changePassenger from "./passenger/updatePassenger.js";
@@ -11,6 +15,7 @@ import changeImage from "./passenger/updateImage.js";
 import fetchPassenger from "./passenger/fetchPassenger.js";
 import fetchPayment from "./passenger/fetchPayment.js";
 import submitFeedback from "./passenger/submitFeedback.js";
+import recharge from "./passenger/recharge.js";
 
 import createTicket from "./passenger/forTicket/purchaseTicket.js";
 import fetchTicket from "./passenger/fetchTicket.js";
@@ -25,6 +30,7 @@ router.use("/updateImage", changeImage);
 router.use("/fetch", fetchPassenger);
 router.use("/payment", fetchPayment);
 router.use("/feedback", submitFeedback);
+router.use("/recharge", recharge);
 
 router.use("/fetchFare", fetchFare);
 router.use("/fetchStations", fetchStations);

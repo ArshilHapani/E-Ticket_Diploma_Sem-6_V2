@@ -100,11 +100,11 @@ const ConductorTable = () => {
         <>
             {loading && <Spinner message="Updating..." />}
             <div className="mt-[16vh] px-5 p-4">
-                <div className="flex justify-between items-center my-5 ">
+                <div className="flex-col sm:flex-row justify-between  md:items-center items-start gap-3 my-5 flex">
                     <Typography variant="h4" className="text-slate-500">
                         Manage Conductors
                     </Typography>
-                    <div className="flex-col sm:flex-row justify-between  md:items-center items-start gap-3 my-5 flex">
+                    <div className="flex gap-4">
                         <Button variant="outlined" onClick={() => setConductorModal(true)} >Add Conductor</Button>
                         <Modal
                             open={conductorModal}

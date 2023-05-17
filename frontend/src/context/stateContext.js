@@ -16,6 +16,7 @@ export const ContextProvider = ({ children }) => {
   const [buyTicketModel, setBuyTicketModel] = useState(false);
   const [toggleSync, setToggleSync] = useState(true);
   const [loader, setLoader] = useState(false);
+  const [debitCardRechargeAmount, setDebitCardRechargeAmount] = useState(0);
   const [newUser, setNewUser] = useState({
     p_uname: "",
     p_pwd: "",
@@ -36,13 +37,6 @@ export const ContextProvider = ({ children }) => {
     message: "",
     type: "info",
   });
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (newUser === undefined && location.pathname === "/") {
-  //       navigate("/signIn");
-  //     }
-  //   }, 3000);
-  // }, [newUser, location.pathname, navigate]);
 
   useEffect(() => {
     if (
@@ -95,6 +89,8 @@ export const ContextProvider = ({ children }) => {
         setNewUser,
         toggleSync,
         setToggleSync,
+        setDebitCardRechargeAmount,
+        debitCardRechargeAmount,
       }}
     >
       {children}

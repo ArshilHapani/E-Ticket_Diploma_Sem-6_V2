@@ -30,6 +30,10 @@ const AddAdmins = ({ setOpen }: any) => {
             toast.error("please enter valid email format");
             return;
         }
+        if (admin.no.toString().length !== 10) {
+            toast.error("Please enter valid mobile number with length 10");
+            return;
+        }
         setLoading(true);
         const create = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/createAdmin`, {
             method: "POST",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./generateTicketBtn.scss";
 import { Box, Button, Card, Modal, Typography } from "@mui/material";
-import { MdPayments } from "react-icons/md";
+import { BsFillCreditCard2BackFill } from "react-icons/bs";
 import { FaExchangeAlt } from "react-icons/fa";
 import { useStateContext } from "../../context/stateContext";
 import { useNavigate } from "react-router-dom";
@@ -148,9 +148,9 @@ const GenerateTicketButton = () => {
                     setQrModel(false);
                     setUpiModal(true);
                   }}
-                  endIcon={<MdPayments />}
+                  endIcon={<BsFillCreditCard2BackFill />}
                 >
-                  Recharge using UPI{" "}
+                  Recharge using Card{" "}
                 </Button>
               </Stack>
             </Box>
