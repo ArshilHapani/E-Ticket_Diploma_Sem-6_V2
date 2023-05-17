@@ -12,6 +12,8 @@ The BRTS E - ticket management system is a software application that allows user
 
 **Server:** Node, Express, MySql
 
+**Payment Gateway:** Stripe
+
 
 ## Authors
 
