@@ -1,4 +1,3 @@
-import { FileDownload } from "@/interfaces";
 import { ChangeEvent } from "react";
 import { toast } from "react-hot-toast";
 import * as xlsx from "xlsx";
@@ -110,26 +109,6 @@ export async function readConductorExcel(
   }
 }
 
-export async function handleDownloadConductorSampleExcel() {
-  const files: FileDownload[] = [
-    { filename: "conductor_sample.xlsx", url: "/assets/conductor_sample.xlsx" },
-    {
-      filename: "excel_rules.txt",
-      url: "/assets/excel_rules.txt",
-    },
-  ];
-  for (const file of files) {
-    const response = await fetch(file.url);
-    const blob = await response.blob();
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = file.filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-}
-
 // Bus stop excel functions
 
 export async function readBusStopsExcel(
@@ -137,7 +116,6 @@ export async function readBusStopsExcel(
   setLoading: Function
 ) {
   const file = event.target.files?.[0];
-
   let conductorObjArray: Array<string[]> = [];
   if (file) {
     const reader = new FileReader();
@@ -158,13 +136,14 @@ export async function readBusStopsExcel(
             toast.error(
               "Please enter valid field heading excel sheet or check the demo excel file"
             );
-            return false;
-          } else {
-            conductorObjArray.push(arr);
+            return;
           }
+          return false;
+        } else if (index > 0) {
+          conductorObjArray.push(arr);
+          console.log(conductorObjArray);
         }
       });
-
       conductorObjArray.length !== 0 &&
         conductorObjArray.forEach(async (station, index) => {
           if (
@@ -208,27 +187,7 @@ export async function readBusStopsExcel(
   }
 }
 
-export async function handleDownloadBusStopsSampleExcel() {
-  const files: FileDownload[] = [
-    { filename: "station_sample.xlsx", url: "/assets/station_sample.xlsx" },
-    {
-      filename: "excel_rules.txt",
-      url: "/assets/excel_rules.txt",
-    },
-  ];
-  for (const file of files) {
-    const response = await fetch(file.url);
-    const blob = await response.blob();
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = file.filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-}
-
-//  add admin excel helper functoins
+//  add admin excel helper functions
 
 export async function readAdminExcel(
   event: ChangeEvent<HTMLInputElement>,
@@ -244,7 +203,6 @@ export async function readAdminExcel(
       const workbook = xlsx.read(data, { type: "array" });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
-
       jsonData.forEach(async (arr: any, index: number) => {
         // Checking for first row validation in excel
         if (index === 0) {
@@ -331,22 +289,30 @@ export async function readAdminExcel(
   }
 }
 
-export async function handleDownloadAdminSampleExcel() {
-  const files: FileDownload[] = [
-    { filename: "admin_sample.xlsx", url: "/assets/admin_sample.xlsx" },
-    {
-      filename: "excel_rules.txt",
-      url: "/assets/excel_rules.txt",
-    },
-  ];
-  for (const file of files) {
-    const response = await fetch(file.url);
-    const blob = await response.blob();
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = file.filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+export async function handleDownloadSampleExcel() {
+  downloadFile("../assets/sample_files.zip", "sample_files.zip");
+}
+function downloadFile(uri: string, fileName: string): void {
+  fetch(uri)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName; // Specify the desired file name for the downloaded ZIP file
+
+      link.style.display = "none";
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+
+      // Clean up the created URL
+      window.URL.revokeObjectURL(url);
+    })
+    .catch((error) => {
+      console.error("Error downloading ZIP file:", error);
+    });
 }

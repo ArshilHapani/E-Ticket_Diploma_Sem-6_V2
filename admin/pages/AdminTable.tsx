@@ -25,7 +25,7 @@ import EditAdmin from '@/components/EditAdminModal';
 import AddAdmins from '@/components/AddAdminsModal';
 import Spinner from '@/components/Spinner';
 import { SiMicrosoftexcel } from 'react-icons/si';
-import { handleDownloadAdminSampleExcel, readAdminExcel } from '@/functions/readAndUploadExcel';
+import { handleDownloadSampleExcel, readAdminExcel } from '@/functions/readAndUploadExcel';
 interface funcData {
     img: string,
     id: string,
@@ -131,7 +131,7 @@ const AdminTable = () => {
                                 onChange={(e) => readAdminExcel(e, setLoading)} />
                         </Button>
                         <Tooltip title="Download sample excel file" placement="bottom" >
-                            <IconButton color="success" onClick={handleDownloadAdminSampleExcel} >
+                            <IconButton color="success" onClick={handleDownloadSampleExcel} >
                                 <AiOutlineBulb />
                             </IconButton>
                         </Tooltip>

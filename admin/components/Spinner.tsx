@@ -1,11 +1,28 @@
+import { Box, CircularProgress } from '@mui/material';
 import React from 'react';
-import { Bars, ThreeDots } from 'react-loader-spinner';
-
+import { ThreeDots } from 'react-loader-spinner';
+const style = {
+    zIndex: 999999999999,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    margin: 0,
+    padding: 0,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    loaderStyle: {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+    },
+};
 //@ts-ignore
 const Spinner = ({ message }) => {
     return (
-        <div className='absolute inset-0  z-20' style={{ backgroundColor: "rgba(0,0,0,0.5)" }} >
-            <div className="flex flex-col justify-center items-center w-full h-full ">
+        <Box sx={style}>
+            <div className="flex flex-col overflow-hidden justify-center items-center w-screen h-screen ">
                 <ThreeDots
                     height="50"
                     width="50"
@@ -17,7 +34,7 @@ const Spinner = ({ message }) => {
                 />
                 <p className="text-lg py-3 text-center px-2 text-[#edf6f9] font-bold ">{message}</p>
             </div>
-        </div>
+        </Box>
     );
 };
 

@@ -87,12 +87,20 @@ const GenerateTicketButton = () => {
           </div>
           {activeOneTicket.length !== 0 ? (
             <div className="ticket-details-cont">
-              <span>{activeOneTicket?.start_loc}</span>
-              <span>{activeOneTicket?.dest_loc}</span>
+              <span>
+                {activeOneTicket?.start_loc.length > 20
+                  ? activeOneTicket?.start_loc?.slice(0, 15) + "..."
+                  : activeOneTicket?.start_loc}
+              </span>
+              <span>
+                {activeOneTicket?.dest_loc.length > 20
+                  ? activeOneTicket?.dest_loc.slice(0, 15) + "..."
+                  : activeOneTicket?.dest_loc}
+              </span>
             </div>
           ) : (
             <div className="empty-ticket-container">
-              <span>No current active ticket</span>
+              <span>No active ticket available</span>
             </div>
           )}
         </Card>

@@ -24,7 +24,7 @@ import { toast } from 'react-hot-toast';
 import AddStationsModel from '@/components/AddStationsModel';
 import { SiMicrosoftexcel } from 'react-icons/si';
 import Spinner from '@/components/Spinner';
-import { handleDownloadBusStopsSampleExcel, readBusStopsExcel } from '@/functions/readAndUploadExcel';
+import { handleDownloadSampleExcel, readBusStopsExcel } from '@/functions/readAndUploadExcel';
 
 interface funcData {
     id: number,
@@ -125,7 +125,7 @@ const BusStopsTable = () => {
                                 onChange={(e) => readBusStopsExcel(e, setLoading)} />
                         </Button>
                         <Tooltip title="Download sample excel file" placement="bottom" >
-                            <IconButton color="success" onClick={handleDownloadBusStopsSampleExcel} >
+                            <IconButton color="success" onClick={handleDownloadSampleExcel} >
                                 <AiOutlineBulb />
                             </IconButton>
                         </Tooltip>

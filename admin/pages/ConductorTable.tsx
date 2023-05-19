@@ -24,7 +24,7 @@ import EditConductor from '@/components/EditConductorModel';
 import { style } from '../styles';
 import { toast } from 'react-hot-toast';
 import CreateConductorModel from '@/components/CreateConductorModel';
-import { handleDownloadConductorSampleExcel, readConductorExcel } from '@/functions/readAndUploadExcel';
+import { handleDownloadSampleExcel, readConductorExcel } from '@/functions/readAndUploadExcel';
 import Spinner from '@/components/Spinner';
 interface funcData {
     img: string,
@@ -131,7 +131,7 @@ const ConductorTable = () => {
                                 onChange={(e) => readConductorExcel(e, setLoading)} />
                         </Button>
                         <Tooltip title="Download sample excel file" placement="bottom" >
-                            <IconButton color="success" onClick={handleDownloadConductorSampleExcel} >
+                            <IconButton color="success" onClick={handleDownloadSampleExcel} >
                                 <AiOutlineBulb />
                             </IconButton>
                         </Tooltip>

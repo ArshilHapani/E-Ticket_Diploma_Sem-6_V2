@@ -70,7 +70,7 @@ router.get("/", async (req, res) => {
     });
   } catch (error) {
     res.json({ error: error.message });
-    res.status(500).send("Some error occured");
+    res.status(500).send("Some error occurred");
   }
 });
 
