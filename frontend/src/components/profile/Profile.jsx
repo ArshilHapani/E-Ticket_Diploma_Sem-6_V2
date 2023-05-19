@@ -127,6 +127,10 @@ const Profile = () => {
 
     const response = await data.json();
     const { success } = response;
+    if (!success) {
+      showSnackBar(response?.msg, "error");
+      return;
+    }
     fetchUser();
     setLoader(false);
     return success;
@@ -244,7 +248,7 @@ const Profile = () => {
                 updatedUserInfo={updatedUserInfo}
                 setUpdatedUserInfo={setUpdatedUserInfo}
                 setOpen={() => {
-                  setOpen(); //TODO fixing update profile bug
+                  setOpen();
                 }}
               />
             </form>

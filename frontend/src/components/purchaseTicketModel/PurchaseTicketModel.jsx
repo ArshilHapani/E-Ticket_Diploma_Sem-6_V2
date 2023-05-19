@@ -80,10 +80,11 @@ const PurchaseTicketModel = () => {
 
     setLoader(true);
     let flag = createTicket(dist, showSnackBar);
-    if (flag === false) {
+    if (!flag) {
+      navigate("/");
       setLoader(false);
       return;
-    } else {
+    } else if (flag) {
       setLoader(false);
       setBuyTicketModel(false);
       setDist({

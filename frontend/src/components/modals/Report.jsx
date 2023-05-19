@@ -183,7 +183,7 @@ export default function ReportABugModal({ open, setOpen }) {
           </Box>
           <IoMdCheckmarkCircleOutline fontSize={50} color="#29bf12" />
           <Typography fontSize={16} align="center">
-            Thank you for your request.It's very helpful for us!
+            Thank you for your feedback. We will contact you soon!
           </Typography>
         </Stack>
       </Modal>

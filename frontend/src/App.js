@@ -1,4 +1,4 @@
-import { Home, PaymentSuccess } from "./container";
+import { Home,  PaymentError, PaymentSuccess } from "./container";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
   EnterEmail,
@@ -82,6 +82,15 @@ function App() {
             element={
               <div style={{ overFlowX: "hidden" }}>
                 <PaymentSuccess />
+              </div>
+            }
+          />
+          <Route
+            exact
+            path="/PaymentError"
+            element={
+              <div style={{ overFlowX: "hidden" }}>
+                <PaymentError />
               </div>
             }
           />

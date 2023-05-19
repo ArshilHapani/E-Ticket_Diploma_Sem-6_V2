@@ -17,9 +17,9 @@ export async function createTicket(dist, showSnackBar) {
 
   const response = await ticket.json();
   if (!response.success) {
-    showSnackBar("Insufficient balance", "error");
+    showSnackBar(response.msg, "error");
     return false;
-  } else {
+  } else if (response.success) {
     showSnackBar("Ticket purchased successfully", "success");
     return true;
   }
