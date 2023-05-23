@@ -223,7 +223,7 @@ function OpenDialogModal({ open, setOpen, uname, index, indexMeasure }: any) {
 
     async function handleDelete() {
         const deleteConductor = await fetch(
-            `${process.env.NEXT_PUBLIC_HOST}/admin/deletePassenger`,
+            `${process.env.NEXT_PUBLIC_HOST}/admin/passenger/delete`,
             {
                 method: "DELETE",
                 //@ts-ignore

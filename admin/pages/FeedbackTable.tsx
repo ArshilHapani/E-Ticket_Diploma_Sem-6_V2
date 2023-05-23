@@ -18,6 +18,7 @@ import {
 import { VscReply } from 'react-icons/vsc';
 import { style } from '../styles';
 import ReplyFeedBackModal from '@/components/ReplyFeedbackModal';
+import Spinner from '@/components/Spinner';
 
 interface funcData {
     a_id: string | null,
@@ -33,6 +34,7 @@ interface funcData {
 
 const FeedBackTabel = () => {
     const [open, setOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [dataSet, setDataSet] = useState<Array<object>>([]);
     const [indexMeasure, setIndexMeasure] = useState<number>(0);
     const [menuItems, setMenuItems] = useState<string>("All");
@@ -52,6 +54,7 @@ const FeedBackTabel = () => {
     }, [setMenuItems, menuItems]);
 
     async function fetchSortedFeedback(type: string) {
+        setLoading(true);
         const conductors = await fetch(`${process.env.NEXT_PUBLIC_HOST}/admin/fetchFeedback/${type}`, {
             method: "GET",
             //@ts-ignore
@@ -61,7 +64,7 @@ const FeedBackTabel = () => {
             },
         });
         const res = await conductors.json();
-
+        setLoading(false);
         if (res.success) {
             setDataSet(res.feedbacks);
         }
@@ -96,6 +99,7 @@ const FeedBackTabel = () => {
 
     return (
         <>
+            {loading && <Spinner message={`fetching ${menuItems ? menuItems : "user's"} feedback`} />}
             <div className="mt-[16vh] px-5 p-4">
                 <div className="flex justify-between items-center my-5 ">
                     <Typography variant="h4" className="text-slate-500">

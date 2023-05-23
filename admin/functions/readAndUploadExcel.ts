@@ -290,7 +290,7 @@ export async function readAdminExcel(
 }
 
 export async function handleDownloadSampleExcel() {
-  downloadFile("../assets/sample_files.zip", "sample_files.zip");
+  downloadFile("/sample_files.zip", "sample_files.zip");
 }
 function downloadFile(uri: string, fileName: string): void {
   fetch(uri)
