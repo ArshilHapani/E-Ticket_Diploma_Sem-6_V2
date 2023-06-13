@@ -51,3 +51,26 @@ export type {
   functionEditUserModelProps,
   FileDownload,
 };
+
+export interface AddConductorFunctionProps {
+  c_uname: string;
+  c_pwd: string;
+  c_name: string;
+  c_email: string;
+  c_dob: string;
+}
+
+export interface UserDetailsProps {
+  p_id: string;
+  p_uname: string;
+  p_email: string;
+  p_name: string;
+  p_balance: number;
+}
+
+export interface BusStationDetailsProps {
+  st_id: number;
+  st_name: string;
+  st_lat: number;
+  st_long: number;
+}

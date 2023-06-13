@@ -1,6 +1,8 @@
 import { ChangeEvent } from "react";
 import { toast } from "react-hot-toast";
 import * as xlsx from "xlsx";
+import axios from "axios";
+
 import isUserNameValid from "./userNameValidate";
 import validateEmail from "./validateEmail";
 
@@ -73,32 +75,29 @@ export async function readConductorExcel(
       if (conductorObjArray.length > 0) {
         setLoading(true);
         conductorObjArray.forEach(async (arr, index) => {
-          const create = await fetch(
+          const req = await axios.post(
             `${process.env.NEXT_PUBLIC_HOST}/admin/createConductor`,
             {
-              method: "POST",
-              //@ts-ignore
+              c_uname: arr[1].toString(),
+              c_pwd: arr[5].toString(),
+              c_name: arr[0].toString(),
+              c_email: arr[2].toString(),
+              c_dob: arr[4].toString(),
+              c_no: arr[3].toString(),
+            },
+            {
               headers: {
-                "Content-Type": "application/json",
                 authToken: sessionStorage.getItem("admin")?.toString(),
               },
-              body: JSON.stringify({
-                c_uname: arr[1].toString(),
-                c_pwd: arr[5].toString(),
-                c_name: arr[0].toString(),
-                c_email: arr[2].toString(),
-                c_dob: arr[4].toString(),
-                c_no: arr[3].toString(),
-              }),
             }
           );
-          const response = await create.json();
-          if (response.success) {
+          const { data } = req;
+          if (data.success) {
             toast.success(`Conductor inserted ${arr[1]} `);
             setLoading(false);
             return;
-          } else if (!response.success) {
-            toast.error(`At ${index} error occur '${response.msg}'`);
+          } else if (!data.success) {
+            toast.error(`At ${index} error occur '${data.msg}'`);
             setLoading(true);
           }
         });
@@ -156,28 +155,21 @@ export async function readBusStopsExcel(
             return false;
           } else {
             setLoading(true);
-            const store = await fetch(
-              `${process.env.NEXT_PUBLIC_HOST}/admin/addStation`,
-              {
-                method: "POST",
-                //@ts-ignore
-                headers: {
-                  "Content-Type": "application/json",
-                  authToken: sessionStorage.getItem("admin"),
-                },
-                body: JSON.stringify({
-                  st_id: station[0].toString(),
-                  st_name: station[1].toString(),
-                  st_lat: station[2].toString(),
-                  st_long: station[3].toString(),
-                }),
+            const req = await axios.post(`${process.env.NEXT_PUBLIC_HOST}/admin/addStation`,{
+              st_id: station[0].toString(),
+              st_name: station[1].toString(),
+              st_lat: station[2].toString(),
+              st_long: station[3].toString(),
+            },{
+              headers:{
+                authToken: sessionStorage.getItem("admin"),
               }
-            );
-            const response = await store.json();
-            if (response.success) {
+            })
+            const {data} = req;
+            if (data.success) {
               toast.success(`Successfully added new stations ${station[1]} `);
             } else {
-              toast.error("Failed to add station\n" + response.msg);
+              toast.error("Failed to add station\n" + data.msg);
             }
             setLoading(false);
           }
@@ -256,30 +248,23 @@ export async function readAdminExcel(
       if (conductorObjArray.length > 0) {
         conductorObjArray.forEach(async (arr, index) => {
           setLoading(true);
-          const create = await fetch(
-            `${process.env.NEXT_PUBLIC_HOST}/admin/createAdmin`,
-            {
-              method: "POST",
-              //@ts-ignore
-              headers: {
-                "Content-Type": "application/json",
-                authToken: sessionStorage.getItem("admin")?.toString(),
-              },
-              body: JSON.stringify({
-                a_uname: arr[2].toString(),
-                a_pwd: arr[1].toString(),
-                a_name: arr[0].toString(),
-                a_email: arr[3].toString(),
-                a_dob: arr[5].toString(),
-                a_no: arr[4].toString(),
-              }),
+          const req = await axios.post(`${process.env.NEXT_PUBLIC_HOST}/admin/createAdmin`,{
+            a_uname: arr[2].toString(),
+            a_pwd: arr[1].toString(),
+            a_name: arr[0].toString(),
+            a_email: arr[3].toString(),
+            a_dob: arr[5].toString(),
+            a_no: arr[4].toString(),
+          },{
+            headers:{
+              authToken: sessionStorage.getItem("admin")?.toString(),
             }
-          );
-          const response = await create.json();
-          if (response.success) {
+          })
+          const {data} =req;
+          if (data.success) {
             toast.success(`Successfully created a new admin ${arr[2]} `);
-          } else if (!response.success) {
-            toast.error(`Error occur at ${index} error : ${response.msg}`);
+          } else if (!data.success) {
+            toast.error(`Error occur at ${index} error : ${data.msg}`);
           }
           setLoading(false);
         });
