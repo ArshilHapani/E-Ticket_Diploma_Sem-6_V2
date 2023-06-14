@@ -2,9 +2,13 @@ import axios from "axios";
 
 import {
   AddConductorFunctionProps,
+  AdminDetailsProps,
   BusStationDetailsProps,
+  RawAdminDetailsProps,
   UserDetailsProps,
 } from "@/interfaces";
+
+// For conductors
 
 export async function updateConductor(
   c_id: string,
@@ -71,6 +75,9 @@ export async function deleteConductor({ uname }: { uname: string }) {
   const { data } = req;
   return data;
 }
+
+// For users
+
 export async function deleteUser({ uname }: { uname: string }) {
   const req = await axios.delete(
     `${process.env.NEXT_PUBLIC_HOST}/admin/passenger/delete`,
@@ -111,6 +118,8 @@ export async function editUser(values: UserDetailsProps) {
 
   return data;
 }
+
+// For stations
 
 export async function deleteStation({ st_id }: { st_id: number }) {
   const req = await axios.delete(
@@ -170,4 +179,111 @@ export async function addStation(values: BusStationDetailsProps) {
   const { data } = req;
 
   return data;
+}
+
+// For admins
+
+export async function deleteAdmin({ a_uname }: { a_uname: string }) {
+  const req = await axios.delete(
+    `${process.env.NEXT_PUBLIC_HOST}/admin/deleteAdmin`,
+    {
+      headers: {
+        authToken: sessionStorage.getItem("admin"),
+      },
+      data: { a_uname },
+    }
+  );
+
+  const { data } = req;
+
+  return data;
+}
+
+export async function editAdmin(values: AdminDetailsProps) {
+  const { a_email, a_id, a_name, a_no, a_uname } = values;
+
+  const req = await axios.patch(
+    `${process.env.NEXT_PUBLIC_HOST}/admin/updateAdmin`,
+    {
+      a_id,
+      a_uname,
+      a_name,
+      a_email,
+      a_no,
+    },
+    {
+      headers: {
+        authToken: sessionStorage.getItem("admin"),
+      },
+    }
+  );
+
+  const { data } = req;
+
+  return data;
+}
+export async function addAdmin(values: RawAdminDetailsProps) {
+  const { a_email, a_dob, a_pwd, a_name, a_no, a_uname } = values;
+
+  const req = await axios.post(
+    `${process.env.NEXT_PUBLIC_HOST}/admin/createAdmin`,
+    {
+      a_uname,
+      a_name,
+      a_email,
+      a_no,
+      a_dob,
+      a_pwd,
+    },
+    {
+      headers: {
+        authToken: sessionStorage.getItem("admin"),
+      },
+    }
+  );
+
+  const { data } = req;
+
+  return data;
+}
+
+//  for feedbacks
+
+export async function replyFeedback(values: { f_id: string; reply: string }) {
+  const req = await axios.patch(
+    `${process.env.NEXT_PUBLIC_HOST}/admin/reply`,
+    values,
+    {
+      headers: {
+        authToken: sessionStorage.getItem("admin"),
+      },
+    }
+  );
+
+  const { data } = req;
+
+  return data;
+}
+
+//  for broadcast
+
+export function broadCastMessage(message: string) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_HOST}/admin/sendEmails`,
+        { message },
+        {
+          headers: {
+            authToken: sessionStorage.getItem("admin"),
+          },
+        }
+      )
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 }

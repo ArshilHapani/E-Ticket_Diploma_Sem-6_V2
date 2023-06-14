@@ -53,6 +53,7 @@ const AddStationsModel = ({ setOpen }: any) => {
     }
   };
   if (isLoading) <Spinner message={`Adding station ${stations?.stName}`} />;
+  if (isError) toast.error(`Error adding station '${error}'`);
   return (
     <div>
       <form onSubmit={handleSubmit}>

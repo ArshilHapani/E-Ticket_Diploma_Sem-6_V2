@@ -74,3 +74,16 @@ export interface BusStationDetailsProps {
   st_lat: number;
   st_long: number;
 }
+
+export interface AdminDetailsProps {
+  a_id: string;
+  a_uname: string;
+  a_name: string;
+  a_email: string;
+  a_no: number;
+}
+
+export interface RawAdminDetailsProps extends Omit<AdminDetailsProps, "a_id"> {
+  a_pwd: string;
+  a_dob: string;
+}

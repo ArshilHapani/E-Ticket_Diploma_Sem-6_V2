@@ -229,7 +229,7 @@ const PurchaseTicketModel = () => {
                   type="submit"
                   loading={loader}
                 >
-                  Generate Ticket ({dist.quantity * fareText}&#8377;)
+                  Generate Ticket ({dist.quantity * fareText} &#8377;)
                 </LoadingButton>
               </Box>
             </Box>

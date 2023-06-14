@@ -31,23 +31,25 @@ const SignIn = () => {
       return;
     }
     setLoading(true);
-    const login = await fetch(`${process.env.NEXT_PUBLIC_HOST}/authentication/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        uname: user.uname,
-        password: user.password
-      })
-    });
+    const login = await fetch(
+      `${process.env.NEXT_PUBLIC_HOST}/authentication/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uname: user.uname,
+          password: user.password,
+        }),
+      }
+    );
     const response = await login.json();
     if (response.success) {
-      sessionStorage.setItem('admin', response.authToken);
+      sessionStorage.setItem("admin", response.authToken);
       toast.success("Welcome to admin panel!");
-      router.push('/HomePage');
-    }
-    else if (!response.success) {
+      router.push("/HomePage");
+    } else if (!response.success) {
       toast.error(response.msg);
     }
     setLoading(false);
