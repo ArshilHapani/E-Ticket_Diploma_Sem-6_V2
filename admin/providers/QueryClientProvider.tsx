@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const QueryClientProviderComponent = ({ children }: Props) => {
+const QueryClientProviderComponent = ({ children }: Props): JSX.Element => {
   const [client] = React.useState(() => new QueryClient());
 
   return <QueryClientProvider client={client}>{children}</QueryClientProvider>;

@@ -93,3 +93,16 @@ export async function fetchFeedback(type: string = "") {
     return [];
   }
 }
+
+export async function fetchAdminProfile() {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_HOST}/admin/fetch`,
+    {
+      headers: {
+        authToken: sessionStorage.getItem("admin"),
+      },
+    }
+  );
+
+  return data;
+}

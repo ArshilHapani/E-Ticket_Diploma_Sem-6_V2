@@ -11,7 +11,10 @@ import { Stack } from "@mui/system";
 import { useState, SyntheticEvent } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useMutation } from "@tanstack/react-query";
+
 import Spinner from "./Spinner";
+import { resetPassword } from "@/functions/api/dataPosters";
 
 const defaultModelStyle = {
   position: "absolute",
@@ -33,15 +36,27 @@ type props = {
   uname: string;
   closingModal: Function;
 };
-type responseType = {
-  success?: boolean;
-  msg?: string;
-};
+
 const UpdatePassword = ({ uname, closingModal }: props) => {
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [password, setPassword] = useState({ pwd: "", cPwd: "" });
+  const { mutate, isLoading, error, isError } = useMutation({
+    mutationFn: (value: { uname: string; password: string }) =>
+      resetPassword(value),
+    onSuccess: (response) => {
+      if (response.success) {
+        toast.success("Password updated successfully");
+        closingModal(false);
+
+        return;
+      } else if (!response.success) {
+        toast.error(response.msg || "Something went wrong");
+        return;
+      }
+    },
+  });
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: MouseEvent) => {
     event.preventDefault();
@@ -69,38 +84,13 @@ const UpdatePassword = ({ uname, closingModal }: props) => {
 
       return;
     } else {
-      setLoading(true);
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_HOST}/authentication/changePwd`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            uname,
-            password: password.cPwd,
-          }),
-        }
-      );
-      const response: responseType = await res.json();
-      if (response.success) {
-        toast.success("Password updated successfully");
-        closingModal(false);
-        setLoading(false);
-
-        return;
-      } else if (!response.success) {
-        //@ts-ignore
-        toast.error(response.msg?.toString());
-        setLoading(false);
-        return;
-      }
+      mutate({ uname, password: password.cPwd });
     }
   };
+  if (isError) toast.error(`Error occurred while updating password '${error}'`);
   return (
     <form onSubmit={handleSubmit}>
-      {loading && <Spinner message="Updating password" />}
+      {isLoading && <Spinner message="Updating password" />}
 
       <Stack sx={defaultModelStyle} gap={2} direction="column">
         <Typography variant="h5" textAlign="center">

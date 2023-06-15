@@ -5,6 +5,7 @@ import {
   AdminDetailsProps,
   BusStationDetailsProps,
   RawAdminDetailsProps,
+  UpdateProfileAdminProps,
   UserDetailsProps,
 } from "@/interfaces";
 
@@ -286,4 +287,58 @@ export function broadCastMessage(message: string) {
         reject(err);
       });
   });
+}
+
+// for sign in
+
+export async function signInAdmin(value: { uname: string; password: string }) {
+  const { data } = await axios.post(
+    `${process.env.NEXT_PUBLIC_HOST}/authentication/login`,
+    value
+  );
+  return data;
+}
+
+// for update profile
+
+export async function updateProfile(values: UpdateProfileAdminProps) {
+  const { data } = await axios.patch(
+    `${process.env.NEXT_PUBLIC_HOST}/admin/update`,
+    values,
+    {
+      headers: {
+        authToken: sessionStorage.getItem("admin"),
+      },
+    }
+  );
+
+  return data;
+}
+
+// for sending reset password otp
+
+export async function sendOtp(value: { uname: string }) {
+  const { data } = await axios.post(
+    `${process.env.NEXT_PUBLIC_HOST}/authentication/sendPin/changePwd`,
+    value
+  );
+
+  return data;
+}
+
+// for resetting password
+
+export async function resetPassword(value: {
+  uname: string;
+  password: string;
+}) {
+  type responseType = {
+    success?: boolean;
+    msg?: string;
+  };
+  const { data } = await axios.patch<responseType>(
+    `${process.env.NEXT_PUBLIC_HOST}/authentication/changePwd`,
+    value
+  );
+  return data;
 }

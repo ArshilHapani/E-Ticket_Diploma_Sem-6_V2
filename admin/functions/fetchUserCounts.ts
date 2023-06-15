@@ -1,58 +1,46 @@
+import axios from "axios";
+
 async function fetchUserCounts() {
   let count = {
     passengerCnt: 0,
     conductorCnt: 0,
     adminCnt: 0,
   };
-  const passenger = await fetch(
+  const { data: passenger } = await axios.get(
     `${process.env.NEXT_PUBLIC_HOST}/admin/fetchAllPassengers`,
     {
-      method: "GET",
-      //@ts-ignore
       headers: {
-        "Content-type": "application/json",
         authToken: sessionStorage.getItem("admin"),
       },
     }
   );
-  const res = await passenger.json();
-  if (res.success) {
-    count.passengerCnt = res.passengers.length;
+  if (passenger.success) {
+    count.passengerCnt = passenger.passengers.length;
   }
-  const conductors = await fetch(
+  const { data: conductors } = await axios.get(
     `${process.env.NEXT_PUBLIC_HOST}/admin/fetchAllConductors`,
     {
-      method: "GET",
-      //@ts-ignore
       headers: {
-        "Content-type": "application/json",
         authToken: sessionStorage.getItem("admin"),
       },
     }
   );
-  const res1 = await conductors.json();
-
-  if (res1.success) {
-    count.conductorCnt = res1.conductors.length;
+  if (conductors.success) {
+    count.conductorCnt = conductors.conductors.length;
   }
 
-  const admins = await fetch(
+  const { data: admins } = await axios.get(
     `${process.env.NEXT_PUBLIC_HOST}/admin/fetchAllAdmins`,
     {
-      method: "GET",
-      //@ts-ignore
       headers: {
-        "Content-type": "application/json",
         authToken: sessionStorage.getItem("admin"),
       },
     }
   );
-  const res2 = await admins.json();
-
-  if (res2.success) {
-    count.adminCnt = res2.admins.length;
+  if (admins.success) {
+    count.adminCnt = admins.admins.length;
   }
-  return await count;
+  return count;
 }
 
 export default fetchUserCounts;

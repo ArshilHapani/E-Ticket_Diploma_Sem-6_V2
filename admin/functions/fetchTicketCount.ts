@@ -1,20 +1,18 @@
+import axios from "axios";
+
 export async function fetchTicketCount(
   setTicketCount: Function,
   ticketCount: Array<object>
 ) {
-  const data = await fetch(
+  const { data } = await axios.get(
     `${process.env.NEXT_PUBLIC_HOST}/admin/dailyTicket/count`,
     {
-      method: "GET",
-      //@ts-ignore
       headers: {
-        "Content-type": "application/json",
         authToken: sessionStorage.getItem("admin")?.toString(),
       },
     }
   );
-  const res = await data.json();
-  if (res.success) {
-    setTicketCount({ ...ticketCount, dates: res.dates, counts: res.tickets });
+  if (data.success) {
+    setTicketCount({ ...ticketCount, dates: data.dates, counts: data.tickets });
   }
 }

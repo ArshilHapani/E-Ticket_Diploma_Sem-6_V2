@@ -1,17 +1,15 @@
+import axios from "axios";
+
 export async function fetchTicketDetails(setTickets: Function) {
-  const data = await fetch(
+  const { data } = await axios.get(
     `${process.env.NEXT_PUBLIC_HOST}/admin/dailyTicket/fare`,
     {
-      method: "GET",
-      //@ts-ignore
       headers: {
-        "Content-type": "application/json",
         authToken: sessionStorage.getItem("admin")?.toString(),
       },
     }
   );
-  const res = await data.json();
-  if (res.success) {
-    setTickets(res.amount);
+  if (data.success) {
+    setTickets(data.amount);
   }
 }

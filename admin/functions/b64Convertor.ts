@@ -1,3 +1,4 @@
+import axios from "axios";
 import { toast } from "react-hot-toast";
 
 export default async function b64Convertor(file: File) {
@@ -7,21 +8,18 @@ export default async function b64Convertor(file: File) {
   reader.onload = async function () {
     //@ts-ignore
     base64String = reader?.result?.replace("data:", "").replace(/^.+,/, "");
-    const data = await fetch(
+    const { data: response } = await axios.patch(
       `${process.env.NEXT_PUBLIC_HOST}/admin/updateImage`,
       {
-        method: "PATCH",
-        //@ts-ignore
+        image: base64String,
+      },
+      {
         headers: {
           "Content-Type": "application/json",
           authToken: sessionStorage?.getItem("admin")?.toString(),
         },
-        body: JSON.stringify({
-          image: base64String,
-        }),
       }
     );
-    const response = await data.json();
     if (!response.success) toast.error("Something went wrong");
   };
   reader.readAsDataURL(file);

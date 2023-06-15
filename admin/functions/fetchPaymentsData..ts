@@ -1,22 +1,26 @@
+import axios from "axios";
+
 type types = {
   setPayments: object;
   payments: Array<object>;
 };
 export async function fetchPaymentsData(setPayments: types, payments: types) {
-  const data = await fetch(
+  const res = await axios.get(
     `${process.env.NEXT_PUBLIC_HOST}/admin/dailyPayment`,
     {
-      method: "GET",
-      //@ts-ignore
       headers: {
         "Content-type": "application/json",
         authToken: sessionStorage.getItem("admin")?.toString(),
       },
     }
   );
-  const res = await data.json();
-  if (res.success) {
+  const { data }: any = res;
+  if (data.success) {
     //@ts-ignore
-    setPayments({ ...payments, dates: res.dates, payments: res.payments });
+    await setPayments({
+      ...payments,
+      dates: data.dates,
+      payments: data.payments,
+    });
   }
 }

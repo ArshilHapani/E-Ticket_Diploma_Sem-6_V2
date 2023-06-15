@@ -1,4 +1,6 @@
-import React, { SyntheticEvent, useState } from "react";
+"use client";
+
+import { SyntheticEvent, useState } from "react";
 import {
   Stack,
   Typography,
@@ -15,14 +17,29 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+
 import Spinner from "@/components/Spinner";
+import { signInAdmin } from "@/functions/api/dataPosters";
 
 const SignIn = () => {
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [user, setUser] = useState({
     uname: "",
     password: "",
+  });
+  const { mutate, error, isError, isLoading } = useMutation({
+    mutationFn: (value: { uname: string; password: string }) =>
+      signInAdmin(value),
+    onSuccess: (response) => {
+      if (response.success) {
+        sessionStorage.setItem("admin", response.authToken);
+        toast.success("Welcome to admin panel!");
+        router.push("/HomePage");
+      } else if (!response.success) {
+        toast.error(response.msg);
+      }
+    },
   });
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -30,31 +47,9 @@ const SignIn = () => {
       toast.error("Please enter your username and password");
       return;
     }
-    setLoading(true);
-    const login = await fetch(
-      `${process.env.NEXT_PUBLIC_HOST}/authentication/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uname: user.uname,
-          password: user.password,
-        }),
-      }
-    );
-    const response = await login.json();
-    if (response.success) {
-      sessionStorage.setItem("admin", response.authToken);
-      toast.success("Welcome to admin panel!");
-      router.push("/HomePage");
-    } else if (!response.success) {
-      toast.error(response.msg);
-    }
-    setLoading(false);
+    mutate(user);
   };
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -63,7 +58,7 @@ const SignIn = () => {
   };
   return (
     <div className="form-root">
-      {loading && <Spinner message={`Verifying ${user?.uname} `} />}
+      {isLoading && <Spinner message={`Verifying ${user?.uname} `} />}
 
       <Stack
         sx={{
@@ -100,6 +95,7 @@ const SignIn = () => {
               <Typography fontSize={15} fontWeight="500" textAlign="center">
                 Enter your credential to continue
               </Typography>
+              {isError && `Error while signing in '${error}'`}
             </Stack>
             <Stack gap={1}>
               <TextField

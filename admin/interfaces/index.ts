@@ -87,3 +87,11 @@ export interface RawAdminDetailsProps extends Omit<AdminDetailsProps, "a_id"> {
   a_pwd: string;
   a_dob: string;
 }
+
+export interface UpdateProfileAdminProps{
+  a_uname: string;
+  a_name: string;
+  a_no: number;
+  a_dob: string;
+  a_email: string;
+}

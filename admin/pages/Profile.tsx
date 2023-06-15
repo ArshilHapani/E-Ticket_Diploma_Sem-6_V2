@@ -1,4 +1,7 @@
+"use client";
+
 //@ts-nocheck
+
 import {
   Avatar,
   Button,
@@ -8,14 +11,17 @@ import {
   Stack,
   Box,
 } from "@mui/material";
-import React, { ChangeEvent, useState, useEffect } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { MdPhotoCamera } from "react-icons/md";
 import { AiFillEdit } from "react-icons/ai";
+import { toast } from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
+
 import EditProfileModel from "../components/EditProfileModal";
 import b64Convertor from "../functions/b64Convertor";
 import compressImage from "../functions/compressImage";
-import { toast } from "react-hot-toast";
 import Spinner from "@/components/Spinner";
+import { fetchAdminProfile } from "@/functions/api/dataFetchers";
 
 const labelStyle = {
   color: "#8d99ae",
@@ -30,7 +36,7 @@ const userDetailsStyle = {
 const Profile = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [profileModal, setProfileModal] = useState<boolean>(false);
-  const [localObj, setLocalObj] = useState<object>({
+  const [localObj, setLocalObj] = useState({
     a_id: "",
     a_uname: "",
     created_by: "",
@@ -40,39 +46,27 @@ const Profile = () => {
     a_dob: "",
     a_img: "",
   });
-  useEffect(() => {
-    fetchAdmin();
-  }, []);
-  async function fetchAdmin() {
-    setLoading(true);
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_HOST}/admin/fetch`,
-      {
-        method: "GET",
-        //@ts-ignore
-        headers: {
-          "Content-Type": "application/json",
-          authToken: sessionStorage.getItem("admin")?.toString(),
-        },
+  const { data, isLoading, error, isError } = useQuery({
+    queryKey: ["profile", "admin"],
+    queryFn: fetchAdminProfile,
+    onSuccess(data) {
+      if (data?.success) {
+        setLocalObj({ ...data.admin });
+      } else if (data?.error) {
+        toast.error(data.error);
+      } else if (data?.status) {
+        toast.error(data.status);
+      } else {
+        toast.error("Failed to update profile");
       }
-    );
-    const data = await response.json();
-    console.log(data);
+    },
+    refetchInterval: 3000,
+  });
 
-    if (data.success) {
-      setLocalObj({ ...data.admin });
-    } else if (data?.error) {
-      toast.error(data.error);
-    } else if (data.status) {
-      toast.error(data.status);
-    } else {
-      toast.error("Failed to update profile");
-    }
-    setLoading(false);
-  }
   const uploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setLoading(true);
+    //@ts-ignore
     const selectedFile = e?.target?.files[0];
     if (
       selectedFile.type !== "image/jpeg" &&
@@ -86,6 +80,7 @@ const Profile = () => {
     }
     if (selectedFile.size >= 800000) {
       const imageRes = await compressImage(selectedFile);
+      //@ts-ignore
       await b64Convertor(imageRes);
       toast.success("Image updated successfully");
       setLoading(false);
@@ -95,10 +90,10 @@ const Profile = () => {
     toast.success("Image updated successfully");
     setLoading(false);
   };
+  if (isLoading) <Spinner message={`fetching... `} />;
+  if (loading) <Spinner message={`Updating latest data... `} />;
   return (
     <>
-      {loading && <Spinner message={`Updating latest data... `} />}
-
       <Stack
         sx={{
           height: "100vh",
@@ -108,6 +103,7 @@ const Profile = () => {
             sm: "5rem",
             md: "3rem",
           },
+          overflowX: "hidden",
         }}
         direction="column"
         justifyContent={{
@@ -197,6 +193,7 @@ const Profile = () => {
             </Modal>
           </Stack>
           <Stack width="60%" gap={1}>
+            {isError && `Error fetching profile '${error}'`}
             <Typography sx={labelStyle}>Name</Typography>
             <Typography sx={userDetailsStyle}>{localObj.a_name}</Typography>
             <Divider />

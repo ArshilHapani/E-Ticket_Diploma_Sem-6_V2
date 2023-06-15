@@ -1,3 +1,5 @@
+"use client";
+
 import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
@@ -6,16 +8,18 @@ import LoadingBar from "react-top-loading-bar";
 import { IconButton, Tooltip } from "@mui/material";
 import { AiOutlineHome } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
-import "@/styles/globals.css";
+
 import Navbar from "@/components/Navbar";
 import Spinner from "@/components/Spinner";
 import QueryClientProviderComponent from "@/providers/QueryClientProvider";
 
+import "@/styles/globals.css";
+
 export default function App({ Component, pageProps }: AppProps) {
   const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
+
   useEffect(() => {
     router.events.on("routeChangeComplete", () => {
       setProgress(100);

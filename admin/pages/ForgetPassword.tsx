@@ -10,10 +10,13 @@ import {
   Box,
 } from "@mui/material";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+
 import isUserNameValid from "../functions/userNameValidate";
 import UpdatePassword from "@/components/UpdatePasswordModal";
-import { toast } from "react-hot-toast";
 import Spinner from "@/components/Spinner";
+import { sendOtp } from "@/functions/api/dataPosters";
 
 const ForgotPassword = () => {
   const [textDisable, setTextDisable] = useState<boolean>(true);
@@ -21,7 +24,20 @@ const ForgotPassword = () => {
   const [userName, setUserName] = useState<string>("");
   const [otp, setOtp] = useState(0);
   const [initialOtp, setInitialOtp] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
+  const { mutate, error, isError, isLoading } = useMutation({
+    mutationFn: (value: { uname: string }) => sendOtp(value),
+    onSuccess: (response) => {
+      if (response.success) {
+        toast.success(response.msg);
+        setTextDisable(false);
+        setOtp(response.pin);
+      } else {
+        toast.error(response.msg);
+        setTextDisable(false);
+      }
+    },
+  });
+
   const handleClick = async () => {
     if (userName === "") {
       toast.error("please enter your username");
@@ -31,29 +47,7 @@ const ForgotPassword = () => {
       toast.error("Enter a valid username");
       return;
     }
-    setLoading(true);
-    const otps = await fetch(
-      `${process.env.NEXT_PUBLIC_HOST}/authentication/sendPin/changePwd`,
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          uname: userName,
-        }),
-      }
-    );
-    const response = await otps.json();
-    if (response.success) {
-      toast.success(response.msg);
-      setTextDisable(false);
-      setOtp(response.pin);
-    } else {
-      toast.error(response.msg);
-      setTextDisable(false);
-    }
-    setLoading(false);
+    mutate({ uname: userName });
   };
 
   const handleOTPClick = () => {
@@ -70,7 +64,7 @@ const ForgotPassword = () => {
   };
   return (
     <>
-      {loading && <Spinner message={`Sending mail to ${userName}`} />}
+      {isLoading && <Spinner message={`Sending mail to ${userName}`} />}
       <div className="form-root">
         <Stack
           sx={{
@@ -117,7 +111,8 @@ const ForgotPassword = () => {
               textAlign="center"
             >
               Enter your username address below and we'll send you password
-              reset OTP on your email.
+              reset OTP on your email.{" "}
+              {isError && `Error sending OTP '${error}'`}
             </Typography>
           </Stack>
           <Stack>
