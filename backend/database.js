@@ -9,7 +9,6 @@ const con = createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_DATABASE,
-  connectTimeout: 1000000,
 });
 
 export default con;
