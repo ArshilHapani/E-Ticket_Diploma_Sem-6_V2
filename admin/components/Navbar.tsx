@@ -51,19 +51,17 @@ const Navbar = () => {
       className="shadow-md z-10 h-[70px]"
     >
       <Stack direction="row" gap={4} alignItems="center" className="px-4">
-        <div className="cursor-pointer">
-          <Link
-            href="/HomePage"
-            className="focus:outline-none pointer-events-none"
-          >
-            <Image
-              src="/svg/logo-no-background.svg"
-              alt="logo"
-              height={60}
-              width={60}
-              className="pointer-events-none"
-            />
-          </Link>
+        <div
+          className="cursor-pointer"
+          onClick={() => router.push("/HomePage")}
+        >
+          <Image
+            src="/svg/logo-no-background.svg"
+            alt="logo"
+            height={60}
+            width={60}
+            className="pointer-events-none"
+          />
         </div>
         <Tooltip title="Profile" placement="bottom" arrow>
           <IconButton color="primary" onClick={() => router.push("/Profile")}>
