@@ -1,6 +1,6 @@
 user view:
 
-https://e-ticket-user.netlify.app
+https://e-ticket-user.vercel.app
 
 conductor view:
 
@@ -8,4 +8,4 @@ https://e-ticket-conductor.netlify.app
 
 admin view:
 
-https://eticket-admin-panel.vercel.app
+https://e-ticket-v2.vercel.app
